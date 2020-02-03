@@ -52,6 +52,17 @@ void Max7219_8x8::test() {
   }
 }
 
+// 2次元配列の形で与えれば表示する
+void Max7219_8x8::print(const int pattern[][4]) {
+  int i, d;                
+
+  for(d = 0; d < 8; d++){
+    for(i = 0; i < this->matrix_n; i++){
+      this->sendToDevice(d+1, pattern[d][i]);
+    }
+  }
+}
+
 // params: レジスタアドレス, データ
 void Max7219_8x8::sendToDevice(int addr, int data) {
   digitalWrite(this->SS, LOW);

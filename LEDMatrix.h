@@ -7,4 +7,5 @@ struct Max7219_8x8 {
   void init();
   void test();
   void sendToDevice(int addr, int data);
+  void print(const int pattern[][4]);
 };

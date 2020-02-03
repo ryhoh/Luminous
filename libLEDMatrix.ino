@@ -56,24 +56,12 @@ void setup(){
 }
 
 void loop(){
-  printMatrix(max7219_8x8, sample1);
+  max7219_8x8.print(sample1);
   delay(1000);
 
-  printMatrix(max7219_8x8, sample2);
+  max7219_8x8.print(sample2);
   delay(1000);
 }
-
-// 2次元配列の形で与えれば表示する
-void printMatrix(Max7219_8x8 dev, const int pattern[][4]) {
-  int i, d;                
-
-  for(d = 0; d < 8; d++){
-    for(i = 0; i < dev.matrix_n; i++){
-      dev.sendToDevice(d+1, pattern[d][i]);
-    }
-  }
-}
-
 
 
 //void scrollLeft(int pattern[8][LEDNUM]){
