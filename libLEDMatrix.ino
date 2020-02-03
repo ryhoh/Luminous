@@ -5,12 +5,11 @@
  *  LATCH = SS(slaveSelect) = デフォルトではD10へ接続
  *  CLOCK = SCK             = D13へ接続
  */
-#include <SPI.h>
 
-#define SS 10
-#define LEDNUM 4
+#include "LEDMatrix.h"
 
-#define DEBUG 150
+//#define SS 10
+//#define LEDNUM 4
 
 /*
  *  マトリクスLEDが複数接続（MAX7219のカスケード接続）されている場合、
@@ -21,8 +20,14 @@
  *  8行(8digit)分それを繰り返す
  */
 
+//struct MatrixData {
+//  int data[][]
+//};
+
+Max7219_8x8 max7219_8x8;
+
 // とりあえず1行分 LED8個のONOFFを1Byteで表す
-const int sample1[8][LEDNUM] = {
+const int sample1[8][4] = {
                               {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                               {0b10101010, 0b10101010, 0b10101010, 0b10101010},
                               {0b01010101, 0b01010101, 0b01010101, 0b01010101},
@@ -32,17 +37,7 @@ const int sample1[8][LEDNUM] = {
                               {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                               {0b10101010, 0b10101010, 0b10101010, 0b10101010}
                             };
-const int sample2[8][LEDNUM] = {
-                              {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                              {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                              {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                              {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                              {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                              {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                              {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                              {0b01010101, 0b01010101, 0b01010101, 0b01010101}
-                            };
-const int sample3[8][LEDNUM] = {
+const int sample2[8][4] = {
                               {0b10101010, 0b10101010, 0b10101010, 0b10101010},
                               {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                               {0b10101010, 0b10101010, 0b10101010, 0b10101010},
@@ -54,83 +49,32 @@ const int sample3[8][LEDNUM] = {
                             };
 
 void setup(){
-  delay(1000);
-  SPI.begin();
-  pinMode(SS, OUTPUT);
-  digitalWrite(SS, HIGH);
-
-  /*初期設定*/
-  //シャットダウン→オペレート
-    //レジスタアドレス  オペレート
-  sendTo7219(0x0c, 0x01);
- 
-  //スキャンリミット設定→8桁
-    //レジスタアドレス  8桁全部を使用
-  sendTo7219(0x0b, 0x07);
-  
-  //デコードモード→No decodeモード
-    //レジスタアドレス  デコードしない
-  sendTo7219(0x09, 0x00);
- 
-  //残留表示を消去
-  for (int i = 1; i <= 8; i++) {
-    //レジスタアドレス0x01～0x08を指定
-    //文字blankを送信
-    sendTo7219(i, 0x0f);
-  }
-   
-  //輝度設定
-    //レジスタアドレス  低輝度で
-  sendTo7219(0x0a, 0x00);
-  delay(2000);
- 
-  /*動作テスト*/
-  
-  //ディスプレイテストモード
-    //レジスタアドレス  テストモード（全点灯）
-  sendTo7219(0x0f, 0x01);
-  delay(2000);
-
-    //レジスタアドレス  テストモード終了
-  sendTo7219(0x0f, 0x00);
-  delay(1000);
-
-  // リセット
-  for(int j = 0; j < LEDNUM; j++){
-    for(int i = 1; i <= 8; i++){
-      sendTo7219(i, 0x00);
-    }
-  }
+  max7219_8x8.SS = 10;
+  max7219_8x8.matrix_n = 4;
+  max7219_8x8.init();
+  max7219_8x8.test();
 }
 
 void loop(){
-  printMatrix(sample1);
+  printMatrix(max7219_8x8, sample1);
   delay(1000);
 
-  printMatrix(sample2);
+  printMatrix(max7219_8x8, sample2);
   delay(1000);
-
-//  scrollLeft(table);  
 }
 
 // 2次元配列の形で与えれば表示する
-void printMatrix(const int pattern[8][LEDNUM]){
+void printMatrix(Max7219_8x8 dev, const int pattern[][4]) {
   int i, d;                
 
   for(d = 0; d < 8; d++){
-    for(i = 0; i < LEDNUM; i++){
-      sendTo7219(d+1, pattern[d][i]);
+    for(i = 0; i < dev.matrix_n; i++){
+      dev.sendToDevice(d+1, pattern[d][i]);
     }
   }
 }
 
-// 引数は レジスタアドレス, データ の形
-void sendTo7219(int high, int low){
-  digitalWrite(SS, LOW);
-  SPI.transfer(high);
-  SPI.transfer(low);
-  digitalWrite(SS, HIGH);
-}
+
 
 //void scrollLeft(int pattern[8][LEDNUM]){
 //  int i, d;
