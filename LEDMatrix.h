@@ -1,3 +1,6 @@
+#ifndef LEDMATRIX_H
+#define LEDMATRIX_H
+
 #include <SPI.h>
 
 /*  
@@ -26,3 +29,5 @@ struct Max7219_8x8 {
   void sendToDevice(int addr, int data);
   void print(unsigned char **pattern);
 };
+
+#endif
