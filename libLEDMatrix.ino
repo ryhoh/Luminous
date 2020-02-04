@@ -41,10 +41,10 @@ void makeSimpleMatrix(MatrixData &matrixData, bool invert) {
 }
 
 void loop(){
-  max7219_8x8.print(matrixData1.data);
+  max7219_8x8.print(&matrixData1);
   delay(1000);
 
-  max7219_8x8.print(matrixData2.data);
+  max7219_8x8.print(&matrixData2);
   delay(1000);
 }
 

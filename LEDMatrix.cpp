@@ -1,3 +1,4 @@
+#include <SPI.h>
 #include "LEDMatrix.h"
 
 void Max7219_8x8::init() {
@@ -44,7 +45,8 @@ void Max7219_8x8::test() {
 }
 
 // 2次元配列の形で与えれば表示する
-void Max7219_8x8::print(unsigned char **pattern) {
+void Max7219_8x8::print(MatrixData *matrixData) {
+  unsigned char **pattern = matrixData->data;
   for (int row_i = 0; row_i < 8; ++row_i) {
     for (int matrix_i = 0; matrix_i < this->matrix_n; ++matrix_i) {
       this->sendToDevice(row_i+1, pattern[row_i][matrix_i]);

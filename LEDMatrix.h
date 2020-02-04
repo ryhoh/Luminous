@@ -2,6 +2,7 @@
 #define LEDMATRIX_H
 
 #include <SPI.h>
+#include "MatrixData.h"
 
 /*  
  *  SPI接続によるMAX7219の制御
@@ -33,7 +34,7 @@ struct Max7219_8x8 {
   void init();
   void test();
   void sendToDevice(int addr, int data);
-  void print(unsigned char **pattern);
+  void print(MatrixData *matrixData);
 };
 
 #endif
