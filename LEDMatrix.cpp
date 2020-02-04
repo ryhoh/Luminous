@@ -16,9 +16,9 @@ void Max7219_8x8::init() {
   this->sendToDevice(0x09, 0x00);
  
   // 残留表示を消去
-  for (int i = 1; i <= 8; i++) {
+  for (int addr_i = 1; addr_i < 9; ++addr_i) {
     // 文字blankを送信
-    this->sendToDevice(i, 0x0f);
+    this->sendToDevice(addr_i, 0x0f);
   }
    
   // 輝度設定 -> 低輝度で
@@ -36,20 +36,18 @@ void Max7219_8x8::test() {
   delay(1000);
 
   // リセット
-  for(int j = 0; j < this->matrix_n; j++){
-    for(int i = 1; i <= 8; i++){
-      this->sendToDevice(i, 0x00);
+  for (int matrix_i = 0; matrix_i < this->matrix_n; ++matrix_i) {
+    for (int addr_i = 1; addr_i < 9; ++addr_i) {
+      this->sendToDevice(addr_i, 0x00);
     }
   }
 }
 
 // 2次元配列の形で与えれば表示する
 void Max7219_8x8::print(unsigned char **pattern) {
-  int i, d;                
-
-  for(d = 0; d < 8; d++){
-    for(i = 0; i < this->matrix_n; i++){
-      this->sendToDevice(d+1, pattern[d][i]);
+  for (int row_i = 0; row_i < 8; ++row_i) {
+    for (int matrix_i = 0; matrix_i < this->matrix_n; ++matrix_i) {
+      this->sendToDevice(row_i+1, pattern[row_i][matrix_i]);
     }
   }
 }
