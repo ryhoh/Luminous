@@ -6,41 +6,32 @@ void Max7219_8x8::init() {
   pinMode(this->SS, OUTPUT);
   digitalWrite(this->SS, HIGH);
 
-  /*初期設定*/
-  //シャットダウン→オペレート
-    //レジスタアドレス  オペレート
+  // シャットダウン -> オペレート
   this->sendToDevice(0x0c, 0x01);
  
-  //スキャンリミット設定→8桁
-    //レジスタアドレス  8桁全部を使用
+  // スキャンリミット設定 -> 8桁
   this->sendToDevice(0x0b, 0x07);
   
-  //デコードモード→No decodeモード
-    //レジスタアドレス  デコードしない
+  // デコードモード -> No decodeモード
   this->sendToDevice(0x09, 0x00);
  
-  //残留表示を消去
+  // 残留表示を消去
   for (int i = 1; i <= 8; i++) {
-    //レジスタアドレス0x01～0x08を指定
-    //文字blankを送信
+    // 文字blankを送信
     this->sendToDevice(i, 0x0f);
   }
    
-  //輝度設定
-    //レジスタアドレス  低輝度で
+  // 輝度設定 -> 低輝度で
   this->sendToDevice(0x0a, 0x00);
   delay(2000);
 }
 
 void Max7219_8x8::test() {
-  /*動作テスト*/
-  
-  //ディスプレイテストモード
-    //レジスタアドレス  テストモード（全点灯）
+  // ディスプレイテストモード（全点灯）
   this->sendToDevice(0x0f, 0x01);
   delay(2000);
 
-    //レジスタアドレス  テストモード終了
+  // テストモード終了
   this->sendToDevice(0x0f, 0x00);
   delay(1000);
 
