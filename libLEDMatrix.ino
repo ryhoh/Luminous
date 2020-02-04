@@ -1,34 +1,22 @@
-/*  
- *  SPI接続によるMAX7219の制御
- *  
- *  DATA  = MOSI            = D11へ接続
- *  LATCH = SS(slaveSelect) = デフォルトではD10へ接続
- *  CLOCK = SCK             = D13へ接続
- */
-
 #include "LEDMatrix.h"
-
-//#define SS 10
-//#define LEDNUM 4
-
-/*
- *  マトリクスLEDが複数接続（MAX7219のカスケード接続）されている場合、
- *  MAX7219に2Byteのデータを送る度に、古いデータが後ろのMAX7219へ押し出される
- *  
- *  表示内容の更新を行うには、全体の表示内容を作った上で、
- *  それを1行(1digit)ずつMAX7219の数だけ繰り返して送信し、
- *  8行(8digit)分それを繰り返す
- */
-
-//struct MatrixData {
-//  unsigned char data[8][4];
-//};
+#include "MatrixData.h"
 
 Max7219_8x8 max7219_8x8;
-//MatrixData matrixData1, matrixData2;
+MatrixData matrixData1, matrixData2;
 
-// とりあえず1行分 LED8個のONOFFを1Byteで表す
-const unsigned char sample1[8][4] = {
+void setup(){
+  max7219_8x8.SS = 10;
+  max7219_8x8.matrix_n = 4;
+  max7219_8x8.init();
+  max7219_8x8.test();
+
+  makeSimpleMatrix(matrixData1, false);
+  makeSimpleMatrix(matrixData2, true);
+}
+
+void makeSimpleMatrix(MatrixData &matrixData, bool invert) {
+  // LED8個のONOFFを1Byteで表す
+  const unsigned char sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
                                         {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                                         {0b10101010, 0b10101010, 0b10101010, 0b10101010},
                                         {0b01010101, 0b01010101, 0b01010101, 0b01010101},
@@ -38,32 +26,37 @@ const unsigned char sample1[8][4] = {
                                         {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                                         {0b10101010, 0b10101010, 0b10101010, 0b10101010}
                                       };
-const unsigned char sample2[8][4] = {
-                                        {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                                        {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                                        {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                                        {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                                        {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                                        {0b01010101, 0b01010101, 0b01010101, 0b01010101},
-                                        {0b10101010, 0b10101010, 0b10101010, 0b10101010},
-                                        {0b01010101, 0b01010101, 0b01010101, 0b01010101}
-                                      };
-
-void setup(){
-  max7219_8x8.SS = 10;
-  max7219_8x8.matrix_n = 4;
-  max7219_8x8.init();
-  max7219_8x8.test();
+  matrixData.matrix_size = 8, matrixData.matrix_n = 4;
+  matrixData.data = (unsigned char **)malloc(sizeof(unsigned char *) * matrixData.matrix_size);
+  if (matrixData1.data == NULL) mallocError();
+  
+  for (int i = 0; i < matrixData.matrix_size; ++i) {
+    matrixData.data[i] = (unsigned char *)malloc(sizeof(unsigned char) * matrixData.matrix_n);
+    if (matrixData.data[i] == NULL) mallocError();
+    for (int j = 0; j < matrixData.matrix_n; ++j) {
+      if (invert) matrixData.data[i][j] = sample[i][j] ^ 0xFF;
+      else matrixData.data[i][j] = sample[i][j];
+    }
+  }
 }
 
 void loop(){
-  max7219_8x8.print(sample1);
-//  max7219_8x8.print(matrixData1.data);
+  max7219_8x8.print(matrixData1.data);
   delay(1000);
 
-  max7219_8x8.print(sample2);
-//  max7219_8x8.print(matrixData2.data);
+  max7219_8x8.print(matrixData2.data);
   delay(1000);
+}
+
+void mallocError() {
+  const static int built_in_LED = 13;
+  pinMode(built_in_LED, OUTPUT);
+  while (true) {
+    digitalWrite(built_in_LED, HIGH);
+    delay(50);
+    digitalWrite(built_in_LED, LOW);
+    delay(1000);
+  }
 }
 
 
