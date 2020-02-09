@@ -2,7 +2,7 @@
 #include "MatrixData.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixData matrixData1, matrixData2;
+MatrixData matrixData1 = MatrixData(8, 4), matrixData2 = MatrixData(8, 4);
 
 void setup(){
   max7219_8x8.SS = 10;
@@ -10,11 +10,10 @@ void setup(){
   max7219_8x8.init();
   max7219_8x8.test();
 
-  makeSimpleMatrix(matrixData1, false);
-  makeSimpleMatrix(matrixData2, true);
+  makeSimpleMatrix();
 }
 
-void makeSimpleMatrix(MatrixData &matrixData, bool invert) {
+void makeSimpleMatrix() {
   // LED8個のONOFFを1Byteで表す
   const unsigned char sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
                                         {0b01010101, 0b01010101, 0b01010101, 0b01010101},
@@ -26,18 +25,13 @@ void makeSimpleMatrix(MatrixData &matrixData, bool invert) {
                                         {0b01010101, 0b01010101, 0b01010101, 0b01010101},
                                         {0b10101010, 0b10101010, 0b10101010, 0b10101010}
                                       };
-  matrixData.matrix_size = 8, matrixData.matrix_n = 4;
-  matrixData.data = (unsigned char **)malloc(sizeof(unsigned char *) * matrixData.matrix_size);
-  if (matrixData1.data == NULL) mallocError();
-  
-  for (int i = 0; i < matrixData.matrix_size; ++i) {
-    matrixData.data[i] = (unsigned char *)malloc(sizeof(unsigned char) * matrixData.matrix_n);
-    if (matrixData.data[i] == NULL) mallocError();
-    for (int j = 0; j < matrixData.matrix_n; ++j) {
-      if (invert) matrixData.data[i][j] = sample[i][j] ^ 0xFF;
-      else matrixData.data[i][j] = sample[i][j];
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 4; ++j) {
+      matrixData1.data[i][j] = sample[i][j];
     }
   }
+  matrixData2 = matrixData1.clone();
+  matrixData2.flip();
 }
 
 void loop(){
@@ -48,16 +42,16 @@ void loop(){
   delay(1000);
 }
 
-void mallocError() {
-  const static int built_in_LED = 13;
-  pinMode(built_in_LED, OUTPUT);
-  while (true) {
-    digitalWrite(built_in_LED, HIGH);
-    delay(50);
-    digitalWrite(built_in_LED, LOW);
-    delay(1000);
-  }
-}
+//void mallocError() {
+//  const static int built_in_LED = 13;
+//  pinMode(built_in_LED, OUTPUT);
+//  while (true) {
+//    digitalWrite(built_in_LED, HIGH);
+//    delay(50);
+//    digitalWrite(built_in_LED, LOW);
+//    delay(1000);
+//  }
+//}
 
 
 //void scrollLeft(int pattern[8][LEDNUM]){
