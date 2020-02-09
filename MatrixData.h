@@ -16,11 +16,13 @@ struct MatrixData {
     this->data = matrix_utils::alloc2dimArray(matrix_size, matrix_n);
   };
 
+  MatrixData(const MatrixData &matrixData) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止
+
   ~MatrixData() {
     matrix_utils::free2dimArray(this->data, this->matrix_size);
   }
 
-  MatrixData clone();
+  MatrixData *clone();
   void flip();
 };
 

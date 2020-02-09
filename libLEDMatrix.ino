@@ -2,13 +2,13 @@
 #include "MatrixData.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixData matrixData1 = MatrixData(8, 4), matrixData2 = MatrixData(8, 4);
+MatrixData *matrixData1 = new MatrixData(8, 4), *matrixData2;
 
 void setup(){
   max7219_8x8.SS = 10;
   max7219_8x8.matrix_n = 4;
   max7219_8x8.init();
-  max7219_8x8.test();
+//  max7219_8x8.test();
 
   makeSimpleMatrix();
 }
@@ -27,18 +27,18 @@ void makeSimpleMatrix() {
                                       };
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 4; ++j) {
-      matrixData1.data[i][j] = sample[i][j];
+      matrixData1->data[i][j] = sample[i][j];
     }
   }
-  matrixData2 = matrixData1.clone();
-  matrixData2.flip();
+  matrixData2 = matrixData1->clone();
+  matrixData2->flip();
 }
 
 void loop(){
-  max7219_8x8.print(&matrixData1);
+  max7219_8x8.print(matrixData1);
   delay(1000);
 
-  max7219_8x8.print(&matrixData2);
+  max7219_8x8.print(matrixData2);
   delay(1000);
 }
 

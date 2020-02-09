@@ -8,12 +8,12 @@ void MatrixData::flip() {
   }
 }
 
-MatrixData MatrixData::clone() {
-  MatrixData res = MatrixData(this->matrix_size, this->matrix_n);
+MatrixData *MatrixData::clone() {
+  MatrixData *res = new MatrixData(this->matrix_size, this->matrix_n);
   
   for (short i = 0; i < this->matrix_size; ++i) {
     for (short j = 0; j < this->matrix_n; ++j) {
-      res.data[i][j] = this->data[i][j];
+      res->data[i][j] = this->data[i][j];
     }
   }
 
