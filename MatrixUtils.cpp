@@ -31,3 +31,10 @@ unsigned char **matrix_utils::alloc2dimArray(short outer_size, short inner_size)
 
   return res;
 }
+
+void matrix_utils::free2dimArray(unsigned char **array, short outer_size) {
+  for (short i = 0; i < outer_size; ++i) {
+    free(array[i]);
+  }
+  free(array);
+}

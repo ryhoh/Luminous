@@ -16,8 +16,11 @@ struct MatrixData {
     this->data = matrix_utils::alloc2dimArray(matrix_size, matrix_n);
   };
 
+  ~MatrixData() {
+    matrix_utils::free2dimArray(this->data, this->matrix_size);
+  }
+
   MatrixData clone();
-  
   void flip();
 };
 

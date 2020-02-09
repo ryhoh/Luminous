@@ -15,6 +15,7 @@
 namespace matrix_utils {
   void pError(unsigned int ecode);
   unsigned char **alloc2dimArray(short outer_size, short inner_size);
+  void free2dimArray(unsigned char **array, short outer_size);
 }
 
 #endif

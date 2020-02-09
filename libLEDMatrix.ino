@@ -42,17 +42,6 @@ void loop(){
   delay(1000);
 }
 
-//void mallocError() {
-//  const static int built_in_LED = 13;
-//  pinMode(built_in_LED, OUTPUT);
-//  while (true) {
-//    digitalWrite(built_in_LED, HIGH);
-//    delay(50);
-//    digitalWrite(built_in_LED, LOW);
-//    delay(1000);
-//  }
-//}
-
 
 //void scrollLeft(int pattern[8][LEDNUM]){
 //  int i, d;
