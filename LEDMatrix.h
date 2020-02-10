@@ -27,10 +27,10 @@
  */
 
 struct Max7219_8x8 {
-  unsigned char DAT;
-  unsigned char LAT;
-  unsigned char CLK;
-  unsigned char screen_n;
+  uint8_t DAT;
+  uint8_t LAT;
+  uint8_t CLK;
+  uint8_t screen_n;
 
   void init();
   void test();

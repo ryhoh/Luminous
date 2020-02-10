@@ -21,18 +21,18 @@ void matrix_utils::pError(unsigned int ecode) {
   }
 }
 
-unsigned char **matrix_utils::alloc2dimArray(short outer_size, short inner_size) {
-  unsigned char **res = (unsigned char **)malloc(sizeof(unsigned char *) * outer_size);
+uint8_t **matrix_utils::alloc2dimArray(short outer_size, short inner_size) {
+  uint8_t **res = (uint8_t **)malloc(sizeof(uint8_t *) * outer_size);
   if (res == NULL) matrix_utils::pError(2);
   for (short i = 0; i < outer_size; ++i) {
-    res[i] = (unsigned char *)calloc(inner_size, sizeof(unsigned char));
+    res[i] = (uint8_t *)calloc(inner_size, sizeof(uint8_t));
     if (res[i] == NULL) matrix_utils::pError(2);
   }
 
   return res;
 }
 
-void matrix_utils::free2dimArray(unsigned char **array, short outer_size) {
+void matrix_utils::free2dimArray(uint8_t **array, short outer_size) {
   for (short i = 0; i < outer_size; ++i) {
     free(array[i]);
   }

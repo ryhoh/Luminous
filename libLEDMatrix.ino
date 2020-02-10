@@ -18,7 +18,7 @@ void setup(){
 
 void makeSimpleMatrix() {
   // LED8個のONOFFを1Byteで表す
-  const unsigned char sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
+  const uint8_t sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
                                         {0b00000000, 0b01111000, 0b00000000, 0b00000000},
                                         {0b00111100, 0b01001000, 0b00011110, 0b00111000},
                                         {0b01100110, 0b01001000, 0b00100000, 0b00100100},
