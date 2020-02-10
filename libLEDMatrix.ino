@@ -2,7 +2,7 @@
 #include "MatrixBuffer.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixBuffer *MatrixBuffer1 = new MatrixBuffer(8, 4), *MatrixBuffer2;
+MatrixBuffer *matrixBuffer1 = new MatrixBuffer(8, 4), *matrixBuffer2;
 
 void setup(){
   max7219_8x8.LAT = 10;
@@ -30,15 +30,15 @@ void makeSimpleMatrix() {
                                       };
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 4; ++j) {
-      MatrixBuffer1->data[i][j] = sample[i][j];
+      matrixBuffer1->data[i][j] = sample[i][j];
     }
   }
-  MatrixBuffer2 = MatrixBuffer1->clone();
-  MatrixBuffer2->flip();
+  matrixBuffer2 = matrixBuffer1->clone();
+  matrixBuffer2->flip();
 }
 
 void loop(){
-  MatrixBuffer *matrixBuffer3 = MatrixBuffer1->clone();
+  MatrixBuffer *matrixBuffer3 = matrixBuffer1->clone();
   max7219_8x8.print(matrixBuffer3);
   delay(1000);
 
@@ -48,7 +48,7 @@ void loop(){
     delay(200);
   }
 
-  max7219_8x8.print(MatrixBuffer2);
+  max7219_8x8.print(matrixBuffer2);
   delay(1000);
 }
 
