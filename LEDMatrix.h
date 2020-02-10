@@ -34,8 +34,8 @@ struct Max7219_8x8 {
 
   void init();
   void test();
-  void shiftToRegister(int addr, int data);
-  void sendToDevice(int addr, int data);
+  void shiftToRegister(uint8_t addr, uint8_t data);
+  void sendToDevice(uint8_t addr, uint8_t data);
   void print(MatrixBuffer *MatrixBuffer);
 };
 

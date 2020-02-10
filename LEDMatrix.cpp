@@ -57,13 +57,13 @@ void Max7219_8x8::print(MatrixBuffer *MatrixBuffer) {
 }
 
 // params: レジスタアドレス, データ
-void Max7219_8x8::shiftToRegister(int addr, int data) {
+void Max7219_8x8::shiftToRegister(uint8_t addr, uint8_t data) {
   shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
   shiftOut(this->DAT, this->CLK, MSBFIRST, data);
 }
 
 // params: レジスタアドレス, データ
-void Max7219_8x8::sendToDevice(int addr, int data) {
+void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
   digitalWrite(this->LAT, LOW);
   this->shiftToRegister(addr, data);
   digitalWrite(this->LAT, HIGH);
