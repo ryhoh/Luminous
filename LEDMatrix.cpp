@@ -48,9 +48,15 @@ void Max7219_8x8::test() {
 void Max7219_8x8::print(MatrixData *matrixData) {
   unsigned char **pattern = matrixData->data;
   for (int row_i = 0; row_i < 8; ++row_i) {
-    for (int matrix_i = 0; matrix_i < this->matrix_n; ++matrix_i) {
-      this->sendToDevice(row_i+1, pattern[row_i][matrix_i]);
+//    for (int matrix_i = 0; matrix_i < this->matrix_n; ++matrix_i) {
+    digitalWrite(this->SS, LOW);
+    for (int matrix_i = 0; matrix_i < 4; ++matrix_i) {
+//      this->sendToDevice(row_i+1, pattern[row_i][matrix_i]);
+      SPI.transfer(row_i+1);
+      SPI.transfer(pattern[row_i][matrix_i]);
     }
+    digitalWrite(this->SS, HIGH);
+    digitalWrite(this->SS, LOW);
   }
 }
 
@@ -60,4 +66,5 @@ void Max7219_8x8::sendToDevice(int addr, int data) {
   SPI.transfer(addr);
   SPI.transfer(data);
   digitalWrite(this->SS, HIGH);
+  digitalWrite(this->SS, LOW);
 }
