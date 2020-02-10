@@ -1,15 +1,14 @@
 #ifndef LEDMATRIX_H
 #define LEDMATRIX_H
 
-#include <SPI.h>
-#include "MatrixData.h"
+#include "MatrixBuffer.h"
 
 /*  
- *  SPI接続によるMAX7219の制御
+ *  MAX7219の制御
  *  
- *  DATA  = MOSI            = D11へ接続
- *  LATCH = SS(slaveSelect) = デフォルトではD10へ接続
- *  CLOCK = SCK             = D13へ接続
+ *  DATA  = DAT  テスト環境ではD11へ接続
+ *  LATCH = LAT  テスト環境ではD10へ接続
+ *  CLOCK = CLK  テスト環境ではD13へ接続
  *  
  *  MAX7219: 7セグメントLED8桁を制御可能なチップ
  *           8x8ドットマトリクスLEDの制御にも転用可能
@@ -28,13 +27,16 @@
  */
 
 struct Max7219_8x8 {
-  unsigned char SS;
+  unsigned char DAT;
+  unsigned char LAT;
+  unsigned char CLK;
   unsigned char screen_n;
 
   void init();
   void test();
+  void shiftToRegister(int addr, int data);
   void sendToDevice(int addr, int data);
-  void print(MatrixData *matrixData);
+  void print(MatrixBuffer *MatrixBuffer);
 };
 
 #endif

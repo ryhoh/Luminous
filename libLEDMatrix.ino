@@ -1,12 +1,15 @@
 #include "LEDMatrix.h"
-#include "MatrixData.h"
+#include "MatrixBuffer.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixData *matrixData1 = new MatrixData(8, 4), *matrixData2;
+MatrixBuffer *MatrixBuffer1 = new MatrixBuffer(8, 4), *MatrixBuffer2;
 
 void setup(){
-  max7219_8x8.SS = 10;
+  max7219_8x8.LAT = 10;
+  max7219_8x8.DAT = 11;
+  max7219_8x8.CLK = 13;
   max7219_8x8.screen_n = 4;
+  
   max7219_8x8.init();
   max7219_8x8.test();
 
@@ -27,18 +30,18 @@ void makeSimpleMatrix() {
                                       };
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 4; ++j) {
-      matrixData1->data[i][j] = sample[i][j];
+      MatrixBuffer1->data[i][j] = sample[i][j];
     }
   }
-  matrixData2 = matrixData1->clone();
-  matrixData2->flip();
+  MatrixBuffer2 = MatrixBuffer1->clone();
+  MatrixBuffer2->flip();
 }
 
 void loop(){
-  max7219_8x8.print(matrixData1);
+  max7219_8x8.print(MatrixBuffer1);
   delay(1000);
 
-  max7219_8x8.print(matrixData2);
+  max7219_8x8.print(MatrixBuffer2);
   delay(1000);
 }
 

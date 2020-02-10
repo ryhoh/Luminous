@@ -1,11 +1,10 @@
-#include <SPI.h>
 #include "LEDMatrix.h"
 
 void Max7219_8x8::init() {
   delay(1000);
-  SPI.begin();
-  pinMode(this->SS, OUTPUT);
-  digitalWrite(this->SS, HIGH);
+  pinMode(this->LAT, OUTPUT);
+  pinMode(this->CLK, OUTPUT);
+  pinMode(this->DAT, OUTPUT);
 
   // シャットダウン -> オペレート
   this->sendToDevice(0x0c, 0x01);
@@ -45,25 +44,28 @@ void Max7219_8x8::test() {
 }
 
 // 2次元配列の形で与えれば表示する
-void Max7219_8x8::print(MatrixData *matrixData) {
-  unsigned char **pattern = matrixData->data;
+void Max7219_8x8::print(MatrixBuffer *MatrixBuffer) {
+  unsigned char **pattern = MatrixBuffer->data;
   for (int row_i = 0; row_i < 8; ++row_i) {
-    digitalWrite(this->SS, LOW);
+    digitalWrite(this->LAT, LOW);
     for (int matrix_i = 0; matrix_i < this->screen_n; ++matrix_i) {
-//      this->sendToDevice(row_i+1, pattern[row_i][matrix_i]);
-      SPI.transfer(row_i+1);
-      SPI.transfer(pattern[row_i][matrix_i]);
+      this->shiftToRegister(row_i+1, pattern[row_i][matrix_i]);
     }
-    digitalWrite(this->SS, HIGH);
-    digitalWrite(this->SS, LOW);
+    digitalWrite(this->LAT, HIGH);
+    digitalWrite(this->LAT, LOW);
   }
 }
 
 // params: レジスタアドレス, データ
+void Max7219_8x8::shiftToRegister(int addr, int data) {
+  shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
+  shiftOut(this->DAT, this->CLK, MSBFIRST, data);
+}
+
+// params: レジスタアドレス, データ
 void Max7219_8x8::sendToDevice(int addr, int data) {
-  digitalWrite(this->SS, LOW);
-  SPI.transfer(addr);
-  SPI.transfer(data);
-  digitalWrite(this->SS, HIGH);
-  digitalWrite(this->SS, LOW);
+  digitalWrite(this->LAT, LOW);
+  this->shiftToRegister(addr, data);
+  digitalWrite(this->LAT, HIGH);
+  digitalWrite(this->LAT, LOW);
 }
