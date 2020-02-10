@@ -5,15 +5,15 @@
 
 struct MatrixData {
   short matrix_size;
-  short matrix_n;
-  unsigned char **data;  // data[matrix_size][matrix_n]
+  short screen_n;
+  unsigned char **data;  // data[matrix_size][screen_n]
 
-  MatrixData(short matrix_size, short matrix_n) {
-    if (matrix_size < 1 || matrix_n < 1) matrix_utils::pError(1);
+  MatrixData(short matrix_size, short screen_n) {
+    if (matrix_size < 1 || screen_n < 1) matrix_utils::pError(1);
 
     this->matrix_size = matrix_size;
-    this->matrix_n = matrix_n;
-    this->data = matrix_utils::alloc2dimArray(matrix_size, matrix_n);
+    this->screen_n = screen_n;
+    this->data = matrix_utils::alloc2dimArray(matrix_size, screen_n);
   };
 
   MatrixData(const MatrixData &matrixData) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止

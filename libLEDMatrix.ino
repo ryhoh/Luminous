@@ -6,7 +6,7 @@ MatrixData *matrixData1 = new MatrixData(8, 4), *matrixData2;
 
 void setup(){
   max7219_8x8.SS = 10;
-  max7219_8x8.matrix_n = 4;
+  max7219_8x8.screen_n = 4;
   max7219_8x8.init();
   max7219_8x8.test();
 

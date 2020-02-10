@@ -29,7 +29,7 @@
 
 struct Max7219_8x8 {
   unsigned char SS;
-  unsigned char matrix_n;
+  unsigned char screen_n;
 
   void init();
   void test();
