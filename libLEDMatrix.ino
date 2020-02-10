@@ -38,8 +38,15 @@ void makeSimpleMatrix() {
 }
 
 void loop(){
-  max7219_8x8.print(MatrixBuffer1);
+  MatrixBuffer *matrixBuffer3 = MatrixBuffer1->clone();
+  max7219_8x8.print(matrixBuffer3);
   delay(1000);
+
+  for (int i = 0; i < 32; ++i) {
+    matrixBuffer3->leftScroll(false);
+    max7219_8x8.print(matrixBuffer3);
+    delay(200);
+  }
 
   max7219_8x8.print(MatrixBuffer2);
   delay(1000);

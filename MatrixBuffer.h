@@ -14,6 +14,7 @@ struct MatrixBuffer {
 
   MatrixBuffer *clone();
   void flip();
+  void leftScroll(bool one_padding);
 };
 
 #endif
