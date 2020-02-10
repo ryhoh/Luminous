@@ -50,6 +50,8 @@ void loop(){
 
   max7219_8x8.print(matrixBuffer2);
   delay(1000);
+
+  delete matrixBuffer3;
 }
 
 
