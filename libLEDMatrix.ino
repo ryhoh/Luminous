@@ -1,8 +1,11 @@
 #include "LEDMatrix.h"
 #include "MatrixBuffer.h"
+#include "String5x7Buffer.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixBuffer *matrixBuffer1 = new MatrixBuffer(8, 4), *matrixBuffer2;
+//MatrixBuffer *matrixBuffer1 = new MatrixBuffer(8, 4), *matrixBuffer2;
+char text[] = "Hello world!\0";
+String5x7Buffer *string5x7Buffer = new String5x7Buffer(4, text, false);
 
 void setup(){
   max7219_8x8.LAT = 10;
@@ -13,45 +16,54 @@ void setup(){
   max7219_8x8.init();
   max7219_8x8.test();
 
-  makeSimpleMatrix();
+//  makeSimpleMatrix();
 }
 
-void makeSimpleMatrix() {
-  // LED8個のONOFFを1Byteで表す
-  const uint8_t sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
-                                        {0b00000000, 0b01111000, 0b00000000, 0b00000000},
-                                        {0b00111100, 0b01001000, 0b00011110, 0b00111000},
-                                        {0b01100110, 0b01001000, 0b00100000, 0b00100100},
-                                        {0b01100110, 0b01110000, 0b00100000, 0b00100010},
-                                        {0b01111110, 0b01001000, 0b00100000, 0b00100010},
-                                        {0b01100110, 0b01001000, 0b00100000, 0b00100100},
-                                        {0b01100110, 0b01001000, 0b00100000, 0b00111000},
-                                        {0b01100110, 0b01111100, 0b00011110, 0b00000000}
-                                      };
-  for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 4; ++j) {
-      matrixBuffer1->data[i][j] = sample[i][j];
-    }
-  }
-  matrixBuffer2 = matrixBuffer1->clone();
-  matrixBuffer2->flip();
-}
+//void makeSimpleMatrix() {
+//  // LED8個のONOFFを1Byteで表す
+//  const uint8_t sample[8][4] = {  //  1枚目       2枚目        3枚目       4枚目
+//                                        {0b00000000, 0b01111000, 0b00000000, 0b00000000},
+//                                        {0b00111100, 0b01001000, 0b00011110, 0b00111000},
+//                                        {0b01100110, 0b01001000, 0b00100000, 0b00100100},
+//                                        {0b01100110, 0b01110000, 0b00100000, 0b00100010},
+//                                        {0b01111110, 0b01001000, 0b00100000, 0b00100010},
+//                                        {0b01100110, 0b01001000, 0b00100000, 0b00100100},
+//                                        {0b01100110, 0b01001000, 0b00100000, 0b00111000},
+//                                        {0b01100110, 0b01111100, 0b00011110, 0b00000000}
+//                                      };
+//  uint8_t **data = matrixBuffer1->getData();
+//  for (int i = 0; i < 8; ++i) {
+//    for (int j = 0; j < 4; ++j) {
+//      data[i][j] = sample[i][j];
+//    }
+//  }
+//  matrixBuffer2 = matrixBuffer1->clone();
+//  matrixBuffer2->flip();
+//}
 
 void loop(){
-  MatrixBuffer *matrixBuffer3 = matrixBuffer1->clone();
-  max7219_8x8.print(matrixBuffer3);
-  delay(1000);
+//  MatrixBuffer *matrixBuffer3 = matrixBuffer1->clone();
+//  max7219_8x8.print(matrixBuffer3);
+//  delay(1000);
+//
+//  for (int i = 0; i < 32; ++i) {
+//    matrixBuffer3->leftScroll(false);
+//    max7219_8x8.print(matrixBuffer3);
+//    delay(200);
+//  }
+//
+//  max7219_8x8.print(matrixBuffer2);
+//  delay(1000);
+//
+//  delete matrixBuffer3;
 
-  for (int i = 0; i < 32; ++i) {
-    matrixBuffer3->leftScroll(false);
-    max7219_8x8.print(matrixBuffer3);
-    delay(200);
+  for (int i=0; i < 74; ++i) {
+    max7219_8x8.print(string5x7Buffer);
+    string5x7Buffer->leftScroll(false);
+    delay(100);
   }
-
-  max7219_8x8.print(matrixBuffer2);
   delay(1000);
-
-  delete matrixBuffer3;
+  string5x7Buffer->reset();
 }
 
 

@@ -3,18 +3,24 @@
 
 #include "MatrixUtils.h"
 
-struct MatrixBuffer {
+class MatrixBuffer {
+protected:
   short matrix_size;
   short screen_n;
   uint8_t **data;  // data[matrix_size][screen_n]
 
+public:
   MatrixBuffer(short matrix_size, short screen_n);
   MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止
-  ~MatrixBuffer();
+  virtual ~MatrixBuffer();
 
-  MatrixBuffer *clone();
-  void flip();
-  void leftScroll(bool one_padding);
+  virtual MatrixBuffer *clone();
+  virtual void flip();
+  virtual void leftScroll(bool one_padding);
+
+  short getMatrix_size();
+  short getScreen_n();
+  uint8_t **getData();
 };
 
 #endif

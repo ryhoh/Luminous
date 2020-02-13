@@ -58,3 +58,16 @@ void MatrixBuffer::leftScroll(bool one_padding) {
     }
   }
 }
+
+/* accessor */
+short MatrixBuffer::getMatrix_size() {
+  return this->matrix_size;
+}
+
+short MatrixBuffer::getScreen_n() {
+  return this->screen_n;
+}
+
+uint8_t **MatrixBuffer::getData() {
+  return this->data;
+}
