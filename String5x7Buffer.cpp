@@ -104,22 +104,18 @@ String5x7Buffer::String5x7Buffer(short screen_n, char *text, bool one_padding) :
   // copying text
   int len = 0;
   for (int i = 0; text[i] != '\0'; ++i) ++len;
-  this->text_bak = (char *)malloc(sizeof(char) * len);
-  if (this->text_bak == NULL) {
+  ++len;  // for NULL code
+  this->text = (char *)malloc(sizeof(char) * len);
+  if (this->text == NULL) {
     matrix_utils::pError(2);
   }
-  for (int i = 0; text[i] != '\0'; ++i) {
-    this->text_bak[i] = text[i];
+  for (int i = 0; i < len; ++i) {
+    this->text[i] = text[i];
   }
-
-  // initial scroll
-//  for (int bit_n = 0; bit_n < this->screen_n * 8; ++bit_n) {
-//    this->leftScroll(one_padding);
-//  }
 }
 
 String5x7Buffer::~String5x7Buffer() {
-  free(this->text_bak);
+  free(this->text);
 }
 
 uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
@@ -157,12 +153,9 @@ void String5x7Buffer::leftScroll(bool one_padding) {
       }
     }
 
-    // shift to next bit
-    ++(this->cur_in_chr);
-    if (this->cur_in_chr == 6) {
-      this->cur_in_chr = 0;
-      ++(this->cur_text);
-    }
+    // shift to next character
+    this->cur_in_chr = 0;
+    ++(this->cur_text);
     return;
   }
   
@@ -194,19 +187,15 @@ void String5x7Buffer::leftScroll(bool one_padding) {
 
     // shift to next bit
     ++(this->cur_in_chr);
-    if (this->cur_in_chr == 6) {
-      this->cur_in_chr = 0;
-      ++(this->cur_text);
-    }
-  } 
+  }
 }
 
 void String5x7Buffer::reset() {
   this->cur_in_chr = 0;
   this->cur_text = 0;
 
-  // copying text
-  for (int i = 0; text[i] != '\0'; ++i) {
-    this->text[i] = text_bak[i];
-  }
+//  // copying text
+//  for (int i = 0; text[i] != '\0'; ++i) {
+//    this->text[i] = text_bak[i];
+//  }
 }

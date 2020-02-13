@@ -4,8 +4,7 @@
 
 Max7219_8x8 max7219_8x8;
 //MatrixBuffer *matrixBuffer1 = new MatrixBuffer(8, 4), *matrixBuffer2;
-char text[] = "Hello world!\0";
-String5x7Buffer *string5x7Buffer = new String5x7Buffer(4, text, false);
+String5x7Buffer *string5x7Buffer;
 
 void setup(){
   max7219_8x8.LAT = 10;
@@ -17,6 +16,8 @@ void setup(){
   max7219_8x8.test();
 
 //  makeSimpleMatrix();
+  char text[] = "Hello world!";
+  string5x7Buffer= new String5x7Buffer(4, text, false);
 }
 
 //void makeSimpleMatrix() {
