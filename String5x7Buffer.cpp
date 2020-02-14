@@ -193,9 +193,4 @@ void String5x7Buffer::leftScroll(bool one_padding) {
 void String5x7Buffer::reset() {
   this->cur_in_chr = 0;
   this->cur_text = 0;
-
-//  // copying text
-//  for (int i = 0; text[i] != '\0'; ++i) {
-//    this->text[i] = text_bak[i];
-//  }
 }

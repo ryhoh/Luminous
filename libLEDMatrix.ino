@@ -67,18 +67,6 @@ void loop(){
   string5x7Buffer->reset();
 }
 
-
-//void scrollLeft(int pattern[8][LEDNUM]){
-//  int i, d;
-////  int temp;
-//
-//  for(d = 1; d < 9; d++){
-//    for(i = 0; i < LEDNUM; i++){
-//      sendTo7219(d, pattern[d][i]);
-//    }
-//  }
-//}
-
 /*
  * // 縦方向のウェーブ
   if(0){
