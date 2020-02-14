@@ -9,6 +9,8 @@ protected:
   short screen_n;
   uint8_t **data;  // data[matrix_size][screen_n]
 
+  virtual void insertOneColumnAtRightEnd(bool invert);
+
 public:
   MatrixBuffer(short matrix_size, short screen_n);
   MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止
@@ -16,7 +18,7 @@ public:
 
   virtual MatrixBuffer *clone();
   virtual void flip();
-  virtual void leftScroll(bool one_padding);
+  virtual void leftScroll(bool invert);
 
   short getMatrix_size();
   short getScreen_n();

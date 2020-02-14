@@ -32,8 +32,19 @@ MatrixBuffer *MatrixBuffer::clone() {
   return res;
 }
 
-// 左に1マスずらす．右端の埋めは，one_paddingがtrueなら1
-void MatrixBuffer::leftScroll(bool one_padding) {
+// 右端に新しいデータを追加
+void MatrixBuffer::insertOneColumnAtRightEnd(bool invert) {
+  for (int row_i = 0; row_i < this->matrix_size; ++row_i) {
+    if (invert) {
+      this->data[row_i][this->screen_n - 1] |= 0b1;
+    } else {
+      this->data[row_i][this->screen_n - 1] &= 0b11111110;
+    }
+  }
+}
+
+// 左に1マスずらす．右端の埋めは，invertがtrueなら1
+void MatrixBuffer::leftScroll(bool invert) {
   for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
     for (int row_i = 0; row_i < this->matrix_size; ++row_i) {
       if (screen_i > 0) {  // 最上位ビットをとなりのscreenの最下位ビットへコピー
@@ -49,14 +60,7 @@ void MatrixBuffer::leftScroll(bool one_padding) {
     }
   }
 
-  // 右端に新しいデータを追加
-  for (int row_i = 0; row_i < this->matrix_size; ++row_i) {
-    if (one_padding) {
-      this->data[row_i][this->screen_n - 1] |= 0b1;
-    } else {
-      this->data[row_i][this->screen_n - 1] &= 0b11111110;
-    }
-  }
+  this->insertOneColumnAtRightEnd(invert);
 }
 
 /* accessor */
