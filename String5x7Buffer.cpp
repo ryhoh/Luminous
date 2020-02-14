@@ -98,7 +98,7 @@ uint8_t String5x7Buffer::_fonts[95][7] = {
   {0x08, 0x15, 0x02, 0x00, 0x00, 0x00, 0x00}   // 0x7e, ~ 
 };
 
-String5x7Buffer::String5x7Buffer(short screen_n, char *text, bool one_padding) : MatrixBuffer(8, screen_n) {
+String5x7Buffer::String5x7Buffer(short screen_n, char *text) : MatrixBuffer(8, screen_n) {
   this->text = text;
 
   // copying text

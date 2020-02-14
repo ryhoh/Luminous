@@ -17,7 +17,7 @@ void setup(){
 
 //  makeSimpleMatrix();
   char text[] = "Hello world!";
-  string5x7Buffer= new String5x7Buffer(4, text, false);
+  string5x7Buffer= new String5x7Buffer(4, text);
 }
 
 //void makeSimpleMatrix() {
