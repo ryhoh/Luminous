@@ -17,11 +17,12 @@ private:
   int cur_text = 0;
   
   uint8_t toFont(char chr_num, int row_num);
+  void insertOneColumnAtRightEnd(bool invert) override;
 
 public:
   String5x7Buffer(short screen_n, char *text);
   ~String5x7Buffer();
-  void leftScroll(bool one_padding) override;
+//  void leftScroll(bool invert) override;
   void reset();
 };
 

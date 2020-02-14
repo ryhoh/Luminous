@@ -128,25 +128,10 @@ uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
 }
 
 // todo
-void String5x7Buffer::leftScroll(bool one_padding) {
-  for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
-    for (int row_i = 0; row_i < this->matrix_size; ++row_i) {
-      if (screen_i > 0) {  // 最上位ビットをとなりのscreenの最下位ビットへコピー
-        bool move_bit = (this->data[row_i][screen_i] >> 7) & 0b1;
-        if (move_bit) {
-          this->data[row_i][screen_i - 1] |= 0b1;
-        } else {
-          this->data[row_i][screen_i - 1] &= 0b11111110;
-        }
-      }
-      this->data[row_i][screen_i] <<= 1;  // 左にずらす
-    }
-  }
-
-  /* 右端に新しいデータを追加 */
+void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
   if (this->cur_in_chr == 5) {  // spacing between characters
     for (int row_i = 0; row_i < 8; ++row_i) {
-      if (one_padding) {
+      if (invert) {
         this->data[row_i][this->screen_n - 1] |= 0b1;
       } else {
         this->data[row_i][this->screen_n - 1] &= 0b11111110;
@@ -161,7 +146,7 @@ void String5x7Buffer::leftScroll(bool one_padding) {
   
   if (this->text[this->cur_text] == '\0') {  // no more character
     for (int row_i = 0; row_i < 8; ++row_i) {
-      if (one_padding) {
+      if (invert) {
         this->data[row_i][this->screen_n - 1] |= 0b1;
       } else {
         this->data[row_i][this->screen_n - 1] &= 0b11111110;
@@ -170,7 +155,7 @@ void String5x7Buffer::leftScroll(bool one_padding) {
     
   } else {  // has character
     // screen height is 8 pixel but font height is 7 pixel
-    if (one_padding) {  // add 1 pixel
+    if (invert) {  // add 1 pixel
       this->data[0][this->screen_n - 1] |= 0b1;
     } else {
       this->data[0][this->screen_n - 1] &= 0b11111110;
