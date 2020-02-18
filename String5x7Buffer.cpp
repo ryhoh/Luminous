@@ -153,6 +153,7 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
     
     for (int row_i = 1; row_i < 8; ++row_i) {
       bool padding_bit = (this->toFont(this->text[this->cur_text], row_i - 1) >> (4 - this->cur_in_chr)) & 0b1;
+      if (invert) padding_bit ^= 0b1;
       tgt = &(this->data[row_i][this->screen_n - 1]);
       *tgt = padding_bit ? (*tgt | 0b1) : (*tgt & 0b11111110);
     }

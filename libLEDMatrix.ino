@@ -61,7 +61,7 @@ void loop(){
 
   for (int i=0; i < 74; ++i) {
     max7219_8x8.print(string5x7Buffer);
-    string5x7Buffer->leftScroll(false);
+    string5x7Buffer->leftScroll(true);
     delay(100);
   }
   delay(1000);
