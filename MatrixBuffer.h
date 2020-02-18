@@ -18,6 +18,7 @@ public:
 
   virtual MatrixBuffer *clone();
   virtual void flip();
+  virtual void fill(bool fill_bit);
   virtual void leftScroll(bool invert);
 
   short getMatrix_size();

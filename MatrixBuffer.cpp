@@ -20,6 +20,13 @@ void MatrixBuffer::flip() {
   }
 }
 
+void MatrixBuffer::fill(bool fill_bit) {
+  uint8_t ch = fill_bit ? 0xFF : 0x00;
+  for (short i = 0; i < this->matrix_size; ++i)
+    for (short j = 0; j < this->screen_n; ++j)
+      this->data[i][j] = ch;
+}
+
 MatrixBuffer *MatrixBuffer::clone() {
   MatrixBuffer *res = new MatrixBuffer(this->matrix_size, this->screen_n);
   
