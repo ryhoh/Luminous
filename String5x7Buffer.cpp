@@ -127,47 +127,34 @@ uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
   return String5x7Buffer::_fonts[chr_num - String5x7Buffer::OFFSET][row_num];
 }
 
-// todo
 void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
+  if (this->text[this->cur_text] == '\0') {  // no more character
+    for (int row_i = 0; row_i < 8; ++row_i) {
+      uint8_t *tgt = &(this->data[row_i][this->screen_n - 1]);
+      *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
+    }
+    return;
+  }
+  
+  // has character
   if (this->cur_in_chr == 5) {  // spacing between characters
     for (int row_i = 0; row_i < 8; ++row_i) {
-      if (invert) {
-        this->data[row_i][this->screen_n - 1] |= 0b1;
-      } else {
-        this->data[row_i][this->screen_n - 1] &= 0b11111110;
-      }
+      uint8_t *tgt = &(this->data[row_i][this->screen_n - 1]);
+      *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
     }
 
     // shift to next character
     this->cur_in_chr = 0;
     ++(this->cur_text);
-    return;
-  }
-  
-  if (this->text[this->cur_text] == '\0') {  // no more character
-    for (int row_i = 0; row_i < 8; ++row_i) {
-      if (invert) {
-        this->data[row_i][this->screen_n - 1] |= 0b1;
-      } else {
-        this->data[row_i][this->screen_n - 1] &= 0b11111110;
-      }
-    }
-    
-  } else {  // has character
+  } else {
     // screen height is 8 pixel but font height is 7 pixel
-    if (invert) {  // add 1 pixel
-      this->data[0][this->screen_n - 1] |= 0b1;
-    } else {
-      this->data[0][this->screen_n - 1] &= 0b11111110;
-    }
+    uint8_t *tgt = &(this->data[0][this->screen_n - 1]);
+    *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
     
     for (int row_i = 1; row_i < 8; ++row_i) {
       bool padding_bit = (this->toFont(this->text[this->cur_text], row_i - 1) >> (4 - this->cur_in_chr)) & 0b1;
-      if (padding_bit) {
-        this->data[row_i][this->screen_n - 1] |= 0b1;
-      } else {
-        this->data[row_i][this->screen_n - 1] &= 0b11111110;
-      }
+      tgt = &(this->data[row_i][this->screen_n - 1]);
+      *tgt = padding_bit ? (*tgt | 0b1) : (*tgt & 0b11111110);
     }
 
     // shift to next bit

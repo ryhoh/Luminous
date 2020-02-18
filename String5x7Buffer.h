@@ -22,7 +22,6 @@ private:
 public:
   String5x7Buffer(short screen_n, char *text);
   ~String5x7Buffer();
-//  void leftScroll(bool invert) override;
   void reset();
 };
 
