@@ -47,8 +47,8 @@ void Max7219_8x8::test() {
 void Max7219_8x8::print(MatrixBuffer *MatrixBuffer) {
   for (int row_i = 0; row_i < 8; ++row_i) {
     digitalWrite(this->LAT, LOW);
-    for (int matrix_i = 0; matrix_i < this->screen_n; ++matrix_i) {
-      this->shiftToRegister(row_i+1, MatrixBuffer->getTwoDimArray()->getAt(row_i, matrix_i));
+    for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
+      this->shiftToRegister(row_i+1, MatrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
     }
     digitalWrite(this->LAT, HIGH);
     digitalWrite(this->LAT, LOW);
