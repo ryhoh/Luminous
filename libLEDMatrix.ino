@@ -16,9 +16,28 @@ void setup(){
   max7219_8x8.init();
   max7219_8x8.test();
 
-  makeSimpleMatrix();
-  char text[] = "Hello world!";
+//  makeSimpleMatrix();
+  char text[] = "Ready";
   string5x7Buffer= new String5x7Buffer(4, text);
+  while (string5x7Buffer->distToLeftSet() > 0)
+    string5x7Buffer->leftScroll(false);
+  max7219_8x8.print(string5x7Buffer);
+
+  Serial.begin(9600);
+  while (true) {
+    if (Serial.available() > 0) {
+      delete string5x7Buffer;
+      char buff[256];
+      int i = 0;
+      for (i = 0; Serial.available() > 0; ++i)
+        buff[i] = Serial.read();
+      buff[i-1] = '\0';  // replace '\n' to '\0'
+
+      string5x7Buffer = new String5x7Buffer(4, buff);
+      break;
+    }
+    delay(100);
+  }
 }
 
 void makeSimpleMatrix() {
@@ -44,29 +63,44 @@ void makeSimpleMatrix() {
 }
 
 void loop(){
-  MatrixBuffer *matrixBuffer3 = matrixBuffer1->clone();
-  max7219_8x8.print(matrixBuffer3);
-  delay(1000);
-
-  for (int i = 0; i < 32; ++i) {
-    matrixBuffer3->leftScroll(false);
-    max7219_8x8.print(matrixBuffer3);
-    delay(200);
-  }
-
-//  max7219_8x8.print(matrixBuffer2);
+//  MatrixBuffer *matrixBuffer3 = matrixBuffer1->clone();
+//  max7219_8x8.print(matrixBuffer3);
 //  delay(1000);
+//
+//  for (int i = 0; i < 32; ++i) {
+//    matrixBuffer3->leftScroll(false);
+//    max7219_8x8.print(matrixBuffer3);
+//    delay(200);
+//  }
+//
+////  max7219_8x8.print(matrixBuffer2);
+////  delay(1000);
+//
+//  delete matrixBuffer3;
 
-  delete matrixBuffer3;
-
-  for (int i=0; i < 74; ++i) {
+  while (string5x7Buffer->distToLeftSet() > 0) {
     max7219_8x8.print(string5x7Buffer);
     string5x7Buffer->leftScroll(false);
     delay(100);
   }
-  delay(1000);
+  delay(500);
+
+  while (string5x7Buffer->distToRightSet() > 0) {
+    max7219_8x8.print(string5x7Buffer);
+    string5x7Buffer->leftScroll(false);
+    delay(100);
+  }
+  delay(500);
+
+  while (string5x7Buffer->distToAfter() > 0) {
+    max7219_8x8.print(string5x7Buffer);
+    string5x7Buffer->leftScroll(false);
+    delay(100);
+  }
+  delay(500);
+  
   string5x7Buffer->reset();
-  string5x7Buffer->fill(false);
+//  string5x7Buffer->fill(false);
 }
 
 /*

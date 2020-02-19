@@ -102,14 +102,14 @@ String5x7Buffer::String5x7Buffer(short screen_n, char *text) : MatrixBuffer(8, s
   this->text = text;
 
   // copying text
-  int len = 0;
+  this->len = 0;
   for (int i = 0; text[i] != '\0'; ++i) ++len;
   ++len;  // for NULL code
   this->text = (char *)malloc(sizeof(char) * len);
   if (this->text == NULL) {
     matrix_utils::pError(2);
   }
-  for (int i = 0; i < len; ++i) {
+  for (uint16_t i = 0; i < len; ++i) {
     this->text[i] = text[i];
   }
 }
@@ -128,6 +128,7 @@ uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
 }
 
 void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
+  ++(this->shifted_line_n);
   if (this->text[this->cur_text] == '\0') {  // no more character
     for (int row_i = 0; row_i < 8; ++row_i)
       this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
@@ -160,4 +161,22 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
 void String5x7Buffer::reset() {
   this->cur_in_chr = 0;
   this->cur_text = 0;
+  this->shifted_line_n = 0;
+}
+
+int String5x7Buffer::distToBehind() {
+  return 0 - this->shifted_line_n;
+}
+
+int String5x7Buffer::distToLeftSet() {
+  return 8 * this->screen_n - this->shifted_line_n;
+}
+
+// this->len - 1 : excepting '\0'
+int String5x7Buffer::distToRightSet() {
+  return ((this->len - 1) * 6) - this->shifted_line_n;
+}
+
+int String5x7Buffer::distToAfter() {
+  return (8 * this->screen_n + (this->len - 1) * 6) - this->shifted_line_n;
 }
