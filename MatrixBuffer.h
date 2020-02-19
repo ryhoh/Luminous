@@ -7,7 +7,7 @@ class MatrixBuffer {
 protected:
   short matrix_size;
   short screen_n;
-  uint8_t **data;  // data[matrix_size][screen_n]
+  matrix_utils::TwoDimArray *twoDimArray;
 
   virtual void insertOneColumnAtRightEnd(bool invert);
 
@@ -23,7 +23,7 @@ public:
 
   short getMatrix_size();
   short getScreen_n();
-  uint8_t **getData();
+  matrix_utils::TwoDimArray *getTwoDimArray();
 };
 
 #endif

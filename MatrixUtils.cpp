@@ -21,20 +21,28 @@ void matrix_utils::pError(unsigned int ecode) {
   }
 }
 
-uint8_t **matrix_utils::alloc2dimArray(short outer_size, short inner_size) {
-  uint8_t **res = (uint8_t **)malloc(sizeof(uint8_t *) * outer_size);
-  if (res == NULL) matrix_utils::pError(2);
-  for (short i = 0; i < outer_size; ++i) {
-    res[i] = (uint8_t *)calloc(inner_size, sizeof(uint8_t));
-    if (res[i] == NULL) matrix_utils::pError(2);
-  }
-
-  return res;
+matrix_utils::TwoDimArray::TwoDimArray(short axis0, short axis1) {
+  this->axis0 = axis0;
+  this->axis1 = axis1;
+  this->array = (uint8_t *)calloc(axis0 * axis1, sizeof(uint8_t));
+  if (this->array == NULL) matrix_utils::pError(2);
 }
 
-void matrix_utils::free2dimArray(uint8_t **array, short outer_size) {
-  for (short i = 0; i < outer_size; ++i) {
-    free(array[i]);
-  }
-  free(array);
+matrix_utils::TwoDimArray::~TwoDimArray() {
+  free(this->array);
+}
+
+void matrix_utils::TwoDimArray::setAt(short x, short y, uint8_t val) {
+  this->array[x * this->axis1 + y] = val;
+}
+
+void matrix_utils::TwoDimArray::setBitAt(short x, short y, uint8_t pointFromRight, bool val) {
+  if (pointFromRight > 7) return;
+
+  if (val) this->array[x * this->axis1 + y] |= (0b1 << pointFromRight);
+  else this->array[x * this->axis1 + y] &= ~(0b1 << pointFromRight);
+}
+
+uint8_t matrix_utils::TwoDimArray::getAt(short x, short y) {
+  return this->array[x * this->axis1 + y];
 }

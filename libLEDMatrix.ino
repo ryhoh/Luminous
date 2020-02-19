@@ -33,10 +33,10 @@ void makeSimpleMatrix() {
                                         {0b01100110, 0b01001000, 0b00100000, 0b00111000},
                                         {0b01100110, 0b01111100, 0b00011110, 0b00000000}
                                       };
-  uint8_t **data = matrixBuffer1->getData();
+//  uint8_t **data = matrixBuffer1->getData();
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 4; ++j) {
-      data[i][j] = sample[i][j];
+      matrixBuffer1->getTwoDimArray()->setAt(i, j, sample[i][j]);
     }
   }
 //  matrixBuffer2 = matrixBuffer1->clone();

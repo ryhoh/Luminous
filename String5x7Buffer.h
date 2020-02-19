@@ -10,7 +10,6 @@ private:
   static const int OFFSET = 0x20;
   static uint8_t _fonts[95][7];
   char *text;
-//  char *text_bak;
 
   // for scrolling
   int cur_in_chr = 0;

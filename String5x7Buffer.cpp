@@ -129,33 +129,27 @@ uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
 
 void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
   if (this->text[this->cur_text] == '\0') {  // no more character
-    for (int row_i = 0; row_i < 8; ++row_i) {
-      uint8_t *tgt = &(this->data[row_i][this->screen_n - 1]);
-      *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
-    }
+    for (int row_i = 0; row_i < 8; ++row_i)
+      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
     return;
   }
   
   // has character
   if (this->cur_in_chr == 5) {  // spacing between characters
-    for (int row_i = 0; row_i < 8; ++row_i) {
-      uint8_t *tgt = &(this->data[row_i][this->screen_n - 1]);
-      *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
-    }
+    for (int row_i = 0; row_i < 8; ++row_i)
+      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
 
     // shift to next character
     this->cur_in_chr = 0;
     ++(this->cur_text);
   } else {
     // screen height is 8 pixel but font height is 7 pixel
-    uint8_t *tgt = &(this->data[0][this->screen_n - 1]);
-    *tgt = invert ? (*tgt | 0b1) : (*tgt & 0b11111110);
+    this->twoDimArray->setBitAt(0, this->screen_n - 1, 0, invert);
     
     for (int row_i = 1; row_i < 8; ++row_i) {
       bool padding_bit = (this->toFont(this->text[this->cur_text], row_i - 1) >> (4 - this->cur_in_chr)) & 0b1;
       if (invert) padding_bit ^= 0b1;
-      tgt = &(this->data[row_i][this->screen_n - 1]);
-      *tgt = padding_bit ? (*tgt | 0b1) : (*tgt & 0b11111110);
+      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, padding_bit);
     }
 
     // shift to next bit

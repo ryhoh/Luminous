@@ -14,8 +14,20 @@
 
 namespace matrix_utils {
   void pError(unsigned int ecode);
-  uint8_t **alloc2dimArray(short outer_size, short inner_size);
-  void free2dimArray(uint8_t **array, short outer_size);
+
+  class TwoDimArray {
+  protected:
+    uint8_t *array;
+    short axis0;
+    short axis1;
+
+  public:
+    TwoDimArray(short axis0, short axis1);
+    ~TwoDimArray();
+    void setAt(short x, short y, uint8_t val);
+    void setBitAt(short x, short y, uint8_t pointFromRight, bool val);
+    uint8_t getAt(short x, short y);
+  };
 }
 
 #endif
