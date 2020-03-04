@@ -1,24 +1,26 @@
 #include "LEDMatrix.h"
 #include "MatrixBuffer.h"
 #include "String5x7Buffer.h"
+#include "SerialScanner.h"
 
 Max7219_8x8 max7219_8x8;
-MatrixBuffer *matrixBuffer1 = new MatrixBuffer(8, 4);
+MatrixBuffer *matrixBuffer1 = new MatrixBuffer(4, 8);
 //MatrixBuffer *matrixBuffer2;
 String5x7Buffer *string5x7Buffer;
+SerialScanner serialScanner;
 
 void setup(){
   max7219_8x8.LAT = 10;
   max7219_8x8.DAT = 11;
   max7219_8x8.CLK = 13;
-  max7219_8x8.screen_n = 4;
+  max7219_8x8.screen_n = 8;
   
   max7219_8x8.init();
   max7219_8x8.test();
 
 //  makeSimpleMatrix();
   char text[] = "Ready";
-  string5x7Buffer= new String5x7Buffer(4, text);
+  string5x7Buffer= new String5x7Buffer(8, text);
   while (string5x7Buffer->distToLeftSet() > 0)
     string5x7Buffer->leftScroll(false);
   max7219_8x8.print(string5x7Buffer);
@@ -33,7 +35,11 @@ void setup(){
         buff[i] = Serial.read();
       buff[i-1] = '\0';  // replace '\n' to '\0'
 
-      string5x7Buffer = new String5x7Buffer(4, buff);
+//    if (serialScanner.read()) {
+////    if (strncmp(serialScanner.status, "RECEIVED", 8) == 0) {
+//      delete string5x7Buffer;
+//      string5x7Buffer = new String5x7Buffer(4, serialScanner.text);
+      string5x7Buffer = new String5x7Buffer(8, buff);
       break;
     }
     delay(100);
