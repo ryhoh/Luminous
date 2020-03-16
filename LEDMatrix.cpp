@@ -44,11 +44,11 @@ void Max7219_8x8::test() {
 }
 
 // 2次元配列の形で与えれば表示する
-void Max7219_8x8::print(MatrixBuffer *MatrixBuffer) {
+void Max7219_8x8::print(MatrixBuffer *matrixBuffer) {
   for (int row_i = 0; row_i < 8; ++row_i) {
     digitalWrite(this->LAT, LOW);
     for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
-      this->shiftToRegister(row_i+1, MatrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
+      this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
     }
     digitalWrite(this->LAT, HIGH);
     digitalWrite(this->LAT, LOW);
