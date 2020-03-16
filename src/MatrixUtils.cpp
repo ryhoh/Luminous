@@ -1,4 +1,4 @@
-#include "MatrixUtils.h"
+#include "../include/MatrixUtils.h"
 
 void matrix_utils::pError(unsigned int ecode) {
   const static int built_in_LED = 13;
@@ -9,7 +9,7 @@ void matrix_utils::pError(unsigned int ecode) {
     digitalWrite(built_in_LED, HIGH);
     delay(10000);
   }
-  
+
   // for ecode >= 1
   while (true) {
     for (unsigned int i = 0; i < ecode; ++i) {

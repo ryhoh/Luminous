@@ -1,5 +1,5 @@
-#include "LEDMatrix.h"
-#include "String5x7Buffer.h"
+#include "include/LEDMatrix.h"
+#include "include/String5x7Buffer.h"
 
 Max7219_8x8 max7219_8x8;
 String5x7Buffer *string5x7Buffer;
