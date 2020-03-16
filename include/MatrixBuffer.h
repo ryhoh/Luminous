@@ -5,14 +5,14 @@
 
 class MatrixBuffer {
 protected:
-  short matrix_size;
+  short matrix_size = 8;
   short screen_n;
   matrix_utils::TwoDimArray *twoDimArray;
 
   virtual void insertOneColumnAtRightEnd(bool invert);
 
 public:
-  MatrixBuffer(short matrix_size, short screen_n);
+  MatrixBuffer(short screen_n);
   MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止
   virtual ~MatrixBuffer();
 

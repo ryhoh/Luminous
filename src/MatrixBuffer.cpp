@@ -1,9 +1,8 @@
 #include "../include/MatrixBuffer.h"
 
-MatrixBuffer::MatrixBuffer(short matrix_size, short screen_n) {
-  if (matrix_size < 1 || screen_n < 1) matrix_utils::pError(1);
+MatrixBuffer::MatrixBuffer(short screen_n) {
+  if (screen_n < 1) matrix_utils::pError(1);
 
-  this->matrix_size = matrix_size;
   this->screen_n = screen_n;
   this->twoDimArray = new matrix_utils::TwoDimArray(matrix_size, screen_n);
 };
@@ -26,7 +25,7 @@ void MatrixBuffer::fill(bool fill_bit) {
 }
 
 MatrixBuffer *MatrixBuffer::clone() {
-  MatrixBuffer *res = new MatrixBuffer(this->matrix_size, this->screen_n);
+  MatrixBuffer *res = new MatrixBuffer(this->screen_n);
 
   for (short i = 0; i < this->matrix_size; ++i)
     for (short j = 0; j < this->screen_n; ++j)
