@@ -1,15 +1,23 @@
 #ifndef MATRIXUTILS_H
 #define MATRIXUTILS_H
 
+#ifdef ARDUINO
 #include <Arduino.h>
 
-/* 
+#elif defined SIMULATOR
+#include <iostream>
+// using uint8_t = unsigned char;
+using std::uint8_t;
+
+#endif
+
+/*
  *  list of error codes
- *  
+ *
  *  0: MatrixUtils internal
  *  1: constructing
  *  2: allocating
- *  
+ *
  */
 
 namespace matrix_utils {

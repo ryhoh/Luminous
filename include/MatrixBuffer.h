@@ -3,6 +3,10 @@
 
 #include "MatrixUtils.h"
 
+#ifdef SIMULATOR
+using std::uint8_t;
+#endif
+
 class MatrixBuffer {
 protected:
   short matrix_size = 8;
@@ -13,7 +17,7 @@ protected:
 
 public:
   MatrixBuffer(short screen_n);
-  MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じポインタを持つ複数オブジェクトの作成を禁止
+  MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じ配列のポインタを持つ複数オブジェクトの作成を禁止
   virtual ~MatrixBuffer();
 
   virtual MatrixBuffer *clone();

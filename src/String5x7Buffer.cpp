@@ -1,17 +1,17 @@
 #include "../include/String5x7Buffer.h"
 
 String5x7Buffer::String5x7Buffer(short screen_n, char *text) : MatrixBuffer(screen_n) {
-  this->text = text;
+  // this->text = text;
 
   // copying text
   this->len = 0;
   for (int i = 0; text[i] != '\0'; ++i) ++len;
-  ++len;  // for NULL code
+  ++(this->len);  // for NULL code
   this->text = (char *)malloc(sizeof(char) * len);
   if (this->text == NULL) {
     matrix_utils::pError(2);
   }
-  for (uint16_t i = 0; i < len; ++i) {
+  for (uint16_t i = 0; i < this->len; ++i) {
     this->text[i] = text[i];
   }
 }
@@ -21,16 +21,21 @@ String5x7Buffer::~String5x7Buffer() {
 }
 
 uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
+  // std::cout << (int)chr_num << " " << row_num << std::endl;
   // return 0xFF for illegal params
   if (chr_num < 0x20 || 0x7e < chr_num) return 0xFF;
   if (row_num < 0 || 6 < row_num) return 0xFF;
 
-  // access as "_fonts['a' - OFFSET]"
-  // return String5x7Buffer::_fonts[chr_num - String5x7Buffer::OFFSET][row_num];
+  // access as "_ASCII_FONTS['a' - OFFSET]"
+  #ifdef ARDUINO  // using EEPROM
   return pgm_read_byte(&_ASCII_FONTS[chr_num - _ASCII_OFFSET][row_num]);
+  #else
+  return _ASCII_FONTS[chr_num - _ASCII_OFFSET][row_num];
+  #endif
 }
 
-void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
+void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {  //fixme:sim
+  // std::cout << shifted_line_n << " " << cur_text << " " << cur_in_chr << std::endl;
   ++(this->shifted_line_n);
   if (this->text[this->cur_text] == '\0') {  // no more character
     for (int row_i = 0; row_i < 8; ++row_i)
@@ -46,6 +51,7 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
     // shift to next character
     this->cur_in_chr = 0;
     ++(this->cur_text);
+    // std::cout << "B" << std::endl;
   } else {
     // screen height is 8 pixel but font height is 7 pixel
     this->twoDimArray->setBitAt(0, this->screen_n - 1, 0, invert);
@@ -58,6 +64,7 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
 
     // shift to next bit
     ++(this->cur_in_chr);
+    // std::cout << this->cur_in_chr << std::endl;
   }
 }
 

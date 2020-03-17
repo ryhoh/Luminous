@@ -1,6 +1,8 @@
 #include "include/LEDMatrix.h"
 #include "include/String5x7Buffer.h"
 
+#define ARDUINO
+
 Max7219_8x8 max7219_8x8;
 String5x7Buffer *string5x7Buffer;
 
@@ -15,7 +17,6 @@ void setup(){
   
   char text[] = "Hello wooooorld!";
   string5x7Buffer = new String5x7Buffer(8, text);
-  delay(100);
 }
 
 void loop(){

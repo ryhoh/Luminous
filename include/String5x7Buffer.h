@@ -1,7 +1,9 @@
 #ifndef STRING5X7_H
 #define STRING5X7_H
 
+#ifdef ARDUINO
 #include <avr/pgmspace.h>
+#endif
 
 #include "MatrixBuffer.h"
 #include "MatrixUtils.h"
@@ -22,13 +24,14 @@ private:
 
 public:
   String5x7Buffer(short screen_n, char *text);
+  String5x7Buffer(const String5x7Buffer &) = delete;
   ~String5x7Buffer();
   void reset();
 
-  int distToBehind();
-  int distToLeftSet();
-  int distToRightSet();
-  int distToAfter();
+  int distToBehind();    // dist screen_right and text_left
+  int distToLeftSet();   // dist screen_left  and text_left
+  int distToRightSet();  // dist screen_right and text_right
+  int distToAfter();     // dist screen_left  and text_right
 };
 
 #endif

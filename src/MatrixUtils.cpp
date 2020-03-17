@@ -1,5 +1,19 @@
 #include "../include/MatrixUtils.h"
 
+#ifdef SIMULATOR
+#include <unistd.h>
+#define delay(ms) sleep(ms * 1000)
+
+// -- erase unnecessary variables/function
+#define HIGH
+#define LOW
+#define OUTPUT
+#define digitalWrite(a, b)
+#define pinMode(a, b)
+// --
+
+#endif
+
 void matrix_utils::pError(unsigned int ecode) {
   const static int built_in_LED = 13;
   pinMode(built_in_LED, OUTPUT);
