@@ -6,8 +6,8 @@
 #define SIMULATOR
 #define msleep(ms) usleep(ms * 1000)
 
-#include "LEDMatrix.h"
-#include "String5x7Buffer.h"
+#include "../include/LEDMatrix.h"
+#include "../include/String5x7Buffer.h"
 
 int main() {
   Max7219_8x8 dev;
