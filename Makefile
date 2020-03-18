@@ -23,14 +23,14 @@ ifdef ARCH_OK
 lib: detArch libLEDMatrix.a clean;
 
 libLEDMatrix.a:	$(OBJECTS.o)
-	mkdir -p $(DIR)
+	@mkdir -p $(DIR)
 	ar r $(DIR)$@ $(OBJECTS.o)
 
 %.o:	%.cpp
 	$(COMPILE) $(OUTPUT_OPTION) $< -c
 
 else  # ARCH_OK
-.PHONY: usage
+.PHONY: usage clean
 usage:
 	@printf "\033[31m%s\033[m\n" "[usage] set ARCH=(SIM / ARD)"
 	@printf "[info ] Arduino library is currently not available\n"
