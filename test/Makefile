@@ -1,5 +1,5 @@
 COMPILE       = $(CXX) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
-CXX           = /usr/local/bin/g++-8
+CXX           = g++-8
 CPPFLAGS     += -std=c++11
 INCLUDES      = -I../include
 MACRO         = -DSIMULATOR
