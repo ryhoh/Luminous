@@ -1,5 +1,5 @@
-#ifndef MATRIXBUFFER_H
-#define MATRIXBUFFER_H
+#ifndef _MATRIXBUFFER_H_
+#define _MATRIXBUFFER_H_
 
 #include "MatrixUtils.h"
 

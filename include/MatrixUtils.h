@@ -1,5 +1,5 @@
-#ifndef MATRIXUTILS_H
-#define MATRIXUTILS_H
+#ifndef _MATRIXUTILS_H_
+#define _MATRIXUTILS_H_
 
 #ifdef ARDUINO
 #include <Arduino.h>

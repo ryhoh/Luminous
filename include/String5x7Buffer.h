@@ -1,5 +1,5 @@
-#ifndef STRING5X7_H
-#define STRING5X7_H
+#ifndef _STRING5X7_H_
+#define _STRING5X7_H_
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>

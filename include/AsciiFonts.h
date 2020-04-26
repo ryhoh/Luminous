@@ -1,5 +1,5 @@
-#ifndef ASCIIFONTS_H
-#define ASCIIFONTS_H
+#ifndef _ASCIIFONTS_H_
+#define _ASCIIFONTS_H_
 
 // access as "_fonts['a' - OFFSET]"
 static const int _ASCII_OFFSET = 0x20;
