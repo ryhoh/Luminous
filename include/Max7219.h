@@ -1,5 +1,5 @@
-#ifndef LEDMATRIX_H
-#define LEDMATRIX_H
+#ifndef _MAX7219_H_
+#define _MAX7219_H_
 
 #include "MatrixBuffer.h"
 
@@ -37,7 +37,9 @@
  *  レジスタアドレスは 0x01 ~ 0x08 を使う（0スタートでない）ことに注意
  */
 
-struct Max7219_8x8 {
+class Max7219_8x8 {
+public:
+
   #ifdef SIMULATOR
   // erase unnecessary variables/function
   #define HIGH
@@ -68,6 +70,8 @@ struct Max7219_8x8 {
   #endif
   void shiftToRegister(uint8_t addr, uint8_t data);
   void print(MatrixBuffer *matrixBuffer);
+
+  Max7219_8x8(uint8_t screen_n);
 };
 
-#endif
+#endif  /* _MAX7219_H_ */

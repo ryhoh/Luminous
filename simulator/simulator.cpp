@@ -9,32 +9,31 @@
 
 #define msleep(ms) usleep(ms * 1000)
 
-#include "../include/LEDMatrix.h"
+#include "../include/Max7219.h"
 #include "../include/String5x7Buffer.h"
 
 int main() {
-  Max7219_8x8 dev;
-  dev.screen_n = 8;
+  Max7219_8x8 *dev = new Max7219_8x8(8);
 
   char text[] = "Hello wooooorld!";
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);
 
   while (string5x7Buffer->distToLeftSet() > 0) {
-    dev.print(string5x7Buffer);
+    dev->print(string5x7Buffer);
     string5x7Buffer->leftScroll(false);
     msleep(50);
   }
   msleep(300);
 
   while (string5x7Buffer->distToRightSet() > 0) {
-    dev.print(string5x7Buffer);
+    dev->print(string5x7Buffer);
     string5x7Buffer->leftScroll(false);
     msleep(50);
   }
   msleep(300);
 
   while (string5x7Buffer->distToAfter() > 0) {
-    dev.print(string5x7Buffer);
+    dev->print(string5x7Buffer);
     string5x7Buffer->leftScroll(false);
     msleep(50);
   }
@@ -43,5 +42,6 @@ int main() {
   string5x7Buffer->reset();
 
   delete string5x7Buffer;
+  delete dev;
   return 0;
 }

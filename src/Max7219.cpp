@@ -1,4 +1,8 @@
-#include "../include/LEDMatrix.h"
+#include "../include/Max7219.h"
+
+Max7219_8x8::Max7219_8x8(uint8_t screen_n) {
+  this->screen_n = screen_n;
+}
 
 #ifdef ARDUINO  // ---------------------------------------
 void Max7219_8x8::init() {

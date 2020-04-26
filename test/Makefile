@@ -8,8 +8,8 @@ OUTPUT_OPTION = -o $@
 TESTLINK = -pthread -lgtest_main -lgtest
 VPATH    = ../src
 
-TARGETS = MatrixBuffer String5x7Buffer LEDMatrix
-OBJECTS = LEDMatrix MatrixBuffer String5x7Buffer MatrixUtils
+TARGETS = MatrixBuffer String5x7Buffer Max7219
+OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
 
 testTARGETS     = $(addprefix test, $(TARGETS))
 testTARGETS.out = $(addsuffix .out, $(testTARGETS))

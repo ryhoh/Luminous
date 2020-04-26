@@ -7,7 +7,7 @@ OUTPUT_OPTION = -o $@
 
 VPATH = ./src
 
-OBJECTS   = LEDMatrix MatrixBuffer String5x7Buffer MatrixUtils
+OBJECTS   = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
 OBJECTS.o = $(addsuffix .o, $(OBJECTS))
 
 ifeq ($(ARCH), SIM)

@@ -2,12 +2,12 @@
 #include <string>
 
 #include <String5x7Buffer.h>
-#include <LEDMatrix.h>
+#include <Max7219.h>
 
 
 TEST(Max7219_8x8Test, withString5x7Buffer){
-  Max7219_8x8 *dev = new Max7219_8x8();
-  dev->screen_n = 8;
+  Max7219_8x8 *dev = new Max7219_8x8(8);
+  // dev->screen_n = 8;
   char text[] = "Hello wooooorld!";
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);
 
