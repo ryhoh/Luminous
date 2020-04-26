@@ -54,19 +54,31 @@ void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
 
 
 #ifdef SIMULATOR  // ---------------------------------------
-void Max7219_8x8::VirtualDevice::print_screen() {
-  std::system("clear");
+std::string Max7219_8x8::generateScreen() {
+  return this->virtualDevice.toString();
+}
 
-  std::for_each(this->reg.cbegin(), this->reg.cend(), [](const std::deque<uint8_t>& deq) {
-    std::for_each(deq.crbegin(), deq.crend(), [](const std::uint8_t& data) {
-      for (int i = 7; i >-1; --i) {
-        if ((data >> i) & 0b1) std::cout << "o";
-        else std::cout << " ";
+std::string Max7219_8x8::VirtualDevice::toString() {
+  std::string res = "";
+
+  for (const std::deque<uint8_t> &deq: this->reg) {
+    for (auto itr = deq.crbegin(); itr != deq.crend(); ++itr) {
+      const uint8_t data = *itr;
+      for (int i = 7; i > -1; --i) {
+        if ((data >> i) & 0b1) res += "o";
+        else res += ".";
       }
-    });
-    std::cout << std::endl;
-  });
-  std::cout << std::endl;
+    }
+    res += "\n";
+  }
+
+  return res;
+}
+
+void Max7219_8x8::updateBuffer(MatrixBuffer *matrixBuffer) {
+  for (int row_i = 0; row_i < 8; ++row_i)
+    for (int screen_i = 0; screen_i < this->screen_n; ++screen_i)
+      this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
 }
 #endif
 
@@ -106,6 +118,8 @@ void Max7219_8x8::print(MatrixBuffer *matrixBuffer) {
   }
 
   #ifdef SIMULATOR
-  this->virtualDevice.print_screen();
+  this->updateBuffer(matrixBuffer);
+  std::system("clear");
+  std::cout << this->generateScreen();
   #endif
 }

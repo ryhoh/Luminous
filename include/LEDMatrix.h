@@ -5,6 +5,7 @@
 
 #ifdef SIMULATOR
 #include <iostream>
+#include <string>
 #include <vector>
 #include <deque>
 #include <algorithm>
@@ -47,8 +48,12 @@ struct Max7219_8x8 {
     std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
 
     void print_screen();
+    std::string toString();
   };
   VirtualDevice virtualDevice;
+
+  std::string generateScreen();
+  void updateBuffer(MatrixBuffer *matrixBuffer);
   #endif
 
   uint8_t DAT;

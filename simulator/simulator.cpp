@@ -3,7 +3,10 @@
 #include <iostream>
 #include <unistd.h>
 
+#ifndef SIMULATOR
 #define SIMULATOR
+#endif  /* SIMULATOR */
+
 #define msleep(ms) usleep(ms * 1000)
 
 #include "../include/LEDMatrix.h"
