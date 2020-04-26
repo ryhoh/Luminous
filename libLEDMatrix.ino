@@ -9,16 +9,14 @@ String5x7Buffer *string5x7Buffer;
 const int wait = 50;
 
 void setup(){
-  max7219_8x8->LAT = 10;
-  max7219_8x8->DAT = 11;
-  max7219_8x8->CLK = 13;
-  
-  max7219_8x8->init();
-  max7219_8x8->test();
-  
   char text[] = "Hello wooooorld!";
   string5x7Buffer = new String5x7Buffer(8, text);
   max7219_8x8 = new Max7219_8x8(8);
+  max7219_8x8->LAT = 10;
+  max7219_8x8->DAT = 11;
+  max7219_8x8->CLK = 13;
+  max7219_8x8->init();
+  max7219_8x8->test();
 }
 
 void loop(){

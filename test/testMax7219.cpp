@@ -6,7 +6,7 @@
 
 
 TEST(Max7219_8x8Test, withString5x7Buffer){
-  Max7219_8x8 *dev = new Max7219_8x8(8);
+  Max7219_8x8_Simlator *dev = new Max7219_8x8_Simlator(8);
   // dev->screen_n = 8;
   char text[] = "Hello wooooorld!";
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);

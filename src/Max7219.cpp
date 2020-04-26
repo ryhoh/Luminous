@@ -54,15 +54,36 @@ void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
   digitalWrite(this->LAT, HIGH);
   digitalWrite(this->LAT, LOW);
 }
-#endif
+#endif  /* ARDUINO */
+
+/* -- Common functions ---------------------------- */
+// params: レジスタアドレス, データ
+void Max7219_8x8::shiftToRegister(uint8_t addr, uint8_t data) {
+  #ifdef ARDUINO
+    shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
+    shiftOut(this->DAT, this->CLK, MSBFIRST, data);
+  #endif  /* ARDUINO */
+}
+
+// 2次元配列の形で与えれば表示する
+void Max7219_8x8::print(MatrixBuffer *matrixBuffer) {
+  for (int row_i = 0; row_i < 8; ++row_i) {
+    digitalWrite(this->LAT, LOW);
+    for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
+      this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
+    }
+    digitalWrite(this->LAT, HIGH);
+    digitalWrite(this->LAT, LOW);
+  }
+}
 
 
 #ifdef SIMULATOR  // ---------------------------------------
-std::string Max7219_8x8::generateScreen() {
+std::string Max7219_8x8_Simlator::generateScreen() {
   return this->virtualDevice.toString();
 }
 
-std::string Max7219_8x8::VirtualDevice::toString() {
+std::string Max7219_8x8_Simlator::VirtualDevice::toString() {
   std::string res = "";
 
   for (const std::deque<uint8_t> &deq: this->reg) {
@@ -79,51 +100,34 @@ std::string Max7219_8x8::VirtualDevice::toString() {
   return res;
 }
 
-void Max7219_8x8::updateBuffer(MatrixBuffer *matrixBuffer) {
+void Max7219_8x8_Simlator::updateBuffer(MatrixBuffer *matrixBuffer) {
   for (int row_i = 0; row_i < 8; ++row_i)
     for (int screen_i = 0; screen_i < this->screen_n; ++screen_i)
       this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
 }
-#endif
 
-/* -- Common functions ---------------------------- */
-// params: レジスタアドレス, データ
-void Max7219_8x8::shiftToRegister(uint8_t addr, uint8_t data) {
-  #ifdef ARDUINO
-    shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
-    shiftOut(this->DAT, this->CLK, MSBFIRST, data);
-  #elif defined SIMULATOR
-    if (addr == 0) throw std::invalid_argument("invalid register address: \"0\"");
-    --addr;  // to 0-base index
+void Max7219_8x8_Simlator::shiftToRegister(uint8_t addr, uint8_t data) {
+  if (addr == 0) throw std::invalid_argument("invalid register address: \"0\"");
+  --addr;  // to 0-base index
 
-    // add row if there's not enough rows
-    while (this->virtualDevice.reg.size() < addr + 1) {
-      this->virtualDevice.reg.push_back(std::deque<uint8_t>());
-    }
-
-    // shifting
-    std::deque<uint8_t> &deq = this->virtualDevice.reg.at(addr);
-    deq.push_front(data);
-
-    if (deq.size() > this->screen_n) deq.pop_back();
-  #endif
-
-}
-
-// 2次元配列の形で与えれば表示する
-void Max7219_8x8::print(MatrixBuffer *matrixBuffer) {
-  for (int row_i = 0; row_i < 8; ++row_i) {
-    digitalWrite(this->LAT, LOW);
-    for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
-      this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
-    }
-    digitalWrite(this->LAT, HIGH);
-    digitalWrite(this->LAT, LOW);
+  // add row if there's not enough rows
+  while (this->virtualDevice.reg.size() < addr + 1) {
+    this->virtualDevice.reg.push_back(std::deque<uint8_t>());
   }
 
-  #ifdef SIMULATOR
+  // shifting
+  std::deque<uint8_t> &deq = this->virtualDevice.reg.at(addr);
+  deq.push_front(data);
+
+  if (deq.size() > this->screen_n) deq.pop_back();
+}
+
+void Max7219_8x8_Simlator::print(MatrixBuffer *matrixBuffer) {
+  Max7219_8x8::print(matrixBuffer);
+
   this->updateBuffer(matrixBuffer);
   std::system("clear");
   std::cout << this->generateScreen();
-  #endif
 }
+
+#endif  /* SIMULATOR */

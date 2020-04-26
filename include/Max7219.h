@@ -12,7 +12,7 @@
 #include <stdexcept>
 #include <cstdlib>
 
-#endif
+#endif  /* SIMULATOR */
 
 /*
  *  MAX7219の制御
@@ -39,25 +39,6 @@
 
 class Max7219_8x8 {
 public:
-
-  #ifdef SIMULATOR
-  // erase unnecessary variables/function
-  #define HIGH
-  #define LOW
-  #define digitalWrite(a, b)
-
-  struct VirtualDevice {
-    std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
-
-    void print_screen();
-    std::string toString();
-  };
-  VirtualDevice virtualDevice;
-
-  std::string generateScreen();
-  void updateBuffer(MatrixBuffer *matrixBuffer);
-  #endif
-
   uint8_t DAT;
   uint8_t LAT;
   uint8_t CLK;
@@ -68,10 +49,34 @@ public:
   void test();
   void sendToDevice(uint8_t addr, uint8_t data);
   #endif
-  void shiftToRegister(uint8_t addr, uint8_t data);
-  void print(MatrixBuffer *matrixBuffer);
+  virtual void shiftToRegister(uint8_t addr, uint8_t data);
+  virtual void print(MatrixBuffer *matrixBuffer);
 
   Max7219_8x8(uint8_t screen_n);
 };
+
+#ifdef SIMULATOR
+class Max7219_8x8_Simlator : public Max7219_8x8 {
+  #define HIGH
+  #define LOW
+  #define digitalWrite(a, b)
+
+public:
+  using Max7219_8x8::Max7219_8x8;
+
+  struct VirtualDevice {
+    std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
+
+    void print_screen();
+    std::string toString();
+  };
+  VirtualDevice virtualDevice;
+
+  virtual std::string generateScreen();
+  virtual void updateBuffer(MatrixBuffer *matrixBuffer);
+  virtual void shiftToRegister(uint8_t addr, uint8_t data) override;
+  virtual void print(MatrixBuffer *matrixBuffer) override;
+};
+#endif /* SIMULATOR */
 
 #endif  /* _MAX7219_H_ */
