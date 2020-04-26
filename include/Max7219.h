@@ -38,32 +38,36 @@
  */
 
 class Max7219_8x8 {
-public:
+protected:
+  uint8_t screen_n;
   uint8_t DAT;
   uint8_t LAT;
   uint8_t CLK;
-  uint8_t screen_n;
 
-  #ifdef ARDUINO
-  void init();
-  void test();
-  void sendToDevice(uint8_t addr, uint8_t data);
-  #endif
+public:
+  Max7219_8x8(uint8_t screen_n, uint8_t DAT, uint8_t LAT, uint8_t CLK) :
+    screen_n(screen_n), DAT(DAT), LAT(LAT), CLK(CLK) {
+      this->init();
+      this->test();
+    }
+
+  virtual void init();
+  virtual void test();
+  virtual void sendToDevice(uint8_t addr, uint8_t data);
   virtual void shiftToRegister(uint8_t addr, uint8_t data);
   virtual void print(MatrixBuffer *matrixBuffer);
-
-  Max7219_8x8(uint8_t screen_n);
 };
 
 #ifdef SIMULATOR
 class Max7219_8x8_Simlator : public Max7219_8x8 {
+  // erase unnecessary constants/functions
   #define HIGH
   #define LOW
   #define digitalWrite(a, b)
+  #define pinMode(lat, HIGH_LOW)
+  #define delay(ms)
 
-public:
-  using Max7219_8x8::Max7219_8x8;
-
+protected:
   struct VirtualDevice {
     std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
 
@@ -72,8 +76,14 @@ public:
   };
   VirtualDevice virtualDevice;
 
+public:
+  Max7219_8x8_Simlator(uint8_t screen_n) : Max7219_8x8(screen_n, 0, 0, 0) {}
+
   virtual std::string generateScreen();
   virtual void updateBuffer(MatrixBuffer *matrixBuffer);
+
+  virtual void init() override {}  // unnecessary for simulator
+  virtual void test() override {}  // unnecessary for simulator
   virtual void shiftToRegister(uint8_t addr, uint8_t data) override;
   virtual void print(MatrixBuffer *matrixBuffer) override;
 };

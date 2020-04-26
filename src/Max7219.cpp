@@ -1,10 +1,6 @@
 #include "../include/Max7219.h"
 
-Max7219_8x8::Max7219_8x8(uint8_t screen_n) {
-  this->screen_n = screen_n;
-}
 
-#ifdef ARDUINO  // ---------------------------------------
 void Max7219_8x8::init() {
   pinMode(this->LAT, OUTPUT);
   pinMode(this->CLK, OUTPUT);
@@ -54,7 +50,6 @@ void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
   digitalWrite(this->LAT, HIGH);
   digitalWrite(this->LAT, LOW);
 }
-#endif  /* ARDUINO */
 
 /* -- Common functions ---------------------------- */
 // params: レジスタアドレス, データ
