@@ -7,10 +7,10 @@
 #define SIMULATOR
 #endif  /* SIMULATOR */
 
-#define msleep(ms) usleep(ms * 1000)
-
 #include "../include/Max7219.h"
 #include "../include/String5x7Buffer.h"
+
+#define msleep(ms) usleep(ms * 1000)
 
 int main() {
   Max7219_8x8_Simlator *dev = new Max7219_8x8_Simlator(8);

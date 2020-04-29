@@ -3,16 +3,6 @@
 
 #include "MatrixBuffer.h"
 
-#ifdef SIMULATOR
-#include <iostream>
-#include <string>
-#include <vector>
-#include <deque>
-#include <algorithm>
-#include <stdexcept>
-#include <cstdlib>
-
-#endif  /* SIMULATOR */
 
 /*
  *  MAX7219の制御
@@ -59,14 +49,15 @@ public:
 };
 
 #ifdef SIMULATOR
-class Max7219_8x8_Simlator : public Max7219_8x8 {
-  // erase unnecessary constants/functions
-  #define HIGH
-  #define LOW
-  #define digitalWrite(a, b)
-  #define pinMode(lat, HIGH_LOW)
-  #define delay(ms)
+#include <iostream>
+#include <string>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <stdexcept>
+#include <cstdlib>
 
+class Max7219_8x8_Simlator : public Max7219_8x8 {
 protected:
   struct VirtualDevice {
     std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
@@ -87,6 +78,7 @@ public:
   virtual void shiftToRegister(uint8_t addr, uint8_t data) override;
   virtual void print(MatrixBuffer *matrixBuffer) override;
 };
+
 #endif /* SIMULATOR */
 
 #endif  /* _MAX7219_H_ */

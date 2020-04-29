@@ -1,10 +1,11 @@
 #include "../include/Max7219.h"
+#include "../include/Interface/DeviceAPI.h"
 
 
 void Max7219_8x8::init() {
-  pinMode(this->LAT, OUTPUT);
-  pinMode(this->CLK, OUTPUT);
-  pinMode(this->DAT, OUTPUT);
+  DeviceAPI::call_pinMode(this->LAT, OUTPUT);
+  DeviceAPI::call_pinMode(this->CLK, OUTPUT);
+  DeviceAPI::call_pinMode(this->DAT, OUTPUT);
 
   // シャットダウン -> オペレート
   this->sendToDevice(0x0c, 0x01);
@@ -23,17 +24,17 @@ void Max7219_8x8::init() {
 
   // 輝度設定 -> 低輝度で
   this->sendToDevice(0x0a, 0x00);
-  delay(1000);
+  DeviceAPI::call_sleep(1000);
 }
 
 void Max7219_8x8::test() {
   // ディスプレイテストモード（全点灯）
   this->sendToDevice(0x0f, 0x01);
-  delay(1000);
+  DeviceAPI::call_sleep(1000);
 
   // テストモード終了
   this->sendToDevice(0x0f, 0x00);
-  delay(500);
+  DeviceAPI::call_sleep(500);
 
   // リセット
   for (int matrix_i = 0; matrix_i < this->screen_n; ++matrix_i) {
@@ -45,30 +46,28 @@ void Max7219_8x8::test() {
 
 // params: レジスタアドレス, データ
 void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
-  digitalWrite(this->LAT, LOW);
+  DeviceAPI::call_digitalWrite(this->LAT, LOW);
   this->shiftToRegister(addr, data);
-  digitalWrite(this->LAT, HIGH);
-  digitalWrite(this->LAT, LOW);
+  DeviceAPI::call_digitalWrite(this->LAT, HIGH);
+  DeviceAPI::call_digitalWrite(this->LAT, LOW);
 }
 
 /* -- Common functions ---------------------------- */
 // params: レジスタアドレス, データ
 void Max7219_8x8::shiftToRegister(uint8_t addr, uint8_t data) {
-  #ifdef ARDUINO
-    shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
-    shiftOut(this->DAT, this->CLK, MSBFIRST, data);
-  #endif  /* ARDUINO */
+    DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
+    DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, data);
 }
 
 // 2次元配列の形で与えれば表示する
 void Max7219_8x8::print(MatrixBuffer *matrixBuffer) {
   for (int row_i = 0; row_i < 8; ++row_i) {
-    digitalWrite(this->LAT, LOW);
+    DeviceAPI::call_digitalWrite(this->LAT, LOW);
     for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
       this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
     }
-    digitalWrite(this->LAT, HIGH);
-    digitalWrite(this->LAT, LOW);
+    DeviceAPI::call_digitalWrite(this->LAT, HIGH);
+    DeviceAPI::call_digitalWrite(this->LAT, LOW);
   }
 }
 
