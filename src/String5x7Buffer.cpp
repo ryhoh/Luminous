@@ -1,6 +1,6 @@
 #include "../include/String5x7Buffer.h"
 
-String5x7Buffer::String5x7Buffer(short screen_n, char *text) : MatrixBuffer(screen_n) {
+String5x7Buffer::String5x7Buffer(short screen_n, const char *text) : MatrixBuffer(screen_n) {
   // this->text = text;
 
   // copying text

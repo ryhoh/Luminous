@@ -23,7 +23,7 @@ private:
   void insertOneColumnAtRightEnd(bool invert) override;
 
 public:
-  String5x7Buffer(short screen_n, char *text);
+  String5x7Buffer(short screen_n, const char *text);
   String5x7Buffer(const String5x7Buffer &) = delete;
   ~String5x7Buffer();
   void reset();
