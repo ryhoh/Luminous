@@ -1,23 +1,30 @@
 #include "../include/String5x7Buffer.h"
 
 String5x7Buffer::String5x7Buffer(short screen_n, const char *text) : MatrixBuffer(screen_n) {
-  // this->text = text;
-
   // copying text
   this->len = 0;
   for (int i = 0; text[i] != '\0'; ++i) ++len;
   ++(this->len);  // for NULL code
+
   this->text = (char *)malloc(sizeof(char) * len);
   if (this->text == NULL) {
     matrix_utils::pError(2);
   }
+
+  this->text[0] = '\0';
+  strlcat(this->text, text, len);
+
   for (uint16_t i = 0; i < this->len; ++i) {
-    this->text[i] = text[i];
+    if (this->text[i] == '\n' || this->text[i] == '\r') {
+      this->text[i] = '\0';
+      break;
+    }
   }
 }
 
 String5x7Buffer::~String5x7Buffer() {
   free(this->text);
+  this->text = NULL;
 }
 
 uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {

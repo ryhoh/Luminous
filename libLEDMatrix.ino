@@ -10,18 +10,6 @@ Max7219_8x8 *max7219_8x8;
 String5x7Buffer *string5x7Buffer;
 
 
-String5x7Buffer *buildBuffer() {
-  String buff = Serial.readString();
-  for (size_t i = 0; i < buff.length(); ++i) {
-    if (buff[i] == '\n') {
-      buff[i] = '\0';
-      break;
-    }
-  }
-  
-  return new String5x7Buffer(MATRIX_SIZE, buff.c_str());
-}
-
 void setup(){
   Serial.begin(9600);
   
@@ -60,6 +48,6 @@ void loop(){
   if (Serial.available()) {
       delete string5x7Buffer;
       string5x7Buffer = NULL;
-      string5x7Buffer = buildBuffer();
+      string5x7Buffer = new String5x7Buffer(MATRIX_SIZE, Serial.readString().c_str());
   }
 }

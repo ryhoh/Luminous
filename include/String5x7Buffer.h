@@ -5,6 +5,10 @@
 #include <avr/pgmspace.h>
 #endif
 
+#ifdef SIMULATOR
+#include <string.h>
+#endif
+
 #include "MatrixBuffer.h"
 #include "MatrixUtils.h"
 #include "AsciiFonts.h"
