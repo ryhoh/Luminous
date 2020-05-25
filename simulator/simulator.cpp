@@ -7,15 +7,14 @@
 #define SIMULATOR
 #endif  /* SIMULATOR */
 
-#include "../include/Max7219.h"
-#include "../include/String5x7Buffer.h"
+#include <core/Max7219.h>
+#include <core/String5x7Buffer.h>
 
 #define msleep(ms) usleep(ms * 1000)
 
-int main() {
+void demo(const char *text) {
   Max7219_8x8_Simlator *dev = new Max7219_8x8_Simlator(8);
 
-  char text[] = "Hello wooooorld!";
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);
 
   while (string5x7Buffer->distToLeftSet() > 0) {
@@ -43,5 +42,12 @@ int main() {
 
   delete string5x7Buffer;
   delete dev;
+}
+
+int main(int argc, char *argv[]) {
+  const char *text = "Hello wooooorld!";
+  if (argc > 1)
+    text = argv[1];
+  demo(text);
   return 0;
 }

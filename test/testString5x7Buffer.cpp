@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <String5x7Buffer.h>
+#include <core/String5x7Buffer.h>
 
 TEST(String5x7BufferTest, construct){
   char text[] = "Hi";

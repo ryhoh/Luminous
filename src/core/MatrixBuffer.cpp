@@ -1,4 +1,4 @@
-#include "../include/MatrixBuffer.h"
+#include "MatrixBuffer.h"
 
 MatrixBuffer::MatrixBuffer(short screen_n) {
   if (screen_n < 1) matrix_utils::pError(1);

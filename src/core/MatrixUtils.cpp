@@ -1,4 +1,4 @@
-#include "../include/MatrixUtils.h"
+#include "MatrixUtils.h"
 
 #ifdef SIMULATOR
 #include <unistd.h>

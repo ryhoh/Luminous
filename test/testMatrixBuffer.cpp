@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <MatrixBuffer.h>
+#include <core/MatrixBuffer.h>
 
 TEST(MatrixBufferTest, construct){
   MatrixBuffer *mb = new MatrixBuffer(1);

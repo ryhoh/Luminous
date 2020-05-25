@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <string>
 
-#include <String5x7Buffer.h>
-#include <Max7219.h>
+#include <../src/core/String5x7Buffer.h>
+#include <../src/core/Max7219.h>
 
 
 TEST(Max7219_8x8Test, withString5x7Buffer){
