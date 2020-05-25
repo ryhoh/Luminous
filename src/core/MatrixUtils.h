@@ -1,15 +1,7 @@
 #ifndef _MATRIXUTILS_H_
 #define _MATRIXUTILS_H_
 
-#ifdef ARDUINO
-#include <Arduino.h>
-
-#elif defined SIMULATOR
-#include <iostream>
-// using uint8_t = unsigned char;
-using std::uint8_t;
-
-#endif
+#include "../Interface/DeviceAPI.h"
 
 /*
  *  list of error codes
