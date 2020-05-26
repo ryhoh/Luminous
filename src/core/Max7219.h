@@ -34,6 +34,8 @@ private:
   uint8_t LAT;
   uint8_t CLK;
 
+  virtual void init();
+  virtual void test();
   virtual void sendToDevice(uint8_t addr, uint8_t data);
   virtual void shiftToRegister(uint8_t addr, uint8_t data);
 
@@ -44,8 +46,6 @@ public:
       this->test();
     }
   virtual ~Max7219_8x8() {}
-  virtual void init();
-  virtual void test();
   virtual void print(MatrixBuffer *matrixBuffer);
 
   uint8_t getScreen_n() { return this->screen_n; }
@@ -64,10 +64,13 @@ class Max7219_8x8_Simlator : public Max7219_8x8 {
 private:
   struct VirtualDevice {
     std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
-    
+
     std::string toString();
   };
   VirtualDevice virtualDevice;
+  
+  virtual void init() override {}  // unnecessary for simulator
+  virtual void test() override {}  // unnecessary for simulator
 
 public:
   Max7219_8x8_Simlator(uint8_t screen_n) : Max7219_8x8(screen_n, 0, 0, 0) {}
@@ -75,8 +78,6 @@ public:
   virtual std::string generateScreen();
   virtual void updateBuffer(MatrixBuffer *matrixBuffer);
 
-  virtual void init() override {}  // unnecessary for simulator
-  virtual void test() override {}  // unnecessary for simulator
   virtual void shiftToRegister(uint8_t addr, uint8_t data) override;
   virtual void print(MatrixBuffer *matrixBuffer) override;
 };
