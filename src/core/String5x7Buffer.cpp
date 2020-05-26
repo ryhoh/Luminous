@@ -50,26 +50,26 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
   ++(this->shifted_line_n);
   if (this->text[this->cur_text] == '\0') {  // no more character
     for (int row_i = 0; row_i < 8; ++row_i)
-      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
+      this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, invert);
     return;
   }
 
   // has character
   if (this->cur_in_chr == 5) {  // spacing between characters
     for (int row_i = 0; row_i < 8; ++row_i)
-      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
+      this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, invert);
 
     // shift to next character
     this->cur_in_chr = 0;
     ++(this->cur_text);
   } else {
     // screen height is 8 pixel but font height is 7 pixel
-    this->twoDimArray->setBitAt(0, this->screen_n - 1, 0, invert);
+    this->getTwoDimArray()->setBitAt(0, this->getScreen_n() - 1, 0, invert);
 
     for (int row_i = 1; row_i < 8; ++row_i) {
       bool padding_bit = (this->toFont(this->text[this->cur_text], row_i - 1) >> (4 - this->cur_in_chr)) & 0b1;
       if (invert) padding_bit ^= 0b1;
-      this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, padding_bit);
+      this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, padding_bit);
     }
 
     // shift to next bit
@@ -88,7 +88,7 @@ int String5x7Buffer::distToBehind() {
 }
 
 int String5x7Buffer::distToLeftSet() {
-  return 8 * this->screen_n - this->shifted_line_n;
+  return 8 * this->getScreen_n() - this->shifted_line_n;
 }
 
 // this->len - 1 : excepting '\0'
@@ -97,7 +97,7 @@ int String5x7Buffer::distToRightSet() {
 }
 
 int String5x7Buffer::distToAfter() {
-  return (8 * this->screen_n + (this->len - 1) * 6) - this->shifted_line_n;
+  return (8 * this->getScreen_n() + (this->len - 1) * 6) - this->shifted_line_n;
 }
 
 int String5x7Buffer::distToCenter() {

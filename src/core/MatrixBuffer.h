@@ -8,7 +8,7 @@ using std::uint8_t;
 #endif
 
 class MatrixBuffer {
-protected:
+private:
   short matrix_size = 8;
   short screen_n;
   matrix_utils::TwoDimArray *twoDimArray;
