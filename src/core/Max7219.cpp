@@ -96,7 +96,7 @@ std::string Max7219_8x8_Simlator::VirtualDevice::toString() {
 
 void Max7219_8x8_Simlator::updateBuffer(MatrixBuffer *matrixBuffer) {
   for (int row_i = 0; row_i < 8; ++row_i)
-    for (int screen_i = 0; screen_i < this->screen_n; ++screen_i)
+    for (int screen_i = 0; screen_i < this->getScreen_n(); ++screen_i)
       this->shiftToRegister(row_i+1, matrixBuffer->getTwoDimArray()->getAt(row_i, screen_i));
 }
 
@@ -113,7 +113,7 @@ void Max7219_8x8_Simlator::shiftToRegister(uint8_t addr, uint8_t data) {
   std::deque<uint8_t> &deq = this->virtualDevice.reg.at(addr);
   deq.push_front(data);
 
-  if (deq.size() > this->screen_n) deq.pop_back();
+  if (deq.size() > this->getScreen_n()) deq.pop_back();
 }
 
 void Max7219_8x8_Simlator::print(MatrixBuffer *matrixBuffer) {

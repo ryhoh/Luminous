@@ -28,11 +28,14 @@
  */
 
 class Max7219_8x8 {
-protected:
+private:
   uint8_t screen_n;
   uint8_t DAT;
   uint8_t LAT;
   uint8_t CLK;
+
+  virtual void sendToDevice(uint8_t addr, uint8_t data);
+  virtual void shiftToRegister(uint8_t addr, uint8_t data);
 
 public:
   Max7219_8x8(uint8_t screen_n, uint8_t DAT, uint8_t LAT, uint8_t CLK) :
@@ -40,12 +43,12 @@ public:
       this->init();
       this->test();
     }
-
+  virtual ~Max7219_8x8() {}
   virtual void init();
   virtual void test();
-  virtual void sendToDevice(uint8_t addr, uint8_t data);
-  virtual void shiftToRegister(uint8_t addr, uint8_t data);
   virtual void print(MatrixBuffer *matrixBuffer);
+
+  uint8_t getScreen_n() { return this->screen_n; }
 };
 
 #ifdef SIMULATOR
@@ -58,11 +61,10 @@ public:
 #include <cstdlib>
 
 class Max7219_8x8_Simlator : public Max7219_8x8 {
-protected:
+private:
   struct VirtualDevice {
     std::vector<std::deque<uint8_t>> reg = std::vector<std::deque<uint8_t>>(8);
-
-    void print_screen();
+    
     std::string toString();
   };
   VirtualDevice virtualDevice;
