@@ -90,10 +90,12 @@ TEST(String5x7BufferTest, reset) {
   EXPECT_EQ(0b00010001, sb->getTwoDimArray()->getAt(0, 6));
   EXPECT_EQ(0b00010001, sb->getTwoDimArray()->getAt(0, 7));
 
+  // 文字幅 12px, 5回左シフト済
   EXPECT_EQ(-5, sb->distToBehind());
   EXPECT_EQ(3, sb->distToLeftSet());
   EXPECT_EQ(7, sb->distToRightSet());
   EXPECT_EQ(15, sb->distToAfter());
+  EXPECT_EQ(5, sb->distToCenter());
 
   sb->reset();
 
@@ -101,6 +103,7 @@ TEST(String5x7BufferTest, reset) {
   EXPECT_EQ(8, sb->distToLeftSet());
   EXPECT_EQ(12, sb->distToRightSet());
   EXPECT_EQ(20, sb->distToAfter());
+  EXPECT_EQ(10, sb->distToCenter());
 
   delete sb;
 }

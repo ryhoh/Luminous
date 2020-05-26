@@ -16,7 +16,7 @@
 class String5x7Buffer : public MatrixBuffer {
 private:
   char *text;
-  uint16_t len;
+  uint16_t len;  // includes '\0'
 
   // for scrolling
   int cur_in_chr = 0;
@@ -32,10 +32,18 @@ public:
   ~String5x7Buffer();
   void reset();
 
+  // Behind state:      |-------|ABC
   int distToBehind();    // dist screen_right and text_left
+  // LeftSet state:     |ABC----|
   int distToLeftSet();   // dist screen_left  and text_left
+  // RightSet state:    |----ABC|
   int distToRightSet();  // dist screen_right and text_right
+  // After state:    ABC|-------|
   int distToAfter();     // dist screen_left  and text_right
+  // Center state:      |--ABC--|
+  int distToCenter();    // dist to point (distToLeftSet + distToRightSet = 0)
+
+  uint16_t getLen() { return this->len; }
 };
 
 #endif
