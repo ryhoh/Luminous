@@ -12,10 +12,9 @@
 
 #define msleep(ms) usleep(ms * 1000)
 
-int main() {
+void demo(const char *text) {
   Max7219_8x8_Simlator *dev = new Max7219_8x8_Simlator(8);
 
-  char text[] = "Hello wooooorld!";
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);
 
   while (string5x7Buffer->distToLeftSet() > 0) {
@@ -41,7 +40,19 @@ int main() {
 
   string5x7Buffer->reset();
 
+  while (string5x7Buffer->distToCenter() > 0)
+    string5x7Buffer->leftScroll(false);
+
+  dev->print(string5x7Buffer);
+  msleep(300);
+
   delete string5x7Buffer;
   delete dev;
-  return 0;
+}
+
+int main(int argc, char *argv[]) {
+  const char *text = "Hello!";
+  if (argc > 1)
+    text = argv[1];
+  demo(text);
 }
