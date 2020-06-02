@@ -14,9 +14,6 @@ void setup(){
   Serial.begin(9600);
   
   max7219_8x8 = new Max7219_8x8(MATRIX_SIZE, 11, 10, 13);
-  max7219_8x8->init();
-  max7219_8x8->test();
-  
   string5x7Buffer = new String5x7Buffer(MATRIX_SIZE, "Hello LEDMatrix!");
 }
 

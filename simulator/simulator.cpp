@@ -14,6 +14,7 @@
 
 void demo(const char *text) {
   Max7219_8x8_Simlator *dev = new Max7219_8x8_Simlator(8);
+
   String5x7Buffer *string5x7Buffer = new String5x7Buffer(8, text);
 
   while (string5x7Buffer->distToLeftSet() > 0) {
@@ -54,5 +55,4 @@ int main(int argc, char *argv[]) {
   if (argc > 1)
     text = argv[1];
   demo(text);
-  return 0;
 }
