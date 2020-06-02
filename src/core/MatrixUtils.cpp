@@ -1,4 +1,4 @@
-#include "MatrixUtils.h"
+#include <core/MatrixUtils.h>
 
 void matrix_utils::pError(unsigned int ecode) {
   const static int built_in_LED = 13;

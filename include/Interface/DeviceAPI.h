@@ -1,6 +1,11 @@
 #ifndef _DEVICEAPI_H_
 #define _DEVICEAPI_H_
 
+#ifdef SIMULATOR
+#include <iostream>
+using std::uint8_t;
+#endif
+
 /* デバイスの差異を吸収する共通の関数群 */
 
 /* -- API Definition -- */

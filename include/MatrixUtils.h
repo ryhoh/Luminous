@@ -3,11 +3,6 @@
 
 #ifdef ARDUINO
 #include <Arduino.h>
-
-#elif defined SIMULATOR
-#include <iostream>
-using std::uint8_t;
-
 #endif
 
 #include "Interface/DeviceAPI.h"

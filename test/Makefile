@@ -1,7 +1,7 @@
 COMPILE       = $(CXX) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
 CXX           = g++-9
 CPPFLAGS     += -std=c++14
-INCLUDES      = -I../src
+INCLUDES      = -I../include
 MACRO         = -DSIMULATOR
 OUTPUT_OPTION = -o $@
 

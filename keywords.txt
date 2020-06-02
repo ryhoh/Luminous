@@ -1,0 +1,10 @@
+###########################################################
+# Syntax Coloring Map for shirosha2's DotMatrix-LED Library
+###########################################################
+
+# Datatype, Class  (KEYWORD1)
+Max7219_8x8 KEYWORD1
+MatrixBuffer KEYWORD1
+String5x7Buffer KEYWORD1
+
+# Method, Function  (KEYWORD2)

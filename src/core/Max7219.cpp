@@ -1,5 +1,5 @@
-#include "Max7219.h"
-#include "../Interface/DeviceAPI.h"
+#include <core/Max7219.h>
+#include <Interface/DeviceAPI.h>
 
 
 void Max7219_8x8::init() {

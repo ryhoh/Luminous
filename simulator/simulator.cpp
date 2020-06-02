@@ -55,4 +55,6 @@ int main(int argc, char *argv[]) {
   if (argc > 1)
     text = argv[1];
   demo(text);
+
+  return 0;
 }
