@@ -1,4 +1,4 @@
-# libLEDMatrix
+# shirosha2_DotMatrix-LED
 
 Library for printing string (or something) on LED-Matrix controled by Max7219.
 
