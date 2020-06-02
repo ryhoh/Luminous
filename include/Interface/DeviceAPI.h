@@ -5,7 +5,7 @@
 
 /* -- API Definition -- */
 namespace DeviceAPI {
-  void call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT);
+  static void call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT);
   static inline void call_digitalWrite(uint8_t pin, uint8_t HIGH_or_LOW);
   static inline void call_sleep(uint32_t ms);
   static inline void call_shiftOut(uint8_t data, uint8_t dat_pin, uint8_t clk_pin, uint8_t lat_pin);
@@ -15,7 +15,7 @@ namespace DeviceAPI {
 #ifdef ARDUINO
 #include <Arduino.h>
 
-void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {
+static void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {
   pinMode(pin, INPUT_or_OUTPUT);
 }
 
@@ -35,6 +35,7 @@ static inline void DeviceAPI::call_shiftOut(uint8_t data, uint8_t dat_pin, uint8
 
 
 #ifdef SIMULATOR
+#include <unistd.h>
 // erase unnecessary constants/functions
 #define OUTPUT 0
 #define HIGH 0
@@ -42,9 +43,9 @@ static inline void DeviceAPI::call_shiftOut(uint8_t data, uint8_t dat_pin, uint8
 #define MSBFIRST 0
 #define digitalWrite(a, b)
 #define pinMode(lat, HIGH_LOW)
-#define delay(ms)
+#define delay(ms) sleep(ms * 1000)
 
-void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {}
+static void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {}
 static inline void DeviceAPI::call_digitalWrite(uint8_t pin, uint8_t HIGH_or_LOW) {}
 static inline void DeviceAPI::call_sleep(uint32_t ms) {}
 static inline void DeviceAPI::call_shiftOut(uint8_t data, uint8_t dat_pin, uint8_t clk_pin, uint8_t lat_pin) {}
