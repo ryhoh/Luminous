@@ -1,7 +1,7 @@
 #ifndef _STRING5X7_H_
 #define _STRING5X7_H_
 
-#ifdef ARDUINO
+#ifdef ARDUINO_MATRIX
 #include <avr/pgmspace.h>
 #endif
 
@@ -9,8 +9,8 @@
 #include <string.h>
 #endif
 
+#include "../Interface/DeviceAPI.h"
 #include "MatrixBuffer.h"
-#include "MatrixUtils.h"
 #include "AsciiFonts.h"
 
 class String5x7Buffer : public MatrixBuffer {

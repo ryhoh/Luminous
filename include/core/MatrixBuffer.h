@@ -3,10 +3,6 @@
 
 #include "MatrixUtils.h"
 
-#ifdef SIMULATOR
-using std::uint8_t;
-#endif
-
 class MatrixBuffer {
 private:
   short matrix_size = 8;
@@ -30,4 +26,4 @@ public:
   matrix_utils::TwoDimArray *getTwoDimArray();
 };
 
-#endif
+#endif  /* _MATRIXBUFFER_H_ */

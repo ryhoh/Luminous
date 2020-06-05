@@ -1,13 +1,12 @@
 #ifndef _DEVICEAPI_H_
 #define _DEVICEAPI_H_
 
-#ifdef SIMULATOR
-#include <iostream>
-using std::uint8_t;
+#ifdef ARDUINO_MATRIX
+#include <Arduino.h>
 #endif
 
-#ifdef ARDUINO
-#include <Arduino.h>
+#ifdef SIMULATOR
+#include <iostream>
 #endif
 
 /* デバイスの差異を吸収する共通の関数群 */
@@ -21,7 +20,7 @@ namespace DeviceAPI {
 };
 /* -------------------- */
 
-#ifdef ARDUINO
+#ifdef ARDUINO_MATRIX
 
 static void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {
   pinMode(pin, INPUT_or_OUTPUT);
@@ -39,7 +38,7 @@ static inline void DeviceAPI::call_shiftOut(uint8_t data, uint8_t dat_pin, uint8
   shiftOut(data, dat_pin, clk_pin, lat_pin);
 }
 
-#endif  /* ARDUINO */
+#endif  /* ARDUINO_MATRIX */
 
 
 #ifdef SIMULATOR

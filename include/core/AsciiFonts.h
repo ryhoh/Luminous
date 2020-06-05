@@ -6,7 +6,7 @@ static const int _ASCII_OFFSET = 0x20;
 
 const uint8_t _ASCII_FONTS[95][7]
 
-#ifdef ARDUINO
+#ifdef ARDUINO_MATRIX
 PROGMEM
 #endif
 
@@ -108,4 +108,4 @@ PROGMEM
   {0x08, 0x15, 0x02, 0x00, 0x00, 0x00, 0x00}   // 0x7e, ~
 };
 
-#endif
+#endif  /* _ASCIIFONTS_H_ */
