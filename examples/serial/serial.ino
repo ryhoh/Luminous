@@ -1,19 +1,21 @@
-#include "Max7219.h"
-#include "String5x7Buffer.h"
+#include <DotMatrixLED.h>
 
 #define ARDUINO
 
-#define MATRIX_SIZE 8
+#define MATRIX_SIZE 12
 #define WAIT 50
 
 Max7219_8x8 *max7219_8x8;
 String5x7Buffer *string5x7Buffer;
 
+const int DIN = 11;
+const int CS  = 10;
+const int CLK = 13;
 
 void setup(){
   Serial.begin(9600);
   
-  max7219_8x8 = new Max7219_8x8(MATRIX_SIZE, 14, 12, 13);
+  max7219_8x8 = new Max7219_8x8(MATRIX_SIZE, DIN, CS, CLK);
   string5x7Buffer = new String5x7Buffer(MATRIX_SIZE, "Hello LEDMatrix!");
 }
 
