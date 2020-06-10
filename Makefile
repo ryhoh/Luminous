@@ -12,7 +12,7 @@ OBJECTS.o = $(addsuffix .o, $(OBJECTS))
 
 ifeq ($(ARCH), SIM)
 	MACRO = -DSIMULATOR
-	DIR = ./lib/sim/
+	DIR = ./build/sim/
 	ARCH_OK = 1
 else ifeq ($(ARCH), ARD)
 	MACRO = -DARDUINO
