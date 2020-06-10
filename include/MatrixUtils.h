@@ -1,7 +1,7 @@
 #ifndef _MATRIXUTILS_H_
 #define _MATRIXUTILS_H_
 
-#ifdef ARDUINO
+#ifdef ARDUINO_ARCH_MATRIXLED
 #include <Arduino.h>
 #endif
 

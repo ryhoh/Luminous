@@ -6,7 +6,7 @@ static const int _ASCII_OFFSET = 0x20;
 
 const uint8_t _ASCII_FONTS[95][7]
 
-#ifdef ARDUINO_MATRIX
+#ifdef ARDUINO
 PROGMEM
 #endif
 

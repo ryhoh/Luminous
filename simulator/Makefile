@@ -12,18 +12,15 @@ CORE_OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
 OBJECTS = $(addprefix core/, $(CORE_OBJECTS))
 OBJECTS.o = $(addsuffix .o, $(OBJECTS))
 
-.PHONY: run
-run:	build clean
-	./simulator
 
 .PHONY:	build
-build:	prepare simulator;
+build:	prepare scroll.out center.out speedtest.out
 
 .PHONY:	prepare
 prepare:
 	@mkdir core
 
-simulator:	simulator.cpp $(OBJECTS.o)
+%.out:	%.cpp $(OBJECTS.o)
 	$(COMPILE) $(OUTPUT_OPTION) $^
 
 %.o:	%.cpp
@@ -31,5 +28,5 @@ simulator:	simulator.cpp $(OBJECTS.o)
 
 .PHONY:	clean
 clean:
-	rm -f *.o
-	rm -r core
+	-rm -f *.o *.out
+	-rm -r core

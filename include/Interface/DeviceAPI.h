@@ -1,7 +1,7 @@
 #ifndef _DEVICEAPI_H_
 #define _DEVICEAPI_H_
 
-#ifdef ARDUINO_MATRIX
+#ifdef ARDUINO
 #include <Arduino.h>
 #endif
 
@@ -20,7 +20,7 @@ namespace DeviceAPI {
 };
 /* -------------------- */
 
-#ifdef ARDUINO_MATRIX
+#ifdef ARDUINO
 
 static void DeviceAPI::call_pinMode(uint8_t pin, uint8_t INPUT_or_OUTPUT) {
   pinMode(pin, INPUT_or_OUTPUT);
@@ -38,7 +38,7 @@ static inline void DeviceAPI::call_shiftOut(uint8_t data, uint8_t dat_pin, uint8
   shiftOut(data, dat_pin, clk_pin, lat_pin);
 }
 
-#endif  /* ARDUINO_MATRIX */
+#endif  /* ARDUINO */
 
 
 #ifdef SIMULATOR

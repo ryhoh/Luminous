@@ -15,13 +15,11 @@
 namespace matrix_utils {
   void pError(unsigned int ecode);
 
-  class TwoDimArray {
-  protected:
+  struct TwoDimArray {
     uint8_t *array;
     short axis0;
     short axis1;
 
-  public:
     TwoDimArray(short axis0, short axis1);
     ~TwoDimArray();
     void setAt(short x, short y, uint8_t val);

@@ -55,8 +55,8 @@ void Max7219_8x8::sendToDevice(uint8_t addr, uint8_t data) {
 /* -- Common functions ---------------------------- */
 // params: レジスタアドレス, データ
 void Max7219_8x8::shiftToRegister(uint8_t addr, uint8_t data) {
-    DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
-    DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, data);
+  DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, addr);
+  DeviceAPI::call_shiftOut(this->DAT, this->CLK, MSBFIRST, data);
 }
 
 // 2次元配列の形で与えれば表示する

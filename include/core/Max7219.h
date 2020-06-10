@@ -1,6 +1,7 @@
 #ifndef _MAX7219_H_
 #define _MAX7219_H_
 
+#include "../Interface/DeviceAPI.h"
 #include "MatrixBuffer.h"
 
 
@@ -68,7 +69,7 @@ private:
     std::string toString();
   };
   VirtualDevice virtualDevice;
-  
+
   virtual void init() override {}  // unnecessary for simulator
   virtual void test() override {}  // unnecessary for simulator
 

@@ -1,7 +1,7 @@
 #ifndef _STRING5X7_H_
 #define _STRING5X7_H_
 
-#ifdef ARDUINO_MATRIX
+#ifdef ARDUINO
 #include <avr/pgmspace.h>
 #endif
 
