@@ -4,10 +4,10 @@
 TEST(String5x7BufferTest, construct){
   char text[] = "Hi";
   String5x7Buffer *sb = new String5x7Buffer(1, text);
-  EXPECT_EQ(0, sb->distToBehind());
-  EXPECT_EQ(8, sb->distToLeftSet());
-  EXPECT_EQ(12, sb->distToRightSet());
-  EXPECT_EQ(20, sb->distToAfter());
+  EXPECT_EQ(0, sb->distTo(Position::Behind));
+  EXPECT_EQ(8, sb->distTo(Position::LeftSet));
+  EXPECT_EQ(12, sb->distTo(Position::RightSet));
+  EXPECT_EQ(20, sb->distTo(Position::After));
   delete sb;
 }
 
@@ -91,19 +91,19 @@ TEST(String5x7BufferTest, reset) {
   EXPECT_EQ(0b00010001, sb->getTwoDimArray()->getAt(0, 7));
 
   // 文字幅 12px, 5回左シフト済
-  EXPECT_EQ(-5, sb->distToBehind());
-  EXPECT_EQ(3, sb->distToLeftSet());
-  EXPECT_EQ(7, sb->distToRightSet());
-  EXPECT_EQ(15, sb->distToAfter());
-  EXPECT_EQ(5, sb->distToCenter());
+  EXPECT_EQ(-5, sb->distTo(Position::Behind));
+  EXPECT_EQ(3, sb->distTo(Position::LeftSet));
+  EXPECT_EQ(7, sb->distTo(Position::RightSet));
+  EXPECT_EQ(15, sb->distTo(Position::After));
+  EXPECT_EQ(5, sb->distTo(Position::Center));
 
   sb->reset();
 
-  EXPECT_EQ(0, sb->distToBehind());
-  EXPECT_EQ(8, sb->distToLeftSet());
-  EXPECT_EQ(12, sb->distToRightSet());
-  EXPECT_EQ(20, sb->distToAfter());
-  EXPECT_EQ(10, sb->distToCenter());
+  EXPECT_EQ(0, sb->distTo(Position::Behind));
+  EXPECT_EQ(8, sb->distTo(Position::LeftSet));
+  EXPECT_EQ(12, sb->distTo(Position::RightSet));
+  EXPECT_EQ(20, sb->distTo(Position::After));
+  EXPECT_EQ(10, sb->distTo(Position::Center));
 
   delete sb;
 }

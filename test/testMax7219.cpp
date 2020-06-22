@@ -23,7 +23,7 @@ TEST(Max7219_8x8Test, withString5x7Buffer){
 ................................................................\n";
   EXPECT_EQ(expected, dev->generateScreen());
 
-  while (string5x7Buffer->distToLeftSet() > 0)
+  while (string5x7Buffer->distTo(Position::LeftSet) > 0)
     string5x7Buffer->leftScroll(false);
   dev->updateBuffer(string5x7Buffer);
   expected = "\
@@ -37,7 +37,7 @@ o...o.o.......o.....o...o...o.......o.o.o.o...o.o...o.o...o.o...\n\
 o...o..oooo...o.....o....ooo.........o.o...ooo...ooo...ooo...ooo\n";
   EXPECT_EQ(expected, dev->generateScreen());
 
-  while (string5x7Buffer->distToRightSet() > 0)
+  while (string5x7Buffer->distTo(Position::RightSet) > 0)
     string5x7Buffer->leftScroll(false);
   dev->updateBuffer(string5x7Buffer);
   expected = "\
@@ -51,7 +51,7 @@ o...o..oooo...o.....o....ooo.........o.o...ooo...ooo...ooo...ooo\n";
 .....o.o...ooo...ooo...ooo...ooo...ooo..o.......o.....ooo...o...\n";
   EXPECT_EQ(expected, dev->generateScreen());
 
-  while (string5x7Buffer->distToAfter() > 0)
+  while (string5x7Buffer->distTo(Position::After) > 0)
     string5x7Buffer->leftScroll(false);
   dev->updateBuffer(string5x7Buffer);
   expected = "\

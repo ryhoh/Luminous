@@ -83,23 +83,20 @@ void String5x7Buffer::reset() {
   this->shifted_line_n = 0;
 }
 
-int String5x7Buffer::distToBehind() {
-  return 0 - this->shifted_line_n;
-}
-
-int String5x7Buffer::distToLeftSet() {
-  return 8 * this->getScreen_n() - this->shifted_line_n;
-}
-
-// this->len - 1 : excepting '\0'
-int String5x7Buffer::distToRightSet() {
-  return ((this->len - 1) * 6) - this->shifted_line_n;
-}
-
-int String5x7Buffer::distToAfter() {
-  return (8 * this->getScreen_n() + (this->len - 1) * 6) - this->shifted_line_n;
-}
-
-int String5x7Buffer::distToCenter() {
-  return (this->distToLeftSet() + this->distToRightSet()) / 2;
+int String5x7Buffer::distTo(Position pos) {
+  switch (pos) {
+  case Position::Behind:  // dist screen_right and text_left
+    return 0 - this->shifted_line_n;
+  case Position::RightSet:  // dist screen_right and text_right
+    return ((this->len - 1) * 6) - this->shifted_line_n;
+  case Position::LeftSet:  // dist screen_left  and text_left
+    return 8 * this->getScreen_n() - this->shifted_line_n;
+  case Position::After:  // dist screen_left  and text_right
+    return (8 * this->getScreen_n() + (this->len - 1) * 6) - this->shifted_line_n;
+  case Position::Center:  // dist to point (distToLeftSet + distToRightSet = 0)
+    return (this->distTo(Position::LeftSet) + this->distTo(Position::RightSet)) / 2;
+  
+  default:
+    return 0;
+  }
 }

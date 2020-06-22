@@ -13,6 +13,14 @@
 #include "MatrixBuffer.h"
 #include "AsciiFonts.h"
 
+enum class Position {  // Decvice
+  Behind,    //          |-------|ABC
+  RightSet,  //          |----ABC|
+  LeftSet,   //          |ABC----|
+  After,     //       ABC|-------|
+  Center,    //          |--ABC--|
+};
+
 class String5x7Buffer : public MatrixBuffer {
 private:
   char *text;
@@ -30,18 +38,9 @@ public:
   String5x7Buffer(short screen_n, const char *text);
   String5x7Buffer(const String5x7Buffer &) = delete;
   ~String5x7Buffer();
+  
   void reset();
-
-  // Behind state:      |-------|ABC
-  int distToBehind();    // dist screen_right and text_left
-  // LeftSet state:     |ABC----|
-  int distToLeftSet();   // dist screen_left  and text_left
-  // RightSet state:    |----ABC|
-  int distToRightSet();  // dist screen_right and text_right
-  // After state:    ABC|-------|
-  int distToAfter();     // dist screen_left  and text_right
-  // Center state:      |--ABC--|
-  int distToCenter();    // dist to point (distToLeftSet + distToRightSet = 0)
+  int distTo(Position pos);
 
   uint16_t getLen() { return this->len; }
 };
