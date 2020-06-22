@@ -1,7 +1,7 @@
 #ifndef _MATRIXBUFFER_H_
 #define _MATRIXBUFFER_H_
 
-#include "MatrixUtils.h"
+#include "../util/MatrixUtils.h"
 
 class MatrixBuffer {
 private:

@@ -9,7 +9,7 @@
 #include <string.h>
 #endif
 
-#include "../Interface/DeviceAPI.h"
+#include "../interface/DeviceAPI.h"
 #include "MatrixBuffer.h"
 #include "AsciiFonts.h"
 
@@ -38,7 +38,7 @@ public:
   String5x7Buffer(short screen_n, const char *text);
   String5x7Buffer(const String5x7Buffer &) = delete;
   ~String5x7Buffer();
-  
+
   void reset();
   int distTo(Position pos);
 
