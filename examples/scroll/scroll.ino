@@ -12,13 +12,13 @@ const int DIN = 11;
 const int CS  = 10;
 const int CLK = 13;
 
-void setup(){
+void setup() {
   max7219_8x8 = new Max7219_8x8(MATRIX_SIZE, DIN, CS, CLK);
   string5x7Buffer = new String5x7Buffer(MATRIX_SIZE, "Hello Matrix LED!");
 }
 
-void loop(){
-  while (string5x7Buffer->distToAfter() > 0) {
+void loop() {
+  while (string5x7Buffer->distTo(Position::After) > 0) {
     max7219_8x8->print(string5x7Buffer);
     string5x7Buffer->leftScroll(false);
     delay(WAIT);

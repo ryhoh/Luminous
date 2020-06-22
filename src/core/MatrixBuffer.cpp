@@ -1,6 +1,6 @@
-#include <core/MatrixBuffer.h>
+#include "../../include/core/MatrixBuffer.h"
 
-MatrixBuffer::MatrixBuffer(short screen_n) {
+MatrixBuffer::MatrixBuffer(uint16_t screen_n) {
   if (screen_n < 1) matrix_utils::pError(1);
 
   this->screen_n = screen_n;
@@ -12,23 +12,23 @@ MatrixBuffer::~MatrixBuffer() {
 }
 
 void MatrixBuffer::flip() {
-  for (short i = 0; i < this->matrix_size; ++i)
-    for (short j = 0; j < this->screen_n; ++j)
+  for (uint16_t i = 0; i < this->matrix_size; ++i)
+    for (uint16_t j = 0; j < this->screen_n; ++j)
       this->twoDimArray->setAt(i, j, this->twoDimArray->getAt(i, j) ^ 0xFF);
 }
 
 void MatrixBuffer::fill(bool fill_bit) {
   uint8_t ch = fill_bit ? 0xFF : 0x00;
-  for (short i = 0; i < this->matrix_size; ++i)
-    for (short j = 0; j < this->screen_n; ++j)
+  for (uint16_t i = 0; i < this->matrix_size; ++i)
+    for (uint16_t j = 0; j < this->screen_n; ++j)
       this->twoDimArray->setAt(i, j, ch);
 }
 
 MatrixBuffer *MatrixBuffer::clone() {
   MatrixBuffer *res = new MatrixBuffer(this->screen_n);
 
-  for (short i = 0; i < this->matrix_size; ++i)
-    for (short j = 0; j < this->screen_n; ++j)
+  for (uint16_t i = 0; i < this->matrix_size; ++i)
+    for (uint16_t j = 0; j < this->screen_n; ++j)
       res->twoDimArray->setAt(i, j, this->twoDimArray->getAt(i, j));
 
   return res;
@@ -36,14 +36,14 @@ MatrixBuffer *MatrixBuffer::clone() {
 
 // 右端に新しいデータを追加
 void MatrixBuffer::insertOneColumnAtRightEnd(bool invert) {
-  for (int row_i = 0; row_i < this->matrix_size; ++row_i)
+  for (uint16_t row_i = 0; row_i < this->matrix_size; ++row_i)
     this->twoDimArray->setBitAt(row_i, this->screen_n - 1, 0, invert);
 }
 
 // 左に1マスずらす．右端の埋めは，invertがtrueなら1
 void MatrixBuffer::leftScroll(bool invert) {
-  for (int screen_i = 0; screen_i < this->screen_n; ++screen_i) {
-    for (int row_i = 0; row_i < this->matrix_size; ++row_i) {
+  for (uint16_t screen_i = 0; screen_i < this->screen_n; ++screen_i) {
+    for (uint16_t row_i = 0; row_i < this->matrix_size; ++row_i) {
       if (screen_i > 0) {  // 最上位ビットをとなりのscreenの最下位ビットへコピー
         bool move_bit = (this->twoDimArray->getAt(row_i, screen_i) >> 7) & 0b1;
         this->twoDimArray->setBitAt(row_i, screen_i - 1, 0, move_bit);
@@ -58,11 +58,11 @@ void MatrixBuffer::leftScroll(bool invert) {
 }
 
 /* accessor */
-short MatrixBuffer::getMatrix_size() {
+uint16_t MatrixBuffer::getMatrix_size() {
   return this->matrix_size;
 }
 
-short MatrixBuffer::getScreen_n() {
+uint16_t MatrixBuffer::getScreen_n() {
   return this->screen_n;
 }
 matrix_utils::TwoDimArray *MatrixBuffer::getTwoDimArray() {

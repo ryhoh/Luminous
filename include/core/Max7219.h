@@ -1,7 +1,8 @@
 #ifndef _MAX7219_H_
 #define _MAX7219_H_
 
-#include "../Interface/DeviceAPI.h"
+#include "../interface/DeviceAPI.h"
+#include "../util/Typing.h"
 #include "MatrixBuffer.h"
 
 
@@ -83,6 +84,6 @@ public:
   virtual void print(MatrixBuffer *matrixBuffer) override;
 };
 
-#endif /* SIMULATOR */
+#endif  /* SIMULATOR */
 
 #endif  /* _MAX7219_H_ */

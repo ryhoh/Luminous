@@ -2,17 +2,18 @@
 #define _MATRIXBUFFER_H_
 
 #include "../util/MatrixUtils.h"
+#include "../util/Typing.h"
 
 class MatrixBuffer {
 private:
-  short matrix_size = 8;
-  short screen_n;
+  uint16_t matrix_size = 8;
+  uint16_t screen_n;
   matrix_utils::TwoDimArray *twoDimArray;
 
   virtual void insertOneColumnAtRightEnd(bool invert);
 
 public:
-  MatrixBuffer(short screen_n);
+  MatrixBuffer(uint16_t screen_n);
   MatrixBuffer(const MatrixBuffer &MatrixBuffer) = delete;  // 同じ配列のポインタを持つ複数オブジェクトの作成を禁止
   virtual ~MatrixBuffer();
 
@@ -21,8 +22,8 @@ public:
   virtual void fill(bool fill_bit);
   virtual void leftScroll(bool invert);
 
-  short getMatrix_size();
-  short getScreen_n();
+  uint16_t getMatrix_size();
+  uint16_t getScreen_n();
   matrix_utils::TwoDimArray *getTwoDimArray();
 };
 

@@ -10,6 +10,7 @@
 #endif
 
 #include "../interface/DeviceAPI.h"
+#include "../util/Typing.h"
 #include "MatrixBuffer.h"
 #include "AsciiFonts.h"
 
@@ -27,20 +28,20 @@ private:
   uint16_t len;  // includes '\0'
 
   // for scrolling
-  int cur_in_chr = 0;
-  int cur_text = 0;
-  int shifted_line_n = 0;
+  uint16_t cur_in_chr = 0;
+  uint16_t cur_text = 0;
+  uint16_t shifted_line_n = 0;
 
   uint8_t toFont(char chr_num, int row_num);
   void insertOneColumnAtRightEnd(bool invert) override;
 
 public:
-  String5x7Buffer(short screen_n, const char *text);
+  String5x7Buffer(uint16_t screen_n, const char *text);
   String5x7Buffer(const String5x7Buffer &) = delete;
   ~String5x7Buffer();
 
   void reset();
-  int distTo(Position pos);
+  int32_t distTo(Position pos);
 
   uint16_t getLen() { return this->len; }
 };

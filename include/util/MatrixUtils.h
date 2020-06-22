@@ -5,7 +5,8 @@
 #include <Arduino.h>
 #endif
 
-#include "Interface/DeviceAPI.h"
+#include "../interface/DeviceAPI.h"
+#include "Typing.h"
 
 /*
  *  list of error codes
@@ -17,20 +18,21 @@
  */
 
 namespace matrix_utils {
-  void pError(unsigned int ecode);
+  void pError(uint8_t ecode);
 
   class TwoDimArray {
   protected:
     uint8_t *array;
-    short axis0;
-    short axis1;
+    uint16_t axis0;
+    uint16_t axis1;
 
   public:
-    TwoDimArray(short axis0, short axis1);
+    TwoDimArray(uint16_t axis0, uint16_t axis1);
     ~TwoDimArray();
-    void setAt(short x, short y, uint8_t val);
-    void setBitAt(short x, short y, uint8_t pointFromRight, bool val);
-    uint8_t getAt(short x, short y);
+    
+    void setAt(uint16_t x, uint16_t y, uint8_t val);
+    void setBitAt(uint16_t x, uint16_t y, uint8_t pointFromRight, bool val);
+    uint8_t getAt(uint16_t x, uint16_t y);
   };
 }
 

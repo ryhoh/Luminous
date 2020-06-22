@@ -1,9 +1,9 @@
-#include <core/String5x7Buffer.h>
+#include "../../include/core/String5x7Buffer.h"
 
-String5x7Buffer::String5x7Buffer(short screen_n, const char *text) : MatrixBuffer(screen_n) {
+String5x7Buffer::String5x7Buffer(uint16_t screen_n, const char *text) : MatrixBuffer(screen_n) {
   // copying text
   this->len = 0;
-  for (int i = 0; text[i] != '\0'; ++i) ++(this->len);
+  for (uint16_t i = 0; text[i] != '\0'; ++i) ++(this->len);
   ++(this->len);  // count for NULL code
 
   this->text = (char *)malloc(sizeof(char) * len);
@@ -24,7 +24,7 @@ String5x7Buffer::String5x7Buffer(short screen_n, const char *text) : MatrixBuffe
 
   // count true length
   this->len = 0;
-  for (int i = 0; this->text[i] != '\0'; ++i) ++(this->len);
+  for (uint16_t i = 0; this->text[i] != '\0'; ++i) ++(this->len);
   ++(this->len);  // count for NULL code
 }
 
@@ -49,14 +49,14 @@ uint8_t String5x7Buffer::toFont(char chr_num, int row_num) {
 void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
   ++(this->shifted_line_n);
   if (this->text[this->cur_text] == '\0') {  // no more character
-    for (int row_i = 0; row_i < 8; ++row_i)
+    for (uint8_t row_i = 0; row_i < 8; ++row_i)
       this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, invert);
     return;
   }
 
   // has character
   if (this->cur_in_chr == 5) {  // spacing between characters
-    for (int row_i = 0; row_i < 8; ++row_i)
+    for (uint8_t row_i = 0; row_i < 8; ++row_i)
       this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, invert);
 
     // shift to next character
@@ -66,7 +66,7 @@ void String5x7Buffer::insertOneColumnAtRightEnd(bool invert) {
     // screen height is 8 pixel but font height is 7 pixel
     this->getTwoDimArray()->setBitAt(0, this->getScreen_n() - 1, 0, invert);
 
-    for (int row_i = 1; row_i < 8; ++row_i) {
+    for (uint8_t row_i = 1; row_i < 8; ++row_i) {
       bool padding_bit = (this->toFont(this->text[this->cur_text], row_i - 1) >> (4 - this->cur_in_chr)) & 0b1;
       if (invert) padding_bit ^= 0b1;
       this->getTwoDimArray()->setBitAt(row_i, this->getScreen_n() - 1, 0, padding_bit);
@@ -83,7 +83,7 @@ void String5x7Buffer::reset() {
   this->shifted_line_n = 0;
 }
 
-int String5x7Buffer::distTo(Position pos) {
+int32_t String5x7Buffer::distTo(Position pos) {
   switch (pos) {
   case Position::Behind:  // dist screen_right and text_left
     return 0 - this->shifted_line_n;
