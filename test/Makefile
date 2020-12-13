@@ -1,40 +1,39 @@
-COMPILE       = $(CXX) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
-CXX           = g++-9
-CPPFLAGS     += -std=c++14
-INCLUDES      = -I../include
-MACRO         = -DSIMULATOR
+CCOMPILE      = $(CC) $(CFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
+CXXCOMPILE    = $(CXX) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
+CC            = gcc
+CXX           = g++
+CFLAGS       += -std=c17
+CPPFLAGS     += -std=c++17
+INCLUDES      = -I../src
 OUTPUT_OPTION = -o $@
 
 TESTLINK = -pthread -lgtest_main -lgtest
 VPATH    = ../src
 
-TARGETS      = MatrixBuffer String5x7Buffer Max7219
-CORE_OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
-
-OBJECTS = $(addprefix core/, $(CORE_OBJECTS))
+TARGETS = MatrixLED AsciiMatrix JISMatrix
+OBJECTS = MatrixLED AsciiMatrix JISMatrix#Max7219
+# TARGETS      = MatrixBuffer String5x7Buffer Max7219
+# CORE_OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
 
 testTARGETS     = $(addprefix test, $(TARGETS))
 testTARGETS.out = $(addsuffix .out, $(testTARGETS))
 OBJECTS.o       = $(addsuffix .o  , $(OBJECTS))
 
 .PHONY:	test
-test:	prepare build clean;
-
-.PHONY:	prepare
-prepare:
-	@mkdir core
-
+test:	build clean;
 .PHONY:	build
-build:	$(testTARGETS.out);
-
-%.out:	%.o $(OBJECTS.o)
-	$(COMPILE) $(OUTPUT_OPTION) $(TESTLINK) $^
-	./$@
-
-%.o:	%.cpp
-	$(COMPILE) -c $(OUTPUT_OPTION) $<
+build:	$(testTARGETS.out)
 
 .PHONY:	clean
 clean:
 	rm -f *.o *.out
-	rm -r core
+
+%.out:	%.o $(OBJECTS.o)
+	$(CXXCOMPILE) $(OUTPUT_OPTION) $(TESTLINK) $^
+	./$@
+
+%.o:	%.cpp
+	$(CXXCOMPILE) -c $(OUTPUT_OPTION) $<
+
+%.o:	%.c
+	$(CCOMPILE) -c $(OUTPUT_OPTION) $<
