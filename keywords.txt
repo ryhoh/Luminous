@@ -4,37 +4,39 @@
 
 # Datatype, Class  (KEYWORD1)
 
+## Buffers
 DotMatrixLED KEYWORD1
 
-Max7219_8x8 KEYWORD1
-MatrixBuffer KEYWORD1
-String5x7Buffer KEYWORD1
+## Support functions
+MatrixLED KEYWORD1
+AsciiMatrix KEYWORD1
+JISMatrix KEYWORD1
+
+## Devices
+Max7219 KEYWORD1
 
 # Method, Function  (KEYWORD2)
 
-## Max7219_8x8 KEYWORD2
-generateScreen KEYWORD2
-updateBuffer KEYWORD2
-shiftToRegister KEYWORD2
-print KEYWORD2
+## MatrixLED KEYWORD2
+initMatrixLED KEYWORD2
+flipMatrixLED KEYWORD2
+fillMatrixLED KEYWORD2
+leftShiftMatrixLED KEYWORD2
 
-## MatrixBuffer
-clone KEYWORD2
-flip KEYWORD2
-fill KEYWORD2
-leftScroll KEYWORD2
-getMatrix_size KEYWORD2
-getScreen_n KEYWORD2
-getTwoDimArray KEYWORD2
+## AsciiMatrix
+getASCIIRow KEYWORD2
+writeAsciiToMatrixLED KEYWORD2
+writeAsciisToMatrixLEDs KEYWORD2
 
-## String5x7Buffer
-reset KEYWORD2
-distToBehind KEYWORD2
-distToLeftSet KEYWORD2
-distToRightSet KEYWORD2
-distToAfter KEYWORD2
-distToCenter KEYWORD2
-getLen KEYWORD2
+## JISMatrix
+getJISRow KEYWORD2
+writeJISToMatrixLED KEYWORD2
+writeJISsToMatrixLEDs KEYWORD2
+
+## LEDControllers
+initMax7219 KEYWORD2
+testRunMax7219 KEYWORD2
+flushMatrixLEDByMax7219 KEYWORD2
+flushMatrixLEDsByMax7219 KEYWORD2
 
 # Constants (LITERAL1)
-ARDUINO LITERAL1

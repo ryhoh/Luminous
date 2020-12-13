@@ -1,32 +1,31 @@
-COMPILE       = $(CXX) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
+CCOMPILE      = $(CC) $(CFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
+CXXCOMPILE    = $(CXX) $(CPPFLAGS) $(INCLUDES) $(MACRO) $(OPTIONS)
+CC            = gcc
 CXX           = g++
-CPPFLAGS     += -std=c++14
-INCLUDES      = -I../include
+CFLAGS       += -std=c17
+CPPFLAGS     += -std=c++17
+INCLUDES      = -I../src
 MACRO         = -DSIMULATOR
 OUTPUT_OPTION = -o $@
 
-VPATH = ../src
+VPATH    = ../src
 
-CORE_OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
+OBJECTS = MatrixLED AsciiMatrix JISMatrix
+OBJECTS.o       = $(addsuffix .o  , $(OBJECTS))
 
-OBJECTS = $(addprefix core/, $(CORE_OBJECTS))
-OBJECTS.o = $(addsuffix .o, $(OBJECTS))
-
-
-.PHONY:	build
-build:	prepare scroll.out center.out speedtest.out
-
-.PHONY:	prepare
-prepare:
-	@mkdir core
-
-%.out:	%.cpp $(OBJECTS.o)
-	$(COMPILE) $(OUTPUT_OPTION) $^
-
-%.o:	%.cpp
-	$(COMPILE) -c $(OUTPUT_OPTION) $<
+.PHONY:	test
+test:	simulator.out
+	./simulator.out
 
 .PHONY:	clean
 clean:
-	-rm -f *.o *.out
-	-rm -r core
+	rm -f *.o *.out
+
+%.out:	%.o $(OBJECTS.o)
+	$(CXXCOMPILE) $(OUTPUT_OPTION) $(TESTLINK) $^
+
+%.o:	%.cpp
+	$(CXXCOMPILE) -c $(OUTPUT_OPTION) $<
+
+%.o:	%.c
+	$(CCOMPILE) -c $(OUTPUT_OPTION) $<
