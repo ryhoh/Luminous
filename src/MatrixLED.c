@@ -24,7 +24,7 @@ void fillMatrixLED(MatrixLED *matrixLED, bool value)
 
 uint8_t leftShiftMatrixLED(MatrixLED *matrixLED, uint8_t padding)
 {
-  uint8_t out;  // 7行目, 6行目, ... 0行目とビットを詰める padding も同じ並び
+  uint8_t out = 0;  // 7行目, 6行目, ... 0行目とビットを詰める padding も同じ並び
   for (uint8_t bit_i = 0; bit_i < matrixLED->height; ++bit_i)
   {
     bool top_bit = (*(matrixLED->buffer + bit_i) >> 7) & 0b1;
