@@ -1,8 +1,5 @@
 #include <Arduino.h>
-
-extern "C" {
-  #include "DotMatrixLED.h"
-}
+#include "DotMatrixLED.h"
 
 Max7219 max7219;
 MatrixLED matrixLEDs[8];

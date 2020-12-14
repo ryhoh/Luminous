@@ -13,7 +13,9 @@ Avaiable on arduino projects.
 
 ### On Arduino Project
 
-The library is written in C. Use `extern "C"`.
+> This library is written in C.  
+> But just include "DotMatrixLED.h" in Arduino project.  
+> (The library has `extern "C"` code)
 
 <figure style="text-align:center;">
 	<img src="resources/led_example.jpg", width=720px>
@@ -28,10 +30,7 @@ The library is written in C. Use `extern "C"`.
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <time.h>
-
-extern "C" {
-  #include "DotMatrixLED.h"
-}
+#include "DotMatrixLED.h"
 
 const String WIFI_SSID = "your_ssid";
 const String WIFI_PASSWORD = "your_password";
@@ -93,10 +92,7 @@ void loop() {
 
 ```cpp
 #include <Arduino.h>
-
-extern "C" {
-  #include "DotMatrixLED.h"
-}
+#include "DotMatrixLED.h"
 
 Max7219 max7219;          // module
 MatrixLED matrixLEDs[8];  // panel

@@ -1,10 +1,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <time.h>
-
-extern "C" {
-  #include "DotMatrixLED.h"
-}
+#include "DotMatrixLED.h"
 
 const String WIFI_SSID = "your_ssid";
 const String WIFI_PASSWORD = "your_password";
@@ -18,7 +15,7 @@ void setup() {
     delay(500);
   }
   configTzTime("JST-9", "ntp.nict.jp", "ntp.jst.mfeed.ad.jp");
-  
+
   initMax7219(&max7219, 5, 4, 13, 3);
   testRunMax7219(&max7219);
   for (uint8_t i = 0; i < 8; ++i) {
@@ -33,7 +30,7 @@ void loop() {
   static time_t t;
   static struct tm *tm;
   static uint8_t hour[2], minute[2], second[2];
-  
+
   t = time(NULL);
   tm = localtime(&t);
 

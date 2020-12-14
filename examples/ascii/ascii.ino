@@ -1,8 +1,5 @@
 #include <Arduino.h>
-
-extern "C" {
-  #include "DotMatrixLED.h"
-}
+#include "DotMatrixLED.h"
 
 Max7219 max7219;
 MatrixLED matrixLEDs[8];
@@ -22,7 +19,7 @@ void loop() {
   fillMatrixLED(matrixLEDs + 7, false);
   writeAsciiToMatrixLED(matrixLEDs + 7, '0' + cnt, 1);
   flushMatrixLEDsByMax7219(&max7219, matrixLEDs, 8);
-  
+
   delay(1000);
 
   if (cnt == 9) {
