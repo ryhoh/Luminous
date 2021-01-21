@@ -400,6 +400,19 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_mix) {
 TEST(UTF8andJISTest, writeJISsToMatrixLEDArray_ascii) {
   MatrixLED matLEDs[5];
   MatrixLEDArray matrixLEDArray;
+  initMatrixLEDArray(&matrixLEDArray, matLEDs, 5, 8, 8);
+
+  // "Hi"
+  writeJISsToMatrixLEDArray(&matrixLEDArray, "Hi", 0);
+  EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
+  EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
+  EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
+  EXPECT_EQ(0b10001000, matLEDs[0].buffer[3]);
+  EXPECT_EQ(0b11111001, matLEDs[0].buffer[4]);
+  EXPECT_EQ(0b10001000, matLEDs[0].buffer[5]);
+  EXPECT_EQ(0b10001000, matLEDs[0].buffer[6]);
+  EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
+
   EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
   EXPECT_EQ(0b00000000, matLEDs[1].buffer[1]);
   EXPECT_EQ(0b10000000, matLEDs[1].buffer[2]);
