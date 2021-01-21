@@ -41,3 +41,8 @@ void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *
     ++p;
   }
 }
+
+void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, uint8_t offset_from_left)
+{
+  writeAsciisToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left);
+}

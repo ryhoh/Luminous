@@ -10,7 +10,6 @@
  * @brief Buffer for matrix LED panel.
  * @note Supports mono-color, binary and up to 8x8 size panel.
 */
-
 typedef struct _MatrixLED {
   uint8_t width;   ///< width  <= 8
   uint8_t height;  ///< height <= 8
@@ -47,5 +46,46 @@ void fillMatrixLED(MatrixLED *matrixLED, bool value);
  * @retval uint8_t Pack of overflowed bits
 */
 uint8_t leftShiftMatrixLED(MatrixLED *matrixLED, uint8_t padding);
+
+/**
+ * @brief Array of MatrixLED modules.
+ * @note Supports mono-color, binary.
+*/
+typedef struct _MatrixLEDArray {
+  MatrixLED *matrixLEDs;
+  size_t length;  ///< valid length of matrixLEDs.
+} MatrixLEDArray;
+
+/**
+ * @brief Initialize MatrixLEDArray.
+ * @param matrixLEDArray [in] Pointer to MatrixLED to initialize.
+ * @param matrixLEDs [in] Pointer to an Array of MatrixLED.
+ * @param width [in] Number of LED per one panel (horizontal).
+ * @param height [in] Number of LED per one panel (vertical).
+ * @retval MatrixLEDArray Given MatrixLEDArray pointer on success
+ * @retval NULL on fail
+ * @note It fails when the each panel is larger than 8x8.
+*/
+MatrixLEDArray *initMatrixLEDArray(MatrixLEDArray *matrixLEDArray, MatrixLED *matrixLEDs, size_t length, int8_t width, uint8_t height);
+
+/**
+ * @brief Invert all LEDs' state (on or off).
+ * @param matrixLEDArray [in] Pointer of MatrixLEDArray to flip.
+*/
+void flipMatrixLEDArray(MatrixLEDArray *matrixLEDArray);
+
+/**
+ * @brief Fill all LEDs with 0 or 1.
+ * @param matrixLEDArray [in] Pointer of MatrixLEDArray to fill.
+ * @param value [in] Value for filling (0 or 1).
+*/
+void fillMatrixLEDArray(MatrixLEDArray *matrixLEDArray, bool value);
+
+/**
+ * @brief Shift all LEDs to left by one bit.
+ * @param matrixLEDArray [in] Pointer of MatrixLEDArray to shift.
+ * @retval uint8_t Pack of overflowed bits
+*/
+uint8_t leftShiftMatrixLEDArray(MatrixLEDArray *matrixLEDArray, uint8_t padding);
 
 #endif  /* _MATRIXLED_H_ */

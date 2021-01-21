@@ -42,3 +42,41 @@ uint8_t leftShiftMatrixLED(MatrixLED *matrixLED, uint8_t padding)
   }
   return out;
 }
+
+MatrixLEDArray *initMatrixLEDArray(MatrixLEDArray *matrixLEDArray, MatrixLED *matrixLEDs, size_t length, int8_t width, uint8_t height)
+{
+  matrixLEDArray->matrixLEDs = matrixLEDs;
+  matrixLEDArray->length = length;
+  for (size_t i = 0; i < length; ++i) {
+    initMatrixLED(matrixLEDArray->matrixLEDs + i, width, height);
+  }
+
+  return matrixLEDArray;
+}
+
+void flipMatrixLEDArray(MatrixLEDArray *matrixLEDArray)
+{
+  for (size_t i = 0; i < matrixLEDArray->length; ++i) {
+    flipMatrixLED(matrixLEDArray->matrixLEDs + i);
+  }
+}
+
+void fillMatrixLEDArray(MatrixLEDArray *matrixLEDArray, bool value)
+{
+  for (size_t i = 0; i < matrixLEDArray->length; ++i) {
+    fillMatrixLED(matrixLEDArray->matrixLEDs + i, value);
+  }
+}
+
+// not tested!
+uint8_t leftShiftMatrixLEDArray(MatrixLEDArray *matrixLEDArray, uint8_t padding)
+{
+  uint8_t last_padding = padding;
+  for (size_t ledArray_i = 0; ledArray_i < matrixLEDArray->length; ++ledArray_i) {
+    for (size_t i = 0; i < matrixLEDArray->length; ++i) {
+      last_padding = leftShiftMatrixLED(matrixLEDArray->matrixLEDs + i, last_padding);
+    }
+  }
+
+  return last_padding;
+}

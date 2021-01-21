@@ -53,6 +53,11 @@ void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *st
   }
 }
 
+void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left)
+{
+  writeJISsToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left);
+}
+
 const uint8_t *_binarySearchForJISMatrix(uint32_t target)
 {
   uint32_t imin = 0;

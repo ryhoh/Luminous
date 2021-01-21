@@ -1,7 +1,7 @@
 #ifndef _DOTMATRIXLED_H_
 #define _DOTMATRIXLED_H_
 
-#ifdef ARDUINO
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -17,7 +17,7 @@ extern "C" {
 #include "LEDControllers.h"
 #endif  /* SIMULATOR */
 
-#ifdef ARDUINO
+#if defined(__cplusplus)
 }
 #endif
 
