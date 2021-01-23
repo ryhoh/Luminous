@@ -18,17 +18,17 @@
  * @retval size_t number of read char in utf8_s on success.
  * @retval 0 on failure.
  * @note *out_buf will not be changed when failure.
- * @note It caches most recent result. Serving for char same to previous is fast.
+         It caches most recent result. Serving for char same to previous is fast.
 */
 static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row_i);
 
 /**
  * @brief Write single JIS char to single matrixLED.
- * @param matrixLED [in] Pointer of MatrixLED.
+ * @param matrixLED [in] Reference of MatrixLED.
  * @param c [in] Char to write.
  * @param offset_from_left [in] Offset size from left end.
 */
-size_t writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_from_left);
+size_t writeJISToMatrixLED(MatrixLED &matrixLED, const char *c, int8_t offset_from_left);
 
 /**
  * @brief Write JIS string to multiple matrixLED.
@@ -41,15 +41,15 @@ size_t writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_fr
 // #pragma deprecated(writeJISsToMatrixLEDs)
 void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left);
 
-/**
- * @brief Write JIS string to a matrixLEDArray.
- * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
- * @param string [in] Char-Array to write.
- * @param offset_from_left [in] Offset size from left end.
- * @note Ascii char has 5px width, and JIS char has 7px. If you like monospace, you should NOT use ascii chars.
- * @note This is an alias for "writeJISsToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
-*/
-void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left);
+// /**
+//  * @brief Write JIS string to a matrixLEDArray.
+//  * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
+//  * @param string [in] Char-Array to write.
+//  * @param offset_from_left [in] Offset size from left end.
+//  * @note Ascii char has 5px width, and JIS char has 7px. If you like monospace, you should NOT use ascii chars.
+//  * @note This is an alias for "writeJISsToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
+// */
+// void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left);
 
 /* binarySearch in _UTF_CODES */
 const uint8_t *_binarySearchForJISMatrix(uint32_t target);
@@ -84,7 +84,7 @@ static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row
 
   // check cache
   static uint32_t utf_code_cache = 0xFFFFFFFF;
-  static const uint8_t *matrix_cache = NULL;
+  static const uint8_t *matrix_cache = nullptr;
   static size_t utf_char_len_cache = 0xFFFFFFFF;
   if (target == utf_code_cache) {
     #ifdef ARDUINO
@@ -96,7 +96,7 @@ static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row
   }
 
   const uint8_t *matrix = _binarySearchForJISMatrix(target);
-  if (matrix == NULL) {  // not found
+  if (matrix == nullptr) {  // not found
     *out_buf = *(_NA_CHAR + row_i) << 3;  // 左端に寄せる
     return 0;
   }

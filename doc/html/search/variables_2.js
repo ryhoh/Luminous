@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['clk_88',['clk',['../struct___max7219.html#a6dc54f154563bceff1f72c635ac1e291',1,'_Max7219']]]
+  ['clk_88',['clk',['../struct_max7219.html#a5ee113cd2abb1ee07244abf6edfded0b',1,'Max7219']]]
 ];

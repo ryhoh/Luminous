@@ -3,7 +3,7 @@
 
 #include "DeviceInterface.h"
 #include "MatrixLED.h"
-#include <stdint.h>
+#include <cstdint>
 
 /*
  *  マトリクスLEDが複数接続（MAX7219のカスケード接続）されている場合、
@@ -20,61 +20,61 @@
 /**
  * @brief Controller for Max7219
 */
-typedef struct _Max7219 {
+struct Max7219 {
   uint8_t dat;  ///< Pin number connecting dat
   uint8_t lat;  ///< Pin number connecting lat (or cs)
   uint8_t clk;  ///< Pin number connecting clk
-} Max7219;
 
-/**
- * @brief Initialize Max7219.
- * @param max7219 [in] Pointer of Max7219 to initialize.
- * @param dat [in] dat pin.
- * @param lat [in] lat pin.
- * @param clk [in] clk pin.
- * @param brightness [in] Integer between [0, 9].
- * @retval max7219 Given Max7219 pointer
-*/
-Max7219 *initMax7219(Max7219 *max7219, uint8_t dat, uint8_t lat, uint8_t clk, uint8_t brightness);
+  /**
+   * @brief Initialize Max7219.
+   * @param dat [in] dat pin.
+   * @param lat [in] lat pin.
+   * @param clk [in] clk pin.
+   * @param brightness [in] Integer between [0, 9].
+  */
+  Max7219(uint8_t dat, uint8_t lat, uint8_t clk, uint8_t brightness);
 
-/**
- * @brief Do test run.
- * @param max7219 [in] Pointer of Max7219 to test.
-*/
-void testRunMax7219(Max7219 *max7219);
+  /**
+   * @brief Destroy Max7219.
+  */
+  ~Max7219() {}
 
-/**
- * @brief Flush data from single MatrixLED to Max7219.
- * @param max7219 [in] Pointer of Max7219 to write.
- * @param matrixLED [in] Pointer of MatrixLED to read.
-*/
-void flushMatrixLEDByMax7219(Max7219 *max7219, MatrixLED *matrixLED);
+  /**
+   * @brief Do test run.
+  */
+  void testRun();
 
-/**
- * @brief Flush data from multiple MatrixLEDs to Max7219.
- * @param max7219 [in] Pointer of Max7219 to write.
- * @param matrixLEDs [in] Pointer of MatrixLED-Array to read.
- * @param length [in] Length of MatrixLED-Array.
- * @note When length is 1, same to flushMatrixLEDByMax7219.
-*/
-void flushMatrixLEDsByMax7219(Max7219 *max7219, MatrixLED *matrixLEDs, uint8_t length);
+  /**
+   * @brief Flush data from single MatrixLED to Max7219.
+   * @param matrixLED [in] Reference of MatrixLED to read.
+  */
+  void flushMatrixLED(MatrixLED &matrixLED);
 
-// params: レジスタアドレス, データ
-// ラッチ操作を行わないバージョン
-static inline void shiftOutToMax7219(Max7219 *max7219, uint8_t addr, uint8_t data)
-{
-  call_shiftOut(max7219->dat, max7219->clk, MSBFIRST, addr);
-  call_shiftOut(max7219->dat, max7219->clk, MSBFIRST, data);
-}
+  /**
+   * @brief Flush data from multiple MatrixLEDs to Max7219.
+   * @param matrixLEDs [in] Pointer of MatrixLED-Array to read.
+   * @param length [in] Length of MatrixLED-Array.
+   * @note When length is 1, same to flushMatrixLEDByMax7219.
+  */
+  void flushMatrixLEDs(MatrixLED *matrixLEDs, uint8_t length);
 
-// params: レジスタアドレス, データ
-// ラッチ操作を行う（1件だけ送る）バージョン
-static inline void sendToMax7219(Max7219 *max7219, uint8_t addr, uint8_t data)
-{
-  call_digitalWrite(max7219->lat, LOW);
-  shiftOutToMax7219(max7219, addr, data);
-  call_digitalWrite(max7219->lat, HIGH);
-  call_digitalWrite(max7219->lat, LOW);
-}
+  // params: レジスタアドレス, データ
+  // ラッチ操作を行わないバージョン
+  inline void shiftOut(uint8_t addr, uint8_t data)
+  {
+    call_shiftOut(this->dat, this->clk, MSBFIRST, addr);
+    call_shiftOut(this->dat, this->clk, MSBFIRST, data);
+  }
+
+  // params: レジスタアドレス, データ
+  // ラッチ操作を行う（1件だけ送る）バージョン
+  inline void send(uint8_t addr, uint8_t data)
+  {
+    call_digitalWrite(this->lat, LOW);
+    this->shiftOut(addr, data);
+    call_digitalWrite(this->lat, HIGH);
+    call_digitalWrite(this->lat, LOW);
+  }
+};
 
 #endif  /* _LED_CONTROLLERS_H_ */

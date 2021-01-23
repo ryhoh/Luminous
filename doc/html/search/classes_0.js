@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['_5fmatrixled_48',['_MatrixLED',['../struct___matrix_l_e_d.html',1,'']]],
-  ['_5fmax7219_49',['_Max7219',['../struct___max7219.html',1,'']]]
+  ['matrixled_46',['MatrixLED',['../struct_matrix_l_e_d.html',1,'']]],
+  ['max7219_47',['Max7219',['../struct_max7219.html',1,'']]]
 ];

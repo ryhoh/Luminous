@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dat_89',['dat',['../struct___max7219.html#a7d39cf3a38ce3792cbbe8f2817795ba7',1,'_Max7219']]]
+  ['dat_89',['dat',['../struct_max7219.html#ad67d5e099e0065069cf817db6f45caf0',1,'Max7219']]]
 ];

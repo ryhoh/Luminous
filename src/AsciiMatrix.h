@@ -28,11 +28,11 @@ static inline uint8_t getASCIIRow(char c, uint8_t row);
  * @param c [in] Char to write.
  * @param offset_from_left [in] Offset size from left end.
 */
-void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left);
+void writeAsciiToMatrixLED(MatrixLED &matrixLED, char c, int8_t offset_from_left);
 
 /**
  * @brief Write ascii string to multiple matrixLED.
- * @param matrixLEDs [in] Pointer of MatrixLED-Array.
+ * @param matrixLEDs [in] Reference of MatrixLED-Array.
  * @param ledlen [in] Length of MatrixLED-Array.
  * @param string [in] Char-Array to write.
  * @param offset_from_left [in] Offset size from left end.
@@ -40,14 +40,14 @@ void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left
 // #pragma deprecated(writeAsciisToMatrixLEDs)
 void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
 
-/**
- * @brief Write ascii string to multiple matrixLED.
- * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
- * @param string [in] Char-Array to write.
- * @param offset_from_left [in] Offset size from left end.
- * @note This is an alias for "writeAsciisToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
-*/
-void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, uint8_t offset_from_left);
+// /**
+//  * @brief Write ascii string to multiple matrixLED.
+//  * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
+//  * @param string [in] Char-Array to write.
+//  * @param offset_from_left [in] Offset size from left end.
+//  * @note This is an alias for "writeAsciisToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
+// */
+// void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, uint8_t offset_from_left);
 
 
 #ifdef ARDUINO

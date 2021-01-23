@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lat_91',['lat',['../struct___max7219.html#aaee166ac9985ff19c80adb0bfa344038',1,'_Max7219']]]
+  ['lat_91',['lat',['../struct_max7219.html#ad91219e0588d815044dba57975c9ed24',1,'Max7219']]]
 ];

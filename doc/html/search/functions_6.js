@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['sendtomax7219_75',['sendToMax7219',['../_l_e_d_controllers_8h.html#a4925693874f53e42f630cb31e5b03487',1,'LEDControllers.h']]],
-  ['shiftouttomax7219_76',['shiftOutToMax7219',['../_l_e_d_controllers_8h.html#a188592c854004ea1d20dea558c25ac90',1,'LEDControllers.h']]]
+  ['send_73',['send',['../struct_max7219.html#abc46f863ef4a375059e4790dfd8dc5b0',1,'Max7219']]],
+  ['shiftout_74',['shiftOut',['../struct_max7219.html#ada815fbc29082470f7ae078bf218b6fc',1,'Max7219']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initmatrixled_27',['initMatrixLED',['../_matrix_l_e_d_8c.html#a9196e24837d401326eb82791fc30e168',1,'initMatrixLED(MatrixLED *matrixLED, uint8_t width, uint8_t height):&#160;MatrixLED.c'],['../_matrix_l_e_d_8h.html#a9196e24837d401326eb82791fc30e168',1,'initMatrixLED(MatrixLED *matrixLED, uint8_t width, uint8_t height):&#160;MatrixLED.c']]],
-  ['initmax7219_28',['initMax7219',['../_l_e_d_controllers_8c.html#aeaf0e695dde480d9d335a0e55f9c4d03',1,'initMax7219(Max7219 *max7219, uint8_t dat, uint8_t lat, uint8_t clk, uint8_t brightness):&#160;LEDControllers.c'],['../_l_e_d_controllers_8h.html#aeaf0e695dde480d9d335a0e55f9c4d03',1,'initMax7219(Max7219 *max7219, uint8_t dat, uint8_t lat, uint8_t clk, uint8_t brightness):&#160;LEDControllers.c']]]
+  ['jismatrix_2ecpp_25',['JISMatrix.cpp',['../_j_i_s_matrix_8cpp.html',1,'']]],
+  ['jismatrix_2eh_26',['JISMatrix.h',['../_j_i_s_matrix_8h.html',1,'']]]
 ];

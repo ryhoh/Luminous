@@ -1,10 +1,6 @@
 #ifndef _DOTMATRIXLED_H_
 #define _DOTMATRIXLED_H_
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 /* Buffers */
 #include "MatrixLED.h"
 
@@ -17,8 +13,5 @@ extern "C" {
 #include "LEDControllers.h"
 #endif  /* SIMULATOR */
 
-#if defined(__cplusplus)
-}
-#endif
 
 #endif  /* _DOTMATRIXLED_H_ */

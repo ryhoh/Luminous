@@ -1,18 +1,14 @@
 #include <gtest/gtest.h>
 #include <iostream>
-
 #include <cstdio>
 
-extern "C" {
-  #include <JISMatrix.h>
-  #include <MatrixLED.h>
-}
+#include <JISMatrix.h>
+#include <MatrixLED.h>
 
 TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
-  MatrixLED matLED;
-  initMatrixLED(&matLED, 8, 8);
+  MatrixLED matLED(8, 8);
 
-  writeJISToMatrixLED(&matLED, "H", 0);
+  writeJISToMatrixLED(matLED, "H", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b10001000, matLED.buffer[1]);
@@ -23,8 +19,8 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
   EXPECT_EQ(0b10001000, matLED.buffer[6]);
   EXPECT_EQ(0b10001000, matLED.buffer[7]);
 
-  fillMatrixLED(&matLED, false);
-  writeJISToMatrixLED(&matLED, "H", 3);
+  matLED.fill(false);
+  writeJISToMatrixLED(matLED, "H", 3);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b00010001, matLED.buffer[1]);
@@ -36,9 +32,9 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
   EXPECT_EQ(0b00010001, matLED.buffer[7]);
 
   // try composite ("Hi")
-  fillMatrixLED(&matLED, false);
-  writeJISToMatrixLED(&matLED, "H", 0);
-  writeJISToMatrixLED(&matLED, "i", 6);
+  matLED.fill(false);
+  writeJISToMatrixLED(matLED, "H", 0);
+  writeJISToMatrixLED(matLED, "i", 6);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b10001000, matLED.buffer[1]);
@@ -50,9 +46,9 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
   EXPECT_EQ(0b10001001, matLED.buffer[7]);
 
   // try minus offset and composite
-  fillMatrixLED(&matLED, false);
-  writeJISToMatrixLED(&matLED, "H", -2);
-  writeJISToMatrixLED(&matLED, "i", 4);
+  matLED.fill(false);
+  writeJISToMatrixLED(matLED, "H", -2);
+  writeJISToMatrixLED(matLED, "i", 4);
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b00100000, matLED.buffer[1]);
   EXPECT_EQ(0b00100010, matLED.buffer[2]);
@@ -70,7 +66,7 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
 //   const char s[] = "＼";
 //   printf("%d %d %d %d\n", (uint8_t)*s, (uint8_t)*(s+1), (uint8_t)*(s+2), (uint8_t)*(s+3));
   
-//   size_t val = writeJISToMatrixLED(&matLED, "＼", 0);
+//   size_t val = writeJISToMatrixLED(matLED, "＼", 0);
 //   // {0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x0},
 
 //   EXPECT_EQ(0b00000000, matLED.buffer[0]);
@@ -85,15 +81,14 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_ascii) {
 // }
 
 TEST(UTF8andJISTest, writeJISToMatrixLED_2byte) {
-  MatrixLED matLED;
-  initMatrixLED(&matLED, 8, 8);
+  MatrixLED matLED(8, 8);
 
   // const char s[] = "Д";
   // printf("%d %d %d\n", (uint8_t)*s, (uint8_t)*(s+1), (uint8_t)*(s+2));
   // uint32_t target = ((uint8_t)*s << 8) + (uint8_t)*(s + 1);
   // printf("%d\n", target);
 
-  size_t val = writeJISToMatrixLED(&matLED, "Д", 0);
+  size_t val = writeJISToMatrixLED(matLED, "Д", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b00111100, matLED.buffer[1]);
@@ -107,10 +102,9 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_2byte) {
 }
 
 TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
-  MatrixLED matLED;
-  initMatrixLED(&matLED, 8, 8);
+  MatrixLED matLED(8, 8);
 
-  size_t val = writeJISToMatrixLED(&matLED, "〆", 0);
+  size_t val = writeJISToMatrixLED(matLED, "〆", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b00000010, matLED.buffer[1]);
@@ -122,8 +116,8 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
   EXPECT_EQ(0b10000000, matLED.buffer[7]);
   EXPECT_EQ(val, 3);
 
-  fillMatrixLED(&matLED, false);
-  val = writeJISToMatrixLED(&matLED, "あ", 0);
+  matLED.fill(false);
+  val = writeJISToMatrixLED(matLED, "あ", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b00100000, matLED.buffer[1]);
@@ -135,8 +129,8 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
   EXPECT_EQ(0b01100100, matLED.buffer[7]);
   EXPECT_EQ(val, 3);
 
-  fillMatrixLED(&matLED, false);
-  val = writeJISToMatrixLED(&matLED, "改", 0);
+  matLED.fill(false);
+  val = writeJISToMatrixLED(matLED, "改", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b11101000, matLED.buffer[1]);
@@ -149,8 +143,8 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
   EXPECT_EQ(val, 3);
 
   // corner case (last char)
-  fillMatrixLED(&matLED, false);
-  val = writeJISToMatrixLED(&matLED, "￥", 0);
+  matLED.fill(false);
+  val = writeJISToMatrixLED(matLED, "￥", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b01000100, matLED.buffer[1]);
@@ -163,8 +157,8 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
   EXPECT_EQ(val, 3);
 
   // "＼" : use 3byte code
-  fillMatrixLED(&matLED, false);
-  val = writeJISToMatrixLED(&matLED, "＼", 0);
+  matLED.fill(false);
+  val = writeJISToMatrixLED(matLED, "＼", 0);
 
   EXPECT_EQ(0b00000000, matLED.buffer[0]);
   EXPECT_EQ(0b10000000, matLED.buffer[1]);
@@ -179,8 +173,7 @@ TEST(UTF8andJISTest, writeJISToMatrixLED_3byte) {
 
 TEST(UTF8andJISTest, writeJISsToMatrixLEDs_ascii) {
   MatrixLED matLEDs[5];
-  for (int i = 0; i < 5; ++i)
-    initMatrixLED(&matLEDs[i], 8, 8);
+  for (size_t i = 0; i < 5; ++i) matLEDs[i] = MatrixLED(8, 8);
 
   // "Hi"
   writeAsciisToMatrixLEDs(matLEDs, 2, "Hi", 0);
@@ -204,7 +197,7 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_ascii) {
 
   // "Hi" with 5 MatrixLEDs
   for (int i = 0; i < 5; ++i)
-    fillMatrixLED(matLEDs + i, false);
+    (matLEDs + i)->fill(false);
   
   writeAsciisToMatrixLEDs(matLEDs, 5, "Hi", 0);
   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
@@ -254,7 +247,7 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_ascii) {
 
   // "Hello!"
   for (int i = 0; i < 5; ++i)
-    fillMatrixLED(matLEDs + i, false);
+    (matLEDs + i)->fill(false);
   
   writeAsciisToMatrixLEDs(matLEDs, 5, "Hello!", 0);
   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
@@ -304,7 +297,7 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_ascii) {
 
   // "Hello!" with only 2 MatrixLEDs
   for (int i = 0; i < 5; ++i)
-    fillMatrixLED(matLEDs + i, false);
+    (matLEDs + i)->fill(false);
   
   writeAsciisToMatrixLEDs(matLEDs, 2, "Hello!", 0);
   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
@@ -355,8 +348,7 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_ascii) {
 
 TEST(UTF8andJISTest, writeJISsToMatrixLEDs_mix) {
   MatrixLED matLEDs[5];
-  for (int i = 0; i < 5; ++i)
-    initMatrixLED(&matLEDs[i], 8, 8);
+  for (size_t i = 0; i < 5; ++i) matLEDs[i] = MatrixLED(8, 8);
 
   writeJISsToMatrixLEDs(matLEDs, 5, "1あ5￥", 0);
 
@@ -397,170 +389,170 @@ TEST(UTF8andJISTest, writeJISsToMatrixLEDs_mix) {
   EXPECT_EQ(0b00000000, matLEDs[3].buffer[7]);
 }
 
-TEST(UTF8andJISTest, writeJISsToMatrixLEDArray_ascii) {
-  MatrixLED matLEDs[5];
-  MatrixLEDArray matrixLEDArray;
-  initMatrixLEDArray(&matrixLEDArray, matLEDs, 5, 8, 8);
+// TEST(UTF8andJISTest, writeJISsToMatrixLEDArray_ascii) {
+//   MatrixLED matLEDs[5];
+//   MatrixLEDArray matrixLEDArray;
+//   initMatrixLEDArray(&matrixLEDArray, matLEDs, 5, 8, 8);
 
-  // "Hi"
-  writeJISsToMatrixLEDArray(&matrixLEDArray, "Hi", 0);
-  EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[3]);
-  EXPECT_EQ(0b11111001, matLEDs[0].buffer[4]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[5]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[6]);
-  EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
+//   // "Hi"
+//   writeJISsToMatrixLEDArray(&matrixLEDArray, "Hi", 0);
+//   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[3]);
+//   EXPECT_EQ(0b11111001, matLEDs[0].buffer[4]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[5]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[6]);
+//   EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[1]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[2]);
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[3]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[4]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[5]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[6]);
-  EXPECT_EQ(0b11000000, matLEDs[1].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[1]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[2]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[3]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[4]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[5]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[6]);
+//   EXPECT_EQ(0b11000000, matLEDs[1].buffer[7]);
 
-  // "Hi" with 5 MatrixLEDs
-  fillMatrixLEDArray(&matrixLEDArray, false);
+//   // "Hi" with 5 MatrixLEDs
+//   fillMatrixLEDArray(&matrixLEDArray, false);
   
-  writeJISsToMatrixLEDArray(&matrixLEDArray, "Hi", 0);
-  EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[3]);
-  EXPECT_EQ(0b11111001, matLEDs[0].buffer[4]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[5]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[6]);
-  EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
+//   writeJISsToMatrixLEDArray(&matrixLEDArray, "Hi", 0);
+//   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[3]);
+//   EXPECT_EQ(0b11111001, matLEDs[0].buffer[4]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[5]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[6]);
+//   EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[1]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[2]);
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[3]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[4]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[5]);
-  EXPECT_EQ(0b10000000, matLEDs[1].buffer[6]);
-  EXPECT_EQ(0b11000000, matLEDs[1].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[1]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[2]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[3]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[4]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[5]);
+//   EXPECT_EQ(0b10000000, matLEDs[1].buffer[6]);
+//   EXPECT_EQ(0b11000000, matLEDs[1].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[1]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[2]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[3]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[4]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[5]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[6]);
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[1]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[2]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[3]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[4]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[5]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[6]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[1]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[2]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[3]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[4]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[5]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[6]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[1]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[2]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[3]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[4]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[5]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[6]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[1]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[2]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[3]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[4]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[5]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[6]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[1]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[2]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[3]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[4]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[5]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[6]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[7]);
 
-  // "Hello!"
-  fillMatrixLEDArray(&matrixLEDArray, false);
+//   // "Hello!"
+//   fillMatrixLEDArray(&matrixLEDArray, false);
   
-  writeJISsToMatrixLEDArray(&matrixLEDArray, "Hello!", 0);
-  EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
-  EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
-  EXPECT_EQ(0b10001001, matLEDs[0].buffer[3]);
-  EXPECT_EQ(0b11111010, matLEDs[0].buffer[4]);
-  EXPECT_EQ(0b10001011, matLEDs[0].buffer[5]);
-  EXPECT_EQ(0b10001010, matLEDs[0].buffer[6]);
-  EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
+//   writeJISsToMatrixLEDArray(&matrixLEDArray, "Hello!", 0);
+//   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[1]);
+//   EXPECT_EQ(0b10001000, matLEDs[0].buffer[2]);
+//   EXPECT_EQ(0b10001001, matLEDs[0].buffer[3]);
+//   EXPECT_EQ(0b11111010, matLEDs[0].buffer[4]);
+//   EXPECT_EQ(0b10001011, matLEDs[0].buffer[5]);
+//   EXPECT_EQ(0b10001010, matLEDs[0].buffer[6]);
+//   EXPECT_EQ(0b10001001, matLEDs[0].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
-  EXPECT_EQ(0b00000110, matLEDs[1].buffer[1]);
-  EXPECT_EQ(0b00000010, matLEDs[1].buffer[2]);
-  EXPECT_EQ(0b11000010, matLEDs[1].buffer[3]);
-  EXPECT_EQ(0b00100010, matLEDs[1].buffer[4]);
-  EXPECT_EQ(0b11100010, matLEDs[1].buffer[5]);
-  EXPECT_EQ(0b00000010, matLEDs[1].buffer[6]);
-  EXPECT_EQ(0b11100010, matLEDs[1].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
+//   EXPECT_EQ(0b00000110, matLEDs[1].buffer[1]);
+//   EXPECT_EQ(0b00000010, matLEDs[1].buffer[2]);
+//   EXPECT_EQ(0b11000010, matLEDs[1].buffer[3]);
+//   EXPECT_EQ(0b00100010, matLEDs[1].buffer[4]);
+//   EXPECT_EQ(0b11100010, matLEDs[1].buffer[5]);
+//   EXPECT_EQ(0b00000010, matLEDs[1].buffer[6]);
+//   EXPECT_EQ(0b11100010, matLEDs[1].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
-  EXPECT_EQ(0b00011000, matLEDs[2].buffer[1]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[2]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[3]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[4]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[5]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[6]);
-  EXPECT_EQ(0b00001000, matLEDs[2].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
+//   EXPECT_EQ(0b00011000, matLEDs[2].buffer[1]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[2]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[3]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[4]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[5]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[6]);
+//   EXPECT_EQ(0b00001000, matLEDs[2].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[1]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[2]);
-  EXPECT_EQ(0b01110000, matLEDs[3].buffer[3]);
-  EXPECT_EQ(0b10001000, matLEDs[3].buffer[4]);
-  EXPECT_EQ(0b10001000, matLEDs[3].buffer[5]);
-  EXPECT_EQ(0b10001000, matLEDs[3].buffer[6]);
-  EXPECT_EQ(0b01110000, matLEDs[3].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[1]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[2]);
+//   EXPECT_EQ(0b01110000, matLEDs[3].buffer[3]);
+//   EXPECT_EQ(0b10001000, matLEDs[3].buffer[4]);
+//   EXPECT_EQ(0b10001000, matLEDs[3].buffer[5]);
+//   EXPECT_EQ(0b10001000, matLEDs[3].buffer[6]);
+//   EXPECT_EQ(0b01110000, matLEDs[3].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[0]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[1]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[2]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[3]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[4]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[5]);
-  EXPECT_EQ(0b00000000, matLEDs[4].buffer[6]);
-  EXPECT_EQ(0b10000000, matLEDs[4].buffer[7]);
-}
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[0]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[1]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[2]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[3]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[4]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[5]);
+//   EXPECT_EQ(0b00000000, matLEDs[4].buffer[6]);
+//   EXPECT_EQ(0b10000000, matLEDs[4].buffer[7]);
+// }
 
-TEST(UTF8andJISTest, writeJISsToMatrixLEDArray_mix) {
-  MatrixLED matLEDs[5];
-  MatrixLEDArray matrixLEDArray;
-  initMatrixLEDArray(&matrixLEDArray, matLEDs, 5, 8, 8);
+// TEST(UTF8andJISTest, writeJISsToMatrixLEDArray_mix) {
+//   MatrixLED matLEDs[5];
+//   MatrixLEDArray matrixLEDArray;
+//   initMatrixLEDArray(&matrixLEDArray, matLEDs, 5, 8, 8);
 
-  writeJISsToMatrixLEDArray(&matrixLEDArray, "1あ5￥", 0);
+//   writeJISsToMatrixLEDArray(&matrixLEDArray, "1あ5￥", 0);
 
-  EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
-  EXPECT_EQ(0b00100000, matLEDs[0].buffer[1]);
-  EXPECT_EQ(0b01100001, matLEDs[0].buffer[2]);
-  EXPECT_EQ(0b00100000, matLEDs[0].buffer[3]);
-  EXPECT_EQ(0b00100001, matLEDs[0].buffer[4]);
-  EXPECT_EQ(0b00100010, matLEDs[0].buffer[5]);
-  EXPECT_EQ(0b00100010, matLEDs[0].buffer[6]);
-  EXPECT_EQ(0b01110001, matLEDs[0].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[0].buffer[0]);
+//   EXPECT_EQ(0b00100000, matLEDs[0].buffer[1]);
+//   EXPECT_EQ(0b01100001, matLEDs[0].buffer[2]);
+//   EXPECT_EQ(0b00100000, matLEDs[0].buffer[3]);
+//   EXPECT_EQ(0b00100001, matLEDs[0].buffer[4]);
+//   EXPECT_EQ(0b00100010, matLEDs[0].buffer[5]);
+//   EXPECT_EQ(0b00100010, matLEDs[0].buffer[6]);
+//   EXPECT_EQ(0b01110001, matLEDs[0].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
-  EXPECT_EQ(0b10000011, matLEDs[1].buffer[1]);
-  EXPECT_EQ(0b11110010, matLEDs[1].buffer[2]);
-  EXPECT_EQ(0b10000011, matLEDs[1].buffer[3]);
-  EXPECT_EQ(0b11110000, matLEDs[1].buffer[4]);
-  EXPECT_EQ(0b10101000, matLEDs[1].buffer[5]);
-  EXPECT_EQ(0b11001010, matLEDs[1].buffer[6]);
-  EXPECT_EQ(0b10010001, matLEDs[1].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[1].buffer[0]);
+//   EXPECT_EQ(0b10000011, matLEDs[1].buffer[1]);
+//   EXPECT_EQ(0b11110010, matLEDs[1].buffer[2]);
+//   EXPECT_EQ(0b10000011, matLEDs[1].buffer[3]);
+//   EXPECT_EQ(0b11110000, matLEDs[1].buffer[4]);
+//   EXPECT_EQ(0b10101000, matLEDs[1].buffer[5]);
+//   EXPECT_EQ(0b11001010, matLEDs[1].buffer[6]);
+//   EXPECT_EQ(0b10010001, matLEDs[1].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
-  EXPECT_EQ(0b11100100, matLEDs[2].buffer[1]);
-  EXPECT_EQ(0b00000100, matLEDs[2].buffer[2]);
-  EXPECT_EQ(0b11000010, matLEDs[2].buffer[3]);
-  EXPECT_EQ(0b00100111, matLEDs[2].buffer[4]);
-  EXPECT_EQ(0b00100001, matLEDs[2].buffer[5]);
-  EXPECT_EQ(0b00100111, matLEDs[2].buffer[6]);
-  EXPECT_EQ(0b11000001, matLEDs[2].buffer[7]);
+//   EXPECT_EQ(0b00000000, matLEDs[2].buffer[0]);
+//   EXPECT_EQ(0b11100100, matLEDs[2].buffer[1]);
+//   EXPECT_EQ(0b00000100, matLEDs[2].buffer[2]);
+//   EXPECT_EQ(0b11000010, matLEDs[2].buffer[3]);
+//   EXPECT_EQ(0b00100111, matLEDs[2].buffer[4]);
+//   EXPECT_EQ(0b00100001, matLEDs[2].buffer[5]);
+//   EXPECT_EQ(0b00100111, matLEDs[2].buffer[6]);
+//   EXPECT_EQ(0b11000001, matLEDs[2].buffer[7]);
 
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
-  EXPECT_EQ(0b01000000, matLEDs[3].buffer[1]);
-  EXPECT_EQ(0b01000000, matLEDs[3].buffer[2]);
-  EXPECT_EQ(0b10000000, matLEDs[3].buffer[3]);
-  EXPECT_EQ(0b11000000, matLEDs[3].buffer[4]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[5]);
-  EXPECT_EQ(0b11000000, matLEDs[3].buffer[6]);
-  EXPECT_EQ(0b00000000, matLEDs[3].buffer[7]);
-}
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[0]);
+//   EXPECT_EQ(0b01000000, matLEDs[3].buffer[1]);
+//   EXPECT_EQ(0b01000000, matLEDs[3].buffer[2]);
+//   EXPECT_EQ(0b10000000, matLEDs[3].buffer[3]);
+//   EXPECT_EQ(0b11000000, matLEDs[3].buffer[4]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[5]);
+//   EXPECT_EQ(0b11000000, matLEDs[3].buffer[6]);
+//   EXPECT_EQ(0b00000000, matLEDs[3].buffer[7]);
+// }

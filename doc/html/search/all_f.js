@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['width_43',['width',['../struct___matrix_l_e_d.html#abce45a22509e19384a4016bdc7ecb451',1,'_MatrixLED']]],
-  ['writeasciistomatrixleds_44',['writeAsciisToMatrixLEDs',['../_ascii_matrix_8c.html#aa0f80ec7ff8bfe2ce7f6baadad4f1382',1,'writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left):&#160;AsciiMatrix.c'],['../_ascii_matrix_8h.html#aa0f80ec7ff8bfe2ce7f6baadad4f1382',1,'writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left):&#160;AsciiMatrix.c']]],
-  ['writeasciitomatrixled_45',['writeAsciiToMatrixLED',['../_ascii_matrix_8c.html#abaebd3f1b5e541ac1c6bd9180a3bc89a',1,'writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left):&#160;AsciiMatrix.c'],['../_ascii_matrix_8h.html#abaebd3f1b5e541ac1c6bd9180a3bc89a',1,'writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left):&#160;AsciiMatrix.c']]],
-  ['writejisstomatrixleds_46',['writeJISsToMatrixLEDs',['../_j_i_s_matrix_8c.html#adab5c70b83cda9f2a24f26104fde70e2',1,'writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left):&#160;JISMatrix.c'],['../_j_i_s_matrix_8h.html#adab5c70b83cda9f2a24f26104fde70e2',1,'writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left):&#160;JISMatrix.c']]],
-  ['writejistomatrixled_47',['writeJISToMatrixLED',['../_j_i_s_matrix_8c.html#ad61c38dad076c93879c3d0bd692c3cab',1,'writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_from_left):&#160;JISMatrix.c'],['../_j_i_s_matrix_8h.html#ad61c38dad076c93879c3d0bd692c3cab',1,'writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_from_left):&#160;JISMatrix.c']]]
+  ['_7ematrixled_44',['~MatrixLED',['../struct_matrix_l_e_d.html#a734127cef5c8b890cdf8e6f8928bc656',1,'MatrixLED']]],
+  ['_7emax7219_45',['~Max7219',['../struct_max7219.html#a47402da87a159c0fbe04b3a9cb5668f1',1,'Max7219']]]
 ];

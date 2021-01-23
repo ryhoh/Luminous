@@ -1,24 +1,16 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-extern "C" {
-  #include <MatrixLED.h>
-}
+#include <MatrixLED.h>
 
 TEST(MatrixLEDTest, init) {
-  MatrixLED matLED;
-  if (initMatrixLED(&matLED, 8, 8) == NULL) {
-    std::cerr << "MatrixLED initialize failed" << std::endl;
-  }
+  MatrixLED matLED(8, 8);
   EXPECT_EQ(8, matLED.width);
   EXPECT_EQ(8, matLED.height);
 }
 
 TEST(MatrixLEDTest, flip) {
-  MatrixLED matLED;
-  if (initMatrixLED(&matLED, 8, 8) == NULL) {
-    std::cerr << "MatrixLED initialize failed" << std::endl;
-  }
+  MatrixLED matLED(8, 8);
 
   matLED.buffer[0] = 0b00100100;
   matLED.buffer[1] = 0b01001001;
@@ -29,7 +21,7 @@ TEST(MatrixLEDTest, flip) {
   matLED.buffer[6] = 0b00100100;
   matLED.buffer[7] = 0b01001001;
 
-  flipMatrixLED(&matLED);
+  matLED.flip();
 
   EXPECT_EQ(0b11011011, matLED.buffer[0]);
   EXPECT_EQ(0b10110110, matLED.buffer[1]);
@@ -40,7 +32,7 @@ TEST(MatrixLEDTest, flip) {
   EXPECT_EQ(0b11011011, matLED.buffer[6]);
   EXPECT_EQ(0b10110110, matLED.buffer[7]);
 
-  flipMatrixLED(&matLED);
+  matLED.flip();
 
   EXPECT_EQ(0b00100100, matLED.buffer[0]);
   EXPECT_EQ(0b01001001, matLED.buffer[1]);
@@ -53,10 +45,7 @@ TEST(MatrixLEDTest, flip) {
 }
 
 TEST(MatrixLEDTest, fill) {
-  MatrixLED matLED;
-  if (initMatrixLED(&matLED, 8, 8) == NULL) {
-    std::cerr << "MatrixLED initialize failed" << std::endl;
-  }
+  MatrixLED matLED(8, 8);
 
   matLED.buffer[0] = 0b00100100;
   matLED.buffer[1] = 0b01001001;
@@ -67,7 +56,7 @@ TEST(MatrixLEDTest, fill) {
   matLED.buffer[6] = 0b00100100;
   matLED.buffer[7] = 0b01001001;
 
-  fillMatrixLED(&matLED, false);
+  matLED.fill(false);
 
   EXPECT_EQ(0x00, matLED.buffer[0]);
   EXPECT_EQ(0x00, matLED.buffer[1]);
@@ -78,7 +67,7 @@ TEST(MatrixLEDTest, fill) {
   EXPECT_EQ(0x00, matLED.buffer[6]);
   EXPECT_EQ(0x00, matLED.buffer[7]);
 
-  fillMatrixLED(&matLED, true);
+  matLED.fill(true);
 
   EXPECT_EQ(0xFF, matLED.buffer[0]);
   EXPECT_EQ(0xFF, matLED.buffer[1]);
@@ -91,10 +80,7 @@ TEST(MatrixLEDTest, fill) {
 }
 
 TEST(MatrixLEDTest, leftShift) {
-  MatrixLED matLED;
-  if (initMatrixLED(&matLED, 8, 8) == NULL) {
-    std::cerr << "MatrixLED initialize failed" << std::endl;
-  }
+  MatrixLED matLED(8, 8);
 
   uint8_t carry_bits;
 
@@ -108,7 +94,7 @@ TEST(MatrixLEDTest, leftShift) {
   matLED.buffer[6] = 0b00100100;
   matLED.buffer[7] = 0b01001001;
 
-  carry_bits = leftShiftMatrixLED(&matLED, 0x00);
+  carry_bits = matLED.leftShift(0x00);
 
   EXPECT_EQ(0b01001000, matLED.buffer[0]);
   EXPECT_EQ(0b10010010, matLED.buffer[1]);
@@ -120,7 +106,7 @@ TEST(MatrixLEDTest, leftShift) {
   EXPECT_EQ(0b10010010, matLED.buffer[7]);
   EXPECT_EQ(0b00100100, carry_bits);
 
-  carry_bits = leftShiftMatrixLED(&matLED, 0x00);
+  carry_bits = matLED.leftShift(0x00);
 
   EXPECT_EQ(0b10010000, matLED.buffer[0]);
   EXPECT_EQ(0b00100100, matLED.buffer[1]);
@@ -142,7 +128,7 @@ TEST(MatrixLEDTest, leftShift) {
   matLED.buffer[6] = 0b00100100;
   matLED.buffer[7] = 0b01001001;
 
-  carry_bits = leftShiftMatrixLED(&matLED, 0xFF);
+  carry_bits = matLED.leftShift(0xFF);
 
   EXPECT_EQ(0b01001001, matLED.buffer[0]);
   EXPECT_EQ(0b10010011, matLED.buffer[1]);
@@ -154,7 +140,7 @@ TEST(MatrixLEDTest, leftShift) {
   EXPECT_EQ(0b10010011, matLED.buffer[7]);
   EXPECT_EQ(0b00100100, carry_bits);
 
-  carry_bits = leftShiftMatrixLED(&matLED, 0xFF);
+  carry_bits = matLED.leftShift(0xFF);
 
   EXPECT_EQ(0b10010011, matLED.buffer[0]);
   EXPECT_EQ(0b00100111, matLED.buffer[1]);
