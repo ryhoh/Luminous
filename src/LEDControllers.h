@@ -28,6 +28,11 @@ struct Max7219 {
 
   /**
    * @brief Initialize Max7219.
+  */
+  Max7219(): dat(0), lat(0), clk(0) {}
+
+  /**
+   * @brief Initialize Max7219.
    * @param dat [in] dat pin.
    * @param lat [in] lat pin.
    * @param clk [in] clk pin.

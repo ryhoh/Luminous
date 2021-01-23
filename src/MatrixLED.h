@@ -16,14 +16,12 @@ struct MatrixLED {
 
   /**
    * @brief Initialize MatrixLED.
-   * @param matrixLED [in] Pointer of MatrixLED to initialize.
    * @note The width and height is 0.
   */
   MatrixLED(): width(0), height(0) {}
 
   /**
    * @brief Initialize MatrixLED.
-   * @param matrixLED [in] Pointer of MatrixLED to initialize.
    * @param width [in] Number of LED on the panel (horizontal).
    * @param height [in] Number of LED on the panel (vertical).
    * @note It fails when the panel is larger than 8x8 and set 0 to width and height.
