@@ -9,8 +9,6 @@ DotMatrixLED KEYWORD1
 
 ## Support functions
 MatrixLED KEYWORD1
-AsciiMatrix KEYWORD1
-JISMatrix KEYWORD1
 
 ## Devices
 Max7219 KEYWORD1
@@ -18,25 +16,24 @@ Max7219 KEYWORD1
 # Method, Function  (KEYWORD2)
 
 ## MatrixLED KEYWORD2
-initMatrixLED KEYWORD2
-flipMatrixLED KEYWORD2
-fillMatrixLED KEYWORD2
-leftShiftMatrixLED KEYWORD2
+init KEYWORD2
+flip KEYWORD2
+fill KEYWORD2
+leftShift KEYWORD2
 
 ## AsciiMatrix
 getASCIIRow KEYWORD2
-writeAsciiToMatrixLED KEYWORD2
-writeAsciisToMatrixLEDs KEYWORD2
+writeAscii KEYWORD2
+writeAsciis KEYWORD2
 
 ## JISMatrix
 getJISRow KEYWORD2
-writeJISToMatrixLED KEYWORD2
-writeJISsToMatrixLEDs KEYWORD2
+writeJIS KEYWORD2
+writeJISs KEYWORD2
 
 ## LEDControllers
-initMax7219 KEYWORD2
-testRunMax7219 KEYWORD2
-flushMatrixLEDByMax7219 KEYWORD2
-flushMatrixLEDsByMax7219 KEYWORD2
+testRun KEYWORD2
+flushMatrixLED KEYWORD2
+flushMatrixLEDs KEYWORD2
 
 # Constants (LITERAL1)
