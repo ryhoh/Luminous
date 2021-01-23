@@ -1,7 +1,7 @@
 #ifndef _ASCIIMATRIX_H_
 #define _ASCIIMATRIX_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>
@@ -37,17 +37,7 @@ void writeAsciiToMatrixLED(MatrixLED &matrixLED, char c, int8_t offset_from_left
  * @param string [in] Char-Array to write.
  * @param offset_from_left [in] Offset size from left end.
 */
-// #pragma deprecated(writeAsciisToMatrixLEDs)
 void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
-
-// /**
-//  * @brief Write ascii string to multiple matrixLED.
-//  * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
-//  * @param string [in] Char-Array to write.
-//  * @param offset_from_left [in] Offset size from left end.
-//  * @note This is an alias for "writeAsciisToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
-// */
-// void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, uint8_t offset_from_left);
 
 
 #ifdef ARDUINO
@@ -154,7 +144,7 @@ static const uint8_t _ASCII_FONTS[95][7]
   {0x08, 0x15, 0x02, 0x00, 0x00, 0x00, 0x00}   // 0x7e, ~
 };
 
-// Send this when fail gettng ascii char (Not Available);
+// Send this when fail gettng ascii char (Not Available Code);
 static const uint8_t _NA_CHAR[7]
 = {
   0b00011001,

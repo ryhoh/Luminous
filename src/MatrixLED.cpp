@@ -1,9 +1,5 @@
 #include "MatrixLED.h"
 
-/* --------- */
-/* MatrixLED */
-/* --------- */
-
 MatrixLED::MatrixLED(uint8_t width, uint8_t height)
 {
   if (8 < width || 8 < height) {
@@ -47,57 +43,3 @@ uint8_t MatrixLED::leftShift(uint8_t padding)
   }
   return out;
 }
-
-
-// /* -------------- */
-// /* MatrixLEDArray */
-// /* -------------- */
-
-// MatrixLEDArray::MatrixLEDArray(MatrixLED *matrixLEDs, size_t length)
-// {
-//   this->matrixLEDs = matrixLEDs;
-//   this->length = length;
-// }
-
-// void MatrixLEDArray::flip()
-// {
-//   for (size_t i = 0; i < this->length; ++i) {
-//     (this->matrixLEDs + i)->flip();
-//   }
-// }
-
-// void MatrixLEDArray::fill(bool value)
-// {
-//   for (size_t i = 0; i < this->length; ++i) {
-//     (this->matrixLEDs + i)->fill(value);
-//   }
-// }
-
-// // not tested!
-// uint8_t MatrixLEDArray::leftShift(uint8_t padding)
-// {
-//   uint8_t last_padding = padding;
-//   for (size_t ledArray_i = 0; ledArray_i < this->length; ++ledArray_i) {
-//     for (size_t i = 0; i < this->length; ++i) {
-//       last_padding = (this->matrixLEDs + i)->leftShift(last_padding);
-//     }
-//   }
-
-//   return last_padding;
-// }
-
-
-// /* ------------------ */
-// /* MultipleMatrixLEDs */
-// /* ------------------ */
-
-// MultipleMatrixLEDArray *initMultipleMatrixLEDArray(MultipleMatrixLEDArray *multipleMatrixLEDArray, MatrixLEDArray *matrixLEDArray, MatrixLED **matrixLEDs, size_t col_length, size_t row_length, uint8_t width, uint8_t height)
-// {
-//   multipleMatrixLEDArray->matrixLEDArray = matrixLEDArray;
-//   for (size_t row_i = 0; row_i < row_length; ++row_i) {
-//     if (initMatrixLEDArray(multipleMatrixLEDArray->matrixLEDArray + row_i, *(matrixLEDs + row_i), col_length, width, height) == NULL)
-//       return NULL;
-//   }
-
-//   return multipleMatrixLEDArray;
-// }

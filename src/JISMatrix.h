@@ -1,7 +1,7 @@
 #ifndef _JISMATRIX_H_
 #define _JISMATRIX_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>
@@ -38,18 +38,7 @@ size_t writeJISToMatrixLED(MatrixLED &matrixLED, const char *c, int8_t offset_fr
  * @param offset_from_left [in] Offset size from left end.
  * @note Ascii char has 5px width, and JIS char has 7px. If you like monospace, you should NOT use ascii chars.
 */
-// #pragma deprecated(writeJISsToMatrixLEDs)
 void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left);
-
-// /**
-//  * @brief Write JIS string to a matrixLEDArray.
-//  * @param matrixLEDArray [in] Pointer of MatrixLEDArray.
-//  * @param string [in] Char-Array to write.
-//  * @param offset_from_left [in] Offset size from left end.
-//  * @note Ascii char has 5px width, and JIS char has 7px. If you like monospace, you should NOT use ascii chars.
-//  * @note This is an alias for "writeJISsToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left)"
-// */
-// void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left);
 
 /* binarySearch in _UTF_CODES */
 const uint8_t *_binarySearchForJISMatrix(uint32_t target);

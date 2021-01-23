@@ -1,7 +1,7 @@
 #ifndef _UTF8TOMATRIX_H_
 #define _UTF8TOMATRIX_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>

@@ -1,9 +1,10 @@
 #ifndef _LED_CONTROLLERS_H_
 #define _LED_CONTROLLERS_H_
 
+#include <cstdint>
+
 #include "DeviceInterface.h"
 #include "MatrixLED.h"
-#include <cstdint>
 
 /*
  *  マトリクスLEDが複数接続（MAX7219のカスケード接続）されている場合、
