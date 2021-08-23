@@ -156,6 +156,17 @@ static const uint8_t _NA_CHAR[7]
   0b00010001,
 };
 
+static const uint8_t _HT[7]
+= {
+  0b00001000,
+  0b00000100,
+  0b00000010,
+  0b00000100,
+  0b00001110,
+  0b00000100,
+  0b00000111,
+};
+
 static const uint8_t _CR[7]
 = {
   0b00001000,
@@ -191,6 +202,8 @@ static const uint8_t _EOS[7]
 
 static inline uint8_t getASCIIRow(char c, uint8_t row)
 {
+  if (c == '\t')
+    return *(_HT + row);
   if (c == '\r')
     return *(_CR + row);
   if (c == '\n')
