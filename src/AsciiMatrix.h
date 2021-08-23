@@ -156,14 +156,54 @@ static const uint8_t _NA_CHAR[7]
   0b00010001,
 };
 
+static const uint8_t _CR[7]
+= {
+  0b00001000,
+  0b00000100,
+  0b00000010,
+  0b00000000,
+  0b00001011,
+  0b00001100,
+  0b00001000,
+};
+
+static const uint8_t _LF[7]
+= {
+  0b00001000,
+  0b00000100,
+  0b00000010,
+  0b00000000,
+  0b00001110,
+  0b00001001,
+  0b00001001,
+};
+
+static const uint8_t _EOS[7]
+= {
+  0b00001000,
+  0b00000100,
+  0b00000010,
+  0b00000000,
+  0b00000110,
+  0b00001001,
+  0b00000110,
+};
+
 static inline uint8_t getASCIIRow(char c, uint8_t row)
 {
-  if (c < _ASCII_OFFSET || 94 + _ASCII_OFFSET < c)
+  if (c == '\r')
+    return *(_CR + row);
+  if (c == '\n')
+    return *(_LF + row);
+  if (c == '\0')
+    return *(_EOS + row);
+
+  if (c < _ASCII_OFFSET || 94 + _ASCII_OFFSET < c)  // Out of Ascii Code Table
     return *(_NA_CHAR + row);
-  
+
   if (7 < row)
     return 0x00;
-  
+
   #ifdef ARDUINO  // using EEPROM
   return pgm_read_byte(*(_ASCII_FONTS + c - _ASCII_OFFSET) + row);
   #else
