@@ -1,5 +1,5 @@
 ###########################################################
-# Syntax Coloring Map for shirosha2's DotMatrix-LED Library
+# Syntax Coloring Map for ryhoh's DotMatrix-LED Library
 ###########################################################
 
 # Datatype, Class  (KEYWORD1)
