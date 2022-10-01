@@ -62,7 +62,7 @@ Max7219 *initMax7219(
  * @param max7219 [in] Pointer of Max7219 to test.
 */
 void testRunMax7219(
-  Max7219 *max7219
+  const Max7219 *max7219
 );
 
 /**
@@ -71,8 +71,8 @@ void testRunMax7219(
  * @param matrixLED [in] Pointer of MatrixLED to read.
 */
 void flushMatrixLEDByMax7219(
-  Max7219 *max7219,
-  MatrixLED *matrixLED
+  const Max7219 *max7219,
+  const MatrixLED *matrixLED
 );
 
 /**
@@ -83,8 +83,8 @@ void flushMatrixLEDByMax7219(
  * @note When length is 1, same to flushMatrixLEDByMax7219.
 */
 void flushMatrixLEDsByMax7219(
-  Max7219 *max7219,
-  MatrixLED *matrixLEDs,
+  const Max7219 *max7219,
+  const MatrixLED *matrixLEDs,
   uint8_t length
 );
 
@@ -95,7 +95,7 @@ void flushMatrixLEDsByMax7219(
  * @param data データ
  */
 static inline void shiftOutToMax7219(
-  Max7219 *max7219,
+  const Max7219 *max7219,
   uint8_t addr,
   uint8_t data
 ) {
@@ -110,7 +110,7 @@ static inline void shiftOutToMax7219(
  * @param data データ
  */
 static inline void sendToMax7219(
-  Max7219 *max7219,
+  const Max7219 *max7219,
   uint8_t addr,
   uint8_t data
 ) {

@@ -33,7 +33,7 @@ Max7219 *initMax7219(
 }
 
 void testRunMax7219(
-  Max7219 *max7219
+  const Max7219 *max7219
 ) {
   // ディスプレイテストモード（全点灯）
   sendToMax7219(max7219, 0x0f, 0x01);
@@ -50,8 +50,8 @@ void testRunMax7219(
 }
 
 void flushMatrixLEDByMax7219(
-  Max7219 *max7219,
-  MatrixLED *matrixLED
+  const Max7219 *max7219,
+  const MatrixLED *matrixLED
 ) {
   driv_call_digitalWrite(max7219->lat, LOW);
   for (uint8_t row_i = 0; row_i < 8; ++row_i) {
@@ -62,8 +62,8 @@ void flushMatrixLEDByMax7219(
 }
 
 void flushMatrixLEDsByMax7219(
-  Max7219 *max7219,
-  MatrixLED *matrixLEDs,
+  const Max7219 *max7219,
+  const MatrixLED *matrixLEDs,
   uint8_t length
 ) {
   for (uint8_t row_i = 0; row_i < 8; ++row_i) {

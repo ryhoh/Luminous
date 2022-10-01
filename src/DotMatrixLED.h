@@ -17,6 +17,9 @@ extern "C" {
 #include "LEDControllers.h"
 #endif  /* SIMULATOR */
 
+/* Wrapper functions */
+#include "Scroll.h"
+
 #if defined(__cplusplus)
 }
 #endif

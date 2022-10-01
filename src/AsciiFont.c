@@ -18,17 +18,28 @@ void writeAsciiToMatrixLED(
   }
 }
 
-void writeAsciisToMatrixLEDs(
+size_t writeAsciisToMatrixLEDs(
   MatrixLED *matrixLEDs,
   uint8_t ledlen,
   const char *string,
   uint8_t offset_from_left
 ) {
   if (string == NULL)
-    return;
+    return 0;
   
-  uint8_t left_cur = offset_from_left;
+  int16_t left_cur = offset_from_left;
   uint8_t matrix_cur = 0;
+
+  // Skipping Empty Matrix (for big `offset_from_left`)
+  for (uint8_t matrix_i = 0; matrix_i < ledlen; ++matrix_i) {
+    if (matrixLEDs[matrix_i].width <= left_cur) {
+      left_cur -= matrixLEDs[matrix_i].width;
+      ++matrix_cur;
+    } else break;
+  }
+  if (ledlen <= matrix_cur)  // matrixLED ran out
+    return ledlen;
+  
   const char *p = string;
   while (*p != '\0') {
     writeAsciiToMatrixLED(matrixLEDs + matrix_cur, *p, left_cur);
@@ -39,7 +50,7 @@ void writeAsciisToMatrixLEDs(
       left_cur %= (matrixLEDs + matrix_cur++)->width;
 
       if (ledlen <= matrix_cur)  // matrixLED ran out
-        return;
+        return ledlen;
 
       // write rest of previous char
       writeAsciiToMatrixLED(matrixLEDs + matrix_cur, *p, left_cur - 6);
@@ -47,6 +58,10 @@ void writeAsciisToMatrixLEDs(
 
     ++p;
   }
+
+  if (left_cur < 0)
+    return 0;
+  return matrix_cur + 1;  // used matrix + initial matrix
 }
 
 void writeAsciisToMatrixLEDArray(

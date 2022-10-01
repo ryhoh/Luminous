@@ -39,7 +39,7 @@ size_t writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_fr
  * @note Ascii char has 5px width, and JIS char has 7px. If you like monospace, you should NOT use ascii chars.
 */
 // #pragma deprecated(writeJISsToMatrixLEDs)
-void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left);
+size_t writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left);
 
 /**
  * @brief Write JIS string to a matrixLEDArray.
