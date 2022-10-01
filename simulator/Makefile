@@ -10,7 +10,7 @@ OUTPUT_OPTION = -o $@
 
 VPATH    = ../src
 
-OBJECTS = MatrixLED AsciiMatrix JISMatrix
+OBJECTS = MatrixLED AsciiFont JISFont
 OBJECTS.o       = $(addsuffix .o  , $(OBJECTS))
 
 .PHONY:	test

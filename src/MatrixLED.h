@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include "Common.h"
 
 /**
  * @brief Buffer for matrix LED panel.
@@ -17,13 +18,20 @@ typedef struct _MatrixLED {
 } MatrixLED;
 
 /**
+ * @brief Array of MatrixLED modules.
+ * @note Supports mono-color, binary.
+*/
+typedef struct _MatrixLEDArray {
+  MatrixLED *matrixLEDs;
+  size_t length;  ///< valid length of matrixLEDs.
+} MatrixLEDArray;
+
+/**
  * @brief Initialize MatrixLED.
  * @param matrixLED [in] Pointer of MatrixLED to initialize.
  * @param width [in] Number of LED on the panel (horizontal).
  * @param height [in] Number of LED on the panel (vertical).
  * @retval matrixLED Given matrixLED pointer on success
- * @retval NULL on fail
- * @note It fails when the panel is larger than 8x8.
 */
 MatrixLED *initMatrixLED(MatrixLED *matrixLED, uint8_t width, uint8_t height);
 
@@ -48,23 +56,12 @@ void fillMatrixLED(MatrixLED *matrixLED, bool value);
 uint8_t leftShiftMatrixLED(MatrixLED *matrixLED, uint8_t padding);
 
 /**
- * @brief Array of MatrixLED modules.
- * @note Supports mono-color, binary.
-*/
-typedef struct _MatrixLEDArray {
-  MatrixLED *matrixLEDs;
-  size_t length;  ///< valid length of matrixLEDs.
-} MatrixLEDArray;
-
-/**
  * @brief Initialize MatrixLEDArray.
  * @param matrixLEDArray [in] Pointer to MatrixLED to initialize.
  * @param matrixLEDs [in] Pointer to an Array of MatrixLED.
  * @param width [in] Number of LED per one panel (horizontal).
  * @param height [in] Number of LED per one panel (vertical).
  * @retval MatrixLEDArray Given MatrixLEDArray pointer on success
- * @retval NULL on fail
- * @note It fails when the each panel is larger than 8x8.
 */
 MatrixLEDArray *initMatrixLEDArray(MatrixLEDArray *matrixLEDArray, MatrixLED *matrixLEDs, size_t length, int8_t width, uint8_t height);
 

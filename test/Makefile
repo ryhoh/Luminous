@@ -10,8 +10,8 @@ OUTPUT_OPTION = -o $@
 TESTLINK = -pthread -lgtest_main -lgtest
 VPATH    = ../src
 
-TARGETS = MatrixLED AsciiMatrix JISMatrix
-OBJECTS = MatrixLED AsciiMatrix JISMatrix#Max7219
+TARGETS = MatrixLED AsciiFont JISFont
+OBJECTS = MatrixLED AsciiFont JISFont#Max7219
 # TARGETS      = MatrixBuffer String5x7Buffer Max7219
 # CORE_OBJECTS = Max7219 MatrixBuffer String5x7Buffer MatrixUtils
 

@@ -1,9 +1,12 @@
-#include <AsciiMatrix.h>
+#include <AsciiFont.h>
 
-void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left)
-{
-  const uint8_t offset_from_top = (7 < matrixLED->height) ? matrixLED->height - 7 : 0;
-  const uint8_t height_limit = (matrixLED->height < 7) ? matrixLED->height : 7;
+void writeAsciiToMatrixLED(
+  MatrixLED *matrixLED,
+  char c,
+  int8_t offset_from_left
+) {
+  const uint8_t offset_from_top = (_ASCII_HEIGHT < matrixLED->height) ? matrixLED->height - _ASCII_HEIGHT : 0;
+  const uint8_t height_limit = (matrixLED->height < _ASCII_HEIGHT) ? matrixLED->height : _ASCII_HEIGHT;
   const int8_t left_end = 3 - offset_from_left;  // 文字を左端に移動させてオフセット
 
   for (uint8_t row_i = 0; row_i < height_limit; ++row_i) {
@@ -15,8 +18,12 @@ void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left
   }
 }
 
-void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left)
-{
+void writeAsciisToMatrixLEDs(
+  MatrixLED *matrixLEDs,
+  uint8_t ledlen,
+  const char *string,
+  uint8_t offset_from_left
+) {
   if (string == NULL)
     return;
   
@@ -42,7 +49,10 @@ void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *
   }
 }
 
-void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, uint8_t offset_from_left)
-{
+void writeAsciisToMatrixLEDArray(
+  MatrixLEDArray *matrixLEDArray,
+  const char *string,
+  uint8_t offset_from_left
+) {
   writeAsciisToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left);
 }

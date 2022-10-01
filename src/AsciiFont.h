@@ -1,5 +1,5 @@
-#ifndef _ASCIIMATRIX_H_
-#define _ASCIIMATRIX_H_
+#ifndef _ASCIIFONT_H_
+#define _ASCIIFONT_H_
 
 #include <stdint.h>
 
@@ -9,8 +9,9 @@
 
 #include "MatrixLED.h"
 
-// access as "_fonts['a' - _ASCII_OFFSET]"
-static const int _ASCII_OFFSET = 0x20;
+#define _ASCII_CHAR_NUM 95
+#define _ASCII_HEIGHT 7
+#define _ASCII_OFFSET 0x20  // access as "_fonts['a' - _ASCII_OFFSET]"
 
 /**
  * @brief Get a row of indicated ascii char.
@@ -51,9 +52,9 @@ void writeAsciisToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *str
 
 
 #ifdef ARDUINO
-static const uint8_t _ASCII_FONTS[95][7] PROGMEM
+static const uint8_t _ASCII_FONTS[_ASCII_CHAR_NUM][_ASCII_HEIGHT] PROGMEM
 #else
-static const uint8_t _ASCII_FONTS[95][7]
+static const uint8_t _ASCII_FONTS[_ASCII_CHAR_NUM][_ASCII_HEIGHT]
 #endif
 
 = {
@@ -155,7 +156,7 @@ static const uint8_t _ASCII_FONTS[95][7]
 };
 
 // Send this when fail gettng ascii char (Not Available);
-static const uint8_t _NA_CHAR[7]
+static const uint8_t _NA_CHAR[_ASCII_HEIGHT]
 = {
   0b00011001,
   0b00010101,
@@ -166,9 +167,11 @@ static const uint8_t _NA_CHAR[7]
   0b00010001,
 };
 
-static inline uint8_t getASCIIRow(char c, uint8_t row)
-{
-  if (c < _ASCII_OFFSET || 94 + _ASCII_OFFSET < c)
+static inline uint8_t getASCIIRow(
+  char c,
+  uint8_t row
+) {
+  if (c < _ASCII_OFFSET || _ASCII_CHAR_NUM - 1 + _ASCII_OFFSET < c)
     return *(_NA_CHAR + row);
   
   if (7 < row)
@@ -181,4 +184,4 @@ static inline uint8_t getASCIIRow(char c, uint8_t row)
   #endif
 }
 
-#endif  /* _ASCIIMATRIX_H_ */
+#endif  /* _ASCIIFONT_H_ */

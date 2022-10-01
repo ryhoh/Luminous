@@ -9,6 +9,7 @@
 
 // static const size_t _UTF_CODES_LEN = 3490;
 #define _UTF_CODES_LEN 3490
+#define _UTF_CODES_HEIGHT 8
 
 #ifdef ARDUINO
 static const uint32_t _UTF8_CODES[_UTF_CODES_LEN] PROGMEM
@@ -3509,9 +3510,9 @@ static const uint32_t _UTF8_CODES[_UTF_CODES_LEN]
 };
 
 #ifdef ARDUINO
-static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8] PROGMEM
+static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][_UTF_CODES_HEIGHT] PROGMEM
 #else
-static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8]
+static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][_UTF_CODES_HEIGHT]
 #endif
 = {
   {0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x0},
@@ -7005,5 +7006,43 @@ static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8]
   {0xfe, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
   {0x44, 0x44, 0x28, 0x7c, 0x10, 0x7c, 0x10, 0x0}
 };
+
+/* binarySearch in _UTF_CODES */
+static const uint8_t *binarySearchForJISFont(
+  uint32_t target
+) {
+  uint32_t imin = 0;
+  uint32_t imax = _UTF_CODES_LEN - 1;
+  while (imin <= imax) {
+    // linear search for small area
+    if (imax - imin < 5) {
+      for (uint16_t entry_i = imin; entry_i < imax + 1; ++entry_i) {
+        #ifdef ARDUINO
+        if (pgm_read_dword(_UTF8_CODES + entry_i) == target)
+        #else
+        if (*(_UTF8_CODES + entry_i) == target)
+        #endif
+          return *(_UTF8_MATRIX + entry_i);
+      }
+      // not found
+      return NULL;
+    }
+
+    const uint32_t imid = imin + (imax - imin) / 2;
+    #ifdef ARDUINO
+    const uint32_t looking_code = (uint32_t)pgm_read_dword(_UTF8_CODES + imid);
+    #else
+    const uint32_t looking_code = *(_UTF8_CODES + imid);
+    #endif
+
+    if (looking_code > target)
+      imax = imid - 1;
+    else if (looking_code < target)
+      imin = imid + 1;
+    else
+      return *(_UTF8_MATRIX + imid);
+  }
+  return NULL;
+}
 
 #endif  /* _UTF8TOMATRIX_H_ */

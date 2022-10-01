@@ -9,8 +9,8 @@ DotMatrixLED KEYWORD1
 
 ## Support functions
 MatrixLED KEYWORD1
-AsciiMatrix KEYWORD1
-JISMatrix KEYWORD1
+AsciiFont KEYWORD1
+JISFont KEYWORD1
 
 ## Devices
 Max7219 KEYWORD1
@@ -23,12 +23,12 @@ flipMatrixLED KEYWORD2
 fillMatrixLED KEYWORD2
 leftShiftMatrixLED KEYWORD2
 
-## AsciiMatrix
+## AsciiFont
 getASCIIRow KEYWORD2
 writeAsciiToMatrixLED KEYWORD2
 writeAsciisToMatrixLEDs KEYWORD2
 
-## JISMatrix
+## JISFont
 getJISRow KEYWORD2
 writeJISToMatrixLED KEYWORD2
 writeJISsToMatrixLEDs KEYWORD2

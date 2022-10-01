@@ -1,5 +1,5 @@
-#ifndef _JISMATRIX_H_
-#define _JISMATRIX_H_
+#ifndef _JISFONT_H_
+#define _JISFONT_H_
 
 #include <stdint.h>
 
@@ -7,7 +7,7 @@
 #include <avr/pgmspace.h>
 #endif
 
-#include "AsciiMatrix.h"
+#include "AsciiFont.h"
 #include "UTF8toMatrix.h"
 
 /**
@@ -51,11 +51,13 @@ void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *st
 */
 void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left);
 
-/* binarySearch in _UTF_CODES */
-const uint8_t *_binarySearchForJISMatrix(uint32_t target);
+extern const uint8_t *binarySearchForJISFont(uint32_t target);
 
-static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row_i)
-{
+static inline size_t getJISRow(
+  const char *utf8_s,
+  uint8_t *out_buf,
+  uint8_t row_i
+) {
   if (7 < row_i) {  // can't serve
     *out_buf = *(_NA_CHAR + row_i) << 3;  // 左端に寄せる
     return 0;
@@ -95,7 +97,7 @@ static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row
     return utf_char_len_cache;
   }
 
-  const uint8_t *matrix = _binarySearchForJISMatrix(target);
+  const uint8_t *matrix = binarySearchForJISFont(target);
   if (matrix == NULL) {  // not found
     *out_buf = *(_NA_CHAR + row_i) << 3;  // 左端に寄せる
     return 0;
@@ -113,4 +115,4 @@ static inline size_t getJISRow(const char *utf8_s, uint8_t *out_buf, uint8_t row
   return utf_char_len;
 }
 
-#endif  /* _JISMATRIX_H_ */
+#endif  /* _JISFONT_H_ */

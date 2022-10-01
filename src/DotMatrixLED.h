@@ -9,8 +9,8 @@ extern "C" {
 #include "MatrixLED.h"
 
 /* Support functions for buffer */
-#include "AsciiMatrix.h"
-#include "JISMatrix.h"
+#include "AsciiFont.h"
+#include "JISFont.h"
 
 /* Devices */
 #ifndef SIMULATOR  // Can't use for simulation on terminal.

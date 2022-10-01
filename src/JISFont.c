@@ -1,7 +1,10 @@
-#include "JISMatrix.h"
+#include "JISFont.h"
 
-size_t writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_from_left)
-{
+size_t writeJISToMatrixLED(
+  MatrixLED *matrixLED,
+  const char *c,
+  int8_t offset_from_left
+) {
   const uint8_t offset_from_top = 1;
   const uint8_t height_limit = (matrixLED->height < 7) ? matrixLED->height : 7;
   const int8_t left_end = -offset_from_left;  // 文字を左端に移動させてオフセット
@@ -19,8 +22,12 @@ size_t writeJISToMatrixLED(MatrixLED *matrixLED, const char *c, int8_t offset_fr
   return read_char_size;
 }
 
-void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, int8_t offset_from_left)
-{
+void writeJISsToMatrixLEDs(
+  MatrixLED *matrixLEDs,
+  uint8_t ledlen,
+  const char *string,
+  int8_t offset_from_left
+) {
   if (string == NULL)
     return;
   
@@ -53,43 +60,10 @@ void writeJISsToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *st
   }
 }
 
-void writeJISsToMatrixLEDArray(MatrixLEDArray *matrixLEDArray, const char *string, int8_t offset_from_left)
-{
+void writeJISsToMatrixLEDArray(
+  MatrixLEDArray *matrixLEDArray,
+  const char *string,
+  int8_t offset_from_left
+) {
   writeJISsToMatrixLEDs(matrixLEDArray->matrixLEDs, matrixLEDArray->length, string, offset_from_left);
-}
-
-const uint8_t *_binarySearchForJISMatrix(uint32_t target)
-{
-  uint32_t imin = 0;
-  uint32_t imax = _UTF_CODES_LEN - 1;
-  while (imin <= imax) {
-    // linear search for small area
-    if (imax - imin < 50) {
-      for (uint16_t entry_i = imin; entry_i < imax + 1; ++entry_i) {
-        #ifdef ARDUINO
-        if (pgm_read_dword(_UTF8_CODES + entry_i) == target)
-        #else
-        if (*(_UTF8_CODES + entry_i) == target)
-        #endif
-          return *(_UTF8_MATRIX + entry_i);
-      }
-      // not found
-      return NULL;
-    }
-
-    const uint32_t imid = imin + (imax - imin) / 2;
-    #ifdef ARDUINO
-    const uint32_t looking_code = (uint32_t)pgm_read_dword(_UTF8_CODES + imid);
-    #else
-    const uint32_t looking_code = *(_UTF8_CODES + imid);
-    #endif
-
-    if (looking_code > target)
-      imax = imid - 1;
-    else if (looking_code < target)
-      imin = imid + 1;
-    else
-      return *(_UTF8_MATRIX + imid);
-  }
-  return NULL;
 }

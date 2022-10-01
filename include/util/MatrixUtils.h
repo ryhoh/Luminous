@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #endif
 
-#include "../interface/DeviceAPI.h"
+#include "../interface/Driver.h"
 #include "Typing.h"
 
 /*
