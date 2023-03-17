@@ -9,9 +9,10 @@
 #define _MIDDLE_PUB_H_
 
 /* インクルード -----------------------------------------------*/
-
+#include "Middle\LEDControl.h""
 
 /* 外部公開用関数 ---------------------------------------------*/
+extern MatrixBuffer_t *f_LED_Get_MatrixBuffer(void);
 
 
 #endif  /* _MIDDLE_PUB_H_ */

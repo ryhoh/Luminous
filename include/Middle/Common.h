@@ -24,6 +24,6 @@
 #define m_ON (1)
 #define m_OFF (0)
 
-#define M_CLIPINC(x, max) do ((x) < (max) ? (x) + 1 : (max)) while(0)
+#define M_CLIPINC(x, max) do { (x) < (max) ? (x) + 1 : (max); } while(0)
 
 #endif  /* _MIDDLE_COMMON_H_ */

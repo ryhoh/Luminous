@@ -9,9 +9,10 @@
 #define _LED_CONTROLLERS_H_
 
 /* インクルード -----------------------------------------------*/
-#include "Common.h"
+#include "Middle\Common.h"
 
 /* マクロ定義 -------------------------------------------------*/
+/* MAX7219 */
 #define m_LEDCONTROL_DATA_PIN  (2)  ///< データピン番号
 #define m_LEDCONTROL_CS_PIN  (3)  ///< チップセレクトピン番号
 #define m_LEDCONTROL_CLK_PIN  (4)  ///< クロックピン番号
@@ -44,7 +45,24 @@
 
 #define m_LEDCONTROL_MAX7219_BLANK_DATA (0x0F)  ///< 空白データ
 
+/* ドライバ駆動状態 */
+#define m_LEDCONTROL_STATE_POWERON (0)  ///< 電源ON
+#define m_LEDCONTROL_STATE_SETUP (1)  ///< 初期化中
+#define m_LEDCONTROL_STATE_DRIVE (2)  ///< 駆動中
+
+/* バッファ */
+#define m_LEDCONTROL_BUFFER_SIZE (8)  ///< バッファサイズ
+
+
 /* 構造体定義 -------------------------------------------------*/
+/**
+ * @brief LEDマトリクスバッファ
+ * 
+ */
+typedef struct _MatrixBuffer {
+  uint32_t u8_size;  ///< データサイズ
+  uint8_t u8_data[m_LEDCONTROL_BUFFER_SIZE];  ///< データ
+} MatrixBuffer_t;
 
 /**
  * @brief Controller for Max7219
@@ -66,20 +84,16 @@ typedef struct _Max7219 {
   uint8_t u8_lat;  ///< Pin number connecting lat (or cs)
   uint8_t u8_clk;  ///< Pin number connecting clk
   uint8_t u8_brightness;  ///< Brightness of LED (0 ~ 9)
-  uint32_t u32_setupStep;  ///< Step of setup
-  uint8_t u8_isready;  ///< Flag of setup completion
-  uint8_t u8_dummy[7];  ///< Dummy
-  uint32_t u32_bufferSize;  ///< Size of buffer 
-  uint8_t *pu8_buffer;  ///< Buffer for data to send
+  uint8_t u8_setupStep;  ///< Step of setup
+  uint8_t u8_state;  ///< Flag of setup completion
 } Max7219_t;
 
-/**
- * @brief Initialize Max7219.
- * @param max7219 [in] Pointer of Max7219 to initialize.
-*/
-void f_LED_MAX7219_init(Max7219 *max7219);
+/* 外部関数宣言 -----------------------------------------------*/
+void f_LED_TaskMain(void);
+MatrixBuffer_t *f_LED_Get_MatrixBuffer(void);
 
 /* 内部関数宣言 -----------------------------------------------*/
+static void f_LED_MAX7219_init(Max7219_t *max7219);
 
 // /**
 //  * @brief Do test run.
@@ -87,38 +101,6 @@ void f_LED_MAX7219_init(Max7219 *max7219);
 // */
 // void testRunMax7219(Max7219 *max7219);
 
-/**
- * @brief Flush data from single MatrixLED to Max7219.
- * @param max7219 [in] Pointer of Max7219 to write.
- * @param matrixLED [in] Pointer of MatrixLED to read.
-*/
-void flushMatrixLEDByMax7219(Max7219 *max7219, MatrixLED *matrixLED);
-
-/**
- * @brief Flush data from multiple MatrixLEDs to Max7219.
- * @param max7219 [in] Pointer of Max7219 to write.
- * @param matrixLEDs [in] Pointer of MatrixLED-Array to read.
- * @param length [in] Length of MatrixLED-Array.
- * @note When length is 1, same to flushMatrixLEDByMax7219.
-*/
-void flushMatrixLEDsByMax7219(Max7219 *max7219, MatrixLED *matrixLEDs, uint8_t length);
-
-// params: レジスタアドレス, データ
-// ラッチ操作を行わないバージョン
-static inline void shiftOutToMax7219(Max7219 *max7219, uint8_t addr, uint8_t data)
-{
-  call_shiftOut(max7219->dat, max7219->clk, MSBFIRST, addr);
-  call_shiftOut(max7219->dat, max7219->clk, MSBFIRST, data);
-}
-
-// params: レジスタアドレス, データ
-// ラッチ操作を行う（1件だけ送る）バージョン
-static inline void sendToMax7219(Max7219 *max7219, uint8_t addr, uint8_t data)
-{
-  call_digitalWrite(max7219->lat, LOW);
-  shiftOutToMax7219(max7219, addr, data);
-  call_digitalWrite(max7219->lat, HIGH);
-  call_digitalWrite(max7219->lat, LOW);
-}
+static void f_LED_MAX7219_Flush(const Max7219_t *pst_max7219, const uint8_t pu8_data[], uint8_t u8_len);
 
 #endif  /* _LED_CONTROLLERS_H_ */

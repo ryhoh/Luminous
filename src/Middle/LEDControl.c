@@ -6,15 +6,50 @@
  */
 
 /* インクルード -----------------------------------------------*/
-#include "LEDControllers.h"
+#include "Middle\LEDControl.h"
+
+/* 外部変数宣言 -----------------------------------------------*/
+MatrixBuffer_t gst_MatrixBuffer = {
+  .u8_size = m_LEDCONTROL_BUFFER_SIZE,
+  .u8_data = { 0 },
+};
 
 /* 関数定義 ---------------------------------------------------*/
-void f_LED_MAX7219_init(Max7219_t *pst_max7219)
-{
-  /* 使用可否 */
-  uint8_t u8_isready = pst_max7219->u8_isready;
+/**
+ * @brief LED制御タスクのメイン処理
+ * 
+ */
+void f_LED_TaskMain(void) {
+  /* Max7219 の構造体 */
+  static Max7219_t sst_Max7219 = {
+    .u8_dat = 0,
+    .u8_lat = 0,
+    .u8_clk = 0,
+    .u8_state = m_LEDCONTROL_STATE_POWERON,
+    .u8_setupStep = m_LEDCONTROL_MAX7219_SETUP_STEP0,
+  };
 
-  if (u8_isready == m_FALSE) {
+  /* 初期化処理 */
+  f_LED_MAX7219_Init(&sst_Max7219);
+
+  /* バッファ出力処理 */
+  f_LED_MAX7219_Flush(
+    &sst_Max7219,
+    &gst_MatrixBuffer.u8_data[0],
+    gst_MatrixBuffer.u8_size
+  );
+}
+
+/**
+ * @brief Initialize Max7219.
+ * @param max7219 [in] Pointer of Max7219 to initialize.
+*/
+static void f_LED_MAX7219_Init(Max7219_t *pst_max7219)
+{
+  /*  */
+  uint8_t u8_state = pst_max7219->u8_state;
+
+  if (u8_state != m_LEDCONTROL_STATE_DRIVE) {
     /* セットアップステップごとの処理 */
     switch (pst_max7219->u8_setupStep) {
       case m_LEDCONTROL_MAX7219_SETUP_STEP0:
@@ -26,12 +61,12 @@ void f_LED_MAX7219_init(Max7219_t *pst_max7219)
         };
 
         /* すべてのピンをOUTPUTに設定 */
-        call_pinMode(pst_max7219->u8_dat, m_OUTPUT);
-        call_pinMode(pst_max7219->u8_lat, m_OUTPUT);
-        call_pinMode(pst_max7219->u8_clk, m_OUTPUT);
+        f_driver_pinMode(pst_max7219->u8_dat, m_OUTPUT);
+        f_driver_pinMode(pst_max7219->u8_lat, m_OUTPUT);
+        f_driver_pinMode(pst_max7219->u8_clk, m_OUTPUT);
 
         /* SPI通信 */
-        call_shiftOuts(
+        f_driver_shiftOuts(
           &u8_sendData,
           m_LEDCONTROL_MAX7219_SETUP_STEP0_DATA_NUM,
           pst_max7219->u8_dat,
@@ -39,10 +74,13 @@ void f_LED_MAX7219_init(Max7219_t *pst_max7219)
           pst_max7219->u8_lat
         );
 
+        /* 次の状態 */
+        u8_state = m_LEDCONTROL_STATE_SETUP;
+
         break;
       case m_LEDCONTROL_MAX7219_SETUP_STEP1:
         // 残留表示を消去
-        const uint8_t u8_sendData[m_LEDCONTROL_MAX7219_SETUP1_DATA_NUM] = {
+        const uint8_t u8_sendData[m_LEDCONTROL_MAX7219_SETUP_STEP1_DATA_NUM] = {
           m_LEDCONTROL_MAX7219_PANEL1, m_LEDCONTROL_MAX7219_BLANK_DATA,  /* blankを送信 */
           m_LEDCONTROL_MAX7219_PANEL2, m_LEDCONTROL_MAX7219_BLANK_DATA,  /* blankを送信 */
           m_LEDCONTROL_MAX7219_PANEL3, m_LEDCONTROL_MAX7219_BLANK_DATA,  /* blankを送信 */
@@ -54,9 +92,9 @@ void f_LED_MAX7219_init(Max7219_t *pst_max7219)
         };
 
         /* SPI通信 */
-        call_shiftOuts(
+        f_driver_shiftOuts(
           &u8_sendData,
-          m_LEDCONTROL_MAX7219_SETUP1_DATA_NUM,
+          m_LEDCONTROL_MAX7219_SETUP_STEP1_DATA_NUM,
           pst_max7219->u8_dat,
           pst_max7219->u8_clk,
           pst_max7219->u8_lat
@@ -65,18 +103,18 @@ void f_LED_MAX7219_init(Max7219_t *pst_max7219)
         break;
       case m_LEDCONTROL_MAX7219_SETUP_STEP5:
         /* @@暫定 4周期=64ms後に使用可能とする */
-        u8_isready = m_TRUE;
+        u8_state = m_LEDCONTROL_STATE_DRIVE;
         break;
       default:
         break;
     }
 
     /* セットアップステップの更新 */
-    M_CLIPINC(pst_max7219->u8_setupStep, UINT32_MAX);
+    M_CLIPINC(pst_max7219->u8_setupStep, UINT8_MAX);
   }
 
-  /* 使用可否の更新 */
-  pst_max7219->u8_isready = u8_isready;
+  /* 状態の更新 */
+  pst_max7219->u8_state = u8_state;
 }
 
 // void testRunMax7219(Max7219 *max7219)
@@ -95,25 +133,31 @@ void f_LED_MAX7219_init(Max7219_t *pst_max7219)
 //   }
 // }
 
-void flushMatrixLEDByMax7219(Max7219 *max7219, MatrixLED *matrixLED)
+/**
+ * @brief データをMAX7219に送信する
+ * 
+ * @param pst_max7219 MAX7219の情報
+ * @param pu8_data 送信するデータ
+ * @param u8_len 送信するデータの長さ
+ */
+static void f_LED_MAX7219_Flush(const Max7219_t *pst_max7219, const uint8_t pu8_data[], uint8_t u8_len)
 {
-  call_digitalWrite(max7219->lat, LOW);
-  for (uint8_t row_i = 0; row_i < 8; ++row_i) {
-    shiftOutToMax7219(max7219, row_i + 1, *(matrixLED->buffer + row_i));
-  }
-  call_digitalWrite(max7219->lat, HIGH);
-  call_digitalWrite(max7219->lat, LOW);
+  /* データ送信 */
+  f_driver_shiftOuts(
+    pu8_data,
+    u8_len,
+    pst_max7219->u8_dat,
+    pst_max7219->u8_clk,
+    pst_max7219->u8_lat
+  );
 }
 
-void flushMatrixLEDsByMax7219(Max7219 *max7219, MatrixLED *matrixLEDs, uint8_t length)
+/**
+ * @brief MatrixBuffer_t アドレスを外部公開する
+ * 
+ * @return MatrixBuffer_t* 
+ */
+MatrixBuffer_t *f_LED_Get_MatrixBuffer(void)
 {
-
-  for (uint8_t row_i = 0; row_i < 8; ++row_i) {
-    call_digitalWrite(max7219->lat, LOW);
-    for (uint8_t matrix_i = 0; matrix_i < length; ++matrix_i) {
-        shiftOutToMax7219(max7219, row_i + 1, *((matrixLEDs + matrix_i)->buffer + row_i));
-    }
-    call_digitalWrite(max7219->lat, HIGH);
-    call_digitalWrite(max7219->lat, LOW);
-  }
+  return &gst_MatrixBuffer;
 }
