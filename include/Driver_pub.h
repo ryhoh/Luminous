@@ -9,7 +9,7 @@
 #define _DRIVER_PUB_H_
 
 /* インクルード -----------------------------------------------*/
-#include "internal\Driver.h"
+#include "Driver\DriverAPI.h"
 
 /* 外部公開用関数 ---------------------------------------------*/
 extern inline void f_driver_pinMode(uint8_t u8_pin, uint8_t u8_mode);

@@ -6,8 +6,8 @@
  */
 
 /* インクルード -----------------------------------------------*/
-#include "Common.h"
-#include "DriverAPI.h"
+#include "Driver\Common.h"
+#include "Driver\DriverAPI.h"
 #ifdef ARDUINO
 #include <Arduino.h>
 #endif
@@ -48,7 +48,7 @@ inline void f_driver_digitalWrite(uint8_t u8_pin, uint8_t u8_mode) {
  */
 inline void f_driver_sleep(uint32_t u32_ms) {
 #ifdef ARDUINO
-  delay(ms);
+  delay(u32_ms);
 #else  /* ARDUINO */
 #error "Arduino以外の環境では使用できません。"
 #endif /* ARDUINO */
@@ -59,11 +59,11 @@ inline void f_driver_sleep(uint32_t u32_ms) {
  * 
  * @param u32_ms 割り込み実行周期(ms)
  */
-inline void f_driver_timerInterrupt(uint32_t u32_ms) {
+inline void f_driver_timerInterrupt(void (*func)(void), uint32_t u32_ms) {
 #ifdef ARDUINO
-  timer0_isr_init();
-  timer0_attachInterrupt(timerInterrupt);
-  timer0_write(ESP.getCycleCount() + u32_ms * 1000);
+  // timer0_isr_init();
+  // timer0_attachInterrupt(func);
+  // timer0_write(ESP.getCycleCount() + u32_ms * 1000);
 #else  /* ARDUINO */
 #error "Arduino以外の環境では使用できません。"
 #endif /* ARDUINO */
@@ -87,7 +87,7 @@ inline void f_driver_timerInterruptDisable(void) {
  */
 inline void f_driver_timerInterruptEnable(void) {
 #ifdef ARDUINO
-  timer0_attachInterrupt(timerInterrupt);
+  // timer0_attachInterrupt(timerInterrupt);
 #else  /* ARDUINO */
 #error "Arduino以外の環境では使用できません。"
 #endif /* ARDUINO */
@@ -127,7 +127,7 @@ inline void f_driver_shiftOut(
  * @param u8_cs_pin チップセレクトピン番号
  */
 inline void f_driver_shiftOuts(
-    const uint8_t *u8_data,
+    const uint8_t u8_data[],
     uint32_t u32_len,
     uint8_t u8_dat_pin,
     uint8_t u8_clk_pin,
@@ -135,11 +135,11 @@ inline void f_driver_shiftOuts(
 ) {
     f_driver_digitalWrite(u8_cs_pin, m_LOW);
     for (uint32_t u32_i = 0; u32_i < u32_len; ++u32_i) {
-        uint8_t u8_data = u8_data[u32_i];
+        uint8_t u8_byte = u8_data[u32_i];
         for (uint8_t u8_i = 0; u8_i < 8; ++u8_i) {
             f_driver_digitalWrite(u8_clk_pin, m_LOW);
-            f_driver_digitalWrite(u8_dat_pin, (u8_data & 0x80) ? m_HIGH : m_LOW);
-            u8_data <<= 1;
+            f_driver_digitalWrite(u8_dat_pin, (u8_byte & 0x80) ? m_HIGH : m_LOW);
+            u8_byte <<= 1;
             f_driver_digitalWrite(u8_clk_pin, m_HIGH);
         }
     }
