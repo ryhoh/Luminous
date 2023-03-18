@@ -6,7 +6,6 @@
  */
 
 /* インクルード -----------------------------------------------*/
-#define ARDUINO
 #include <Arduino.h>
 
 #include "Driver_pub.h"
