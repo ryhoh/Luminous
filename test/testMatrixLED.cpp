@@ -2,7 +2,7 @@
 #include <iostream>
 
 extern "C" {
-  #include <MatrixLED.h>
+  #include <Middle\MatrixLED.h>
 }
 
 TEST(MatrixLEDTest, init) {

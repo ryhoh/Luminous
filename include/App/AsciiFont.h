@@ -10,6 +10,7 @@
 
 /* インクルード -----------------------------------------------*/
 #include "Common.h"
+#include "Middle\MatrixLED.h"
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>
@@ -142,21 +143,21 @@ static const uint8_t gscu8_FONT_ASCII_NA_CHAR[m_FONT_ASCII_HEIGHT]
 /* 外聞関数宣言 -----------------------------------------------*/
 static inline void f_FONT_ASCII_ReadChar(char i8_c, uint8_t u8_matrix[]);
 
-// /**
-//  * @brief Write single ascii char to single matrixLED.
-//  * @param matrixLED [in] Pointer of MatrixLED.
-//  * @param c [in] Char to write.
-//  * @param offset_from_left [in] Offset size from left end.
-// */
-// void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left);
+/**
+ * @brief Write single ascii char to single matrixLED.
+ * @param matrixLED [in] Pointer of MatrixLED.
+ * @param c [in] Char to write.
+ * @param offset_from_left [in] Offset size from left end.
+*/
+void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left);
 
-// /**
-//  * @brief Write ascii string to multiple matrixLED.
-//  * @param matrixLEDs [in] Pointer of MatrixLED-Array.
-//  * @param ledlen [in] Length of MatrixLED-Array.
-//  * @param string [in] Char-Array to write.
-//  * @param offset_from_left [in] Offset size from left end.
-// */
-// void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
+/**
+ * @brief Write ascii string to multiple matrixLED.
+ * @param matrixLEDs [in] Pointer of MatrixLED-Array.
+ * @param ledlen [in] Length of MatrixLED-Array.
+ * @param string [in] Char-Array to write.
+ * @param offset_from_left [in] Offset size from left end.
+*/
+void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
 
 #endif  /* _ASCIIFONT_H_ */

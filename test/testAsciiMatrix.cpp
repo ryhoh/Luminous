@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-  #include <AsciiMatrix.h>
+  #include <App\AsciiMatrix.h>
 }
 
 TEST(AsciiMatrixTest, writeAsciiToMatrixLED) {
