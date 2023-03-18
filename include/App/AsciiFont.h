@@ -1,50 +1,34 @@
-#ifndef _ASCIIMATRIX_H_
-#define _ASCIIMATRIX_H_
+/**
+ * @file AsciiFont.h
+ * @author ryhoh
+ * @brief Ascii font data.
+ * 
+ */
 
-#include <stdint.h>
+#ifndef _ASCIIFONT_H_
+#define _ASCIIFONT_H_
+
+/* インクルード -----------------------------------------------*/
+#include "Common.h"
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>
 #endif
 
-#include "MatrixLED.h"
+/* マクロ定義 -------------------------------------------------*/
+// access as "_fonts['a' - m_FONT_ASCII_ADDRESS_OFFSET]"
+#define m_FONT_ASCII_ADDRESS_OFFSET (0x20)
+#define m_FONT_ASCII_NUM (95)
+#define m_FONT_ASCII_WIDTH (8)
+#define m_FONT_ASCII_HEIGHT (7)
+#define m_FONT_ASCII_BLANK_ROW (0x00)
 
-// access as "_fonts['a' - _ASCII_OFFSET]"
-static const int _ASCII_OFFSET = 0x20;
-
-/**
- * @brief Get a row of indicated ascii char.
- * @param c [in] Char to get row.
- * @param row [in] Row number between [0, 6].
- * @retval uint8_t Row data on success.
- * @retval uint8_t N/A row data on illegal c.
- * @retval 0 on illegal row.
-*/
-static inline uint8_t getASCIIRow(char c, uint8_t row);
-
-/**
- * @brief Write single ascii char to single matrixLED.
- * @param matrixLED [in] Pointer of MatrixLED.
- * @param c [in] Char to write.
- * @param offset_from_left [in] Offset size from left end.
-*/
-void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left);
-
-/**
- * @brief Write ascii string to multiple matrixLED.
- * @param matrixLEDs [in] Pointer of MatrixLED-Array.
- * @param ledlen [in] Length of MatrixLED-Array.
- * @param string [in] Char-Array to write.
- * @param offset_from_left [in] Offset size from left end.
-*/
-void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
-
+/* 定数定義 --------------------------------------------------*/
 #ifdef ARDUINO
-static const uint8_t _ASCII_FONTS[95][7] PROGMEM
+static const uint8_t gscu8_FONT_ASCII_FONTS[m_FONT_ASCII_NUM][m_FONT_ASCII_WIDTH] PROGMEM
 #else
-static const uint8_t _ASCII_FONTS[95][7]
+static const uint8_t gscu8_FONT_ASCII_FONTS[m_FONT_ASCII_NUM][m_FONT_ASCII_WIDTH]
 #endif
-
 = {
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},  // 0x20, Space
   {0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x04},  // 0x21, !
@@ -144,7 +128,7 @@ static const uint8_t _ASCII_FONTS[95][7]
 };
 
 // Send this when fail gettng ascii char (Not Available);
-static const uint8_t _NA_CHAR[7]
+static const uint8_t gscu8_FONT_ASCII_NA_CHAR[m_FONT_ASCII_HEIGHT]
 = {
   0b00011001,
   0b00010101,
@@ -155,19 +139,24 @@ static const uint8_t _NA_CHAR[7]
   0b00010001,
 };
 
-static inline uint8_t getASCIIRow(char c, uint8_t row)
-{
-  if (c < _ASCII_OFFSET || 94 + _ASCII_OFFSET < c)
-    return *(_NA_CHAR + row);
-  
-  if (7 < row)
-    return 0x00;
-  
-  #ifdef ARDUINO  // using EEPROM
-  return pgm_read_byte(*(_ASCII_FONTS + c - _ASCII_OFFSET) + row);
-  #else
-  return *(*(_ASCII_FONTS + c - _ASCII_OFFSET) + row);
-  #endif
-}
+/* 外聞関数宣言 -----------------------------------------------*/
+static inline void f_FONT_ASCII_ReadChar(char i8_c, uint8_t u8_matrix[]);
 
-#endif  /* _ASCIIMATRIX_H_ */
+// /**
+//  * @brief Write single ascii char to single matrixLED.
+//  * @param matrixLED [in] Pointer of MatrixLED.
+//  * @param c [in] Char to write.
+//  * @param offset_from_left [in] Offset size from left end.
+// */
+// void writeAsciiToMatrixLED(MatrixLED *matrixLED, char c, int8_t offset_from_left);
+
+// /**
+//  * @brief Write ascii string to multiple matrixLED.
+//  * @param matrixLEDs [in] Pointer of MatrixLED-Array.
+//  * @param ledlen [in] Length of MatrixLED-Array.
+//  * @param string [in] Char-Array to write.
+//  * @param offset_from_left [in] Offset size from left end.
+// */
+// void writeAsciisToMatrixLEDs(MatrixLED *matrixLEDs, uint8_t ledlen, const char *string, uint8_t offset_from_left);
+
+#endif  /* _ASCIIFONT_H_ */

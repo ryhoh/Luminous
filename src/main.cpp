@@ -11,7 +11,7 @@
 
 #include "Driver_pub.h"
 #include "Middle_pub.h"
-// #include "App\App_pub.h"
+#include "App_pub.h"
 
 void setup() {
   /* スタートアップタスク実行 */

@@ -1,19 +1,34 @@
-#ifndef _UTF8TOMATRIX_H_
-#define _UTF8TOMATRIX_H_
+/**
+ * @file UTF8Font.h
+ * @author ryhoh
+ * @brief UTF-8フォントデータ
+ * 
+ */
 
-#include <stdint.h>
+#ifndef _UTF8FONT_H_
+#define _UTF8FONT_H_
+
+/* インクルード -----------------------------------------------*/
+#include "Common.h"
+#include "AsciiFont.h"
 
 #ifdef ARDUINO
 #include <avr/pgmspace.h>
 #endif
 
-// static const size_t _UTF_CODES_LEN = 3490;
-#define _UTF_CODES_LEN 3490
+/* マクロ定義 -------------------------------------------------*/
+#define m_FONT_UTF_CODES_LEN (3490)
+#define m_FONT_UTF_WIDTH (8)
+#define m_FONT_UTF_HEIGHT (8)
+#define m_FONT_UTF_BLANK_ROW (0x00)
+#define m_FONT_UTF_LINEAR_SEARCH_SIZE (50)
+#define m_FONT_UTF_INVALID_CODE (0xFFFFFFFF)
 
+/* 定数定義 ---------------------------------------------------*/
 #ifdef ARDUINO
-static const uint32_t _UTF8_CODES[_UTF_CODES_LEN] PROGMEM
+static const uint32_t gscu32_FONT_UTF8_CODES[m_FONT_UTF_CODES_LEN] PROGMEM
 #else
-static const uint32_t _UTF8_CODES[_UTF_CODES_LEN]
+static const uint32_t gscu32_FONT_UTF8_CODES[m_FONT_UTF_CODES_LEN]
 #endif
 = {
   0x00005C,
@@ -3509,9 +3524,9 @@ static const uint32_t _UTF8_CODES[_UTF_CODES_LEN]
 };
 
 #ifdef ARDUINO
-static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8] PROGMEM
+static const uint8_t gscu8_FONT_UTF_FONTS[m_FONT_UTF_CODES_LEN][m_FONT_UTF_HEIGHT] PROGMEM
 #else
-static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8]
+static const uint8_t gscu8_FONT_UTF_FONTS[m_FONT_UTF_CODES_LEN][m_FONT_UTF_HEIGHT]
 #endif
 = {
   {0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x0},
@@ -7006,4 +7021,21 @@ static const uint8_t _UTF8_MATRIX[_UTF_CODES_LEN][8]
   {0x44, 0x44, 0x28, 0x7c, 0x10, 0x7c, 0x10, 0x0}
 };
 
-#endif  /* _UTF8TOMATRIX_H_ */
+static const uint8_t gscu8_FONT_UTF_NA_CHAR[m_FONT_UTF_HEIGHT]
+= {
+  0b00000000,
+  0b00011001,
+  0b00010101,
+  0b00010011,
+  0b00000000,
+  0b00000100,
+  0b00001110,
+  0b00010001
+};
+
+/* 関数定義 ---------------------------------------------------*/
+void f_FONT_UTF8_ReadChar(uint32_t u32_code, uint8_t u8_matrix[]);
+static const uint32_t *f_FONT_UTF8_binarySearchForCode(uint32_t u32_code);
+
+
+#endif  /* _UTF8FONT_H_ */

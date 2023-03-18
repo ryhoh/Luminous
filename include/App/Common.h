@@ -1,16 +1,17 @@
 /**
  * @file Common.h
  * @author ryhoh
- * @brief ミドルウェア層向け共通ヘッダ
+ * @brief アプリ層向け共通ヘッダ
  * 
  */
 
-#ifndef _MIDDLE_COMMON_H_
-#define _MIDDLE_COMMON_H_
+#ifndef _APP_COMMON_H_
+#define _APP_COMMON_H_
 
 /* インクルード -----------------------------------------------*/
 #include <stdint.h>
 #include "Driver_pub.h"
+#include "Middle_pub.h"
 
 /* マクロ定義 -------------------------------------------------*/
 #define m_OUTPUT (1)
@@ -24,4 +25,4 @@
 
 #define M_CLIPINC(x, max) do { (x) < (max) ? (x) + 1 : (max); } while(0)
 
-#endif  /* _MIDDLE_COMMON_H_ */
+#endif  /* _APP_COMMON_H_ */

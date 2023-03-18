@@ -55,45 +55,6 @@ inline void f_driver_sleep(uint32_t u32_ms) {
 }
 
 /**
- * @brief タイマ割り込み定義関数
- * 
- * @param u32_ms 割り込み実行周期(ms)
- */
-inline void f_driver_timerInterrupt(void (*func)(void), uint32_t u32_ms) {
-#ifdef ARDUINO
-  // timer0_isr_init();
-  // timer0_attachInterrupt(func);
-  // timer0_write(ESP.getCycleCount() + u32_ms * 1000);
-#else  /* ARDUINO */
-#error "Arduino以外の環境では使用できません。"
-#endif /* ARDUINO */
-}
-
-/**
- * @brief タイマ割り込み禁止関数
- * 
- */
-inline void f_driver_timerInterruptDisable(void) {
-#ifdef ARDUINO
-  timer0_detachInterrupt();
-#else  /* ARDUINO */
-#error "Arduino以外の環境では使用できません。"
-#endif /* ARDUINO */
-}
-
-/**
- * @brief タイマ割り込み許可関数
- * 
- */
-inline void f_driver_timerInterruptEnable(void) {
-#ifdef ARDUINO
-  // timer0_attachInterrupt(timerInterrupt);
-#else  /* ARDUINO */
-#error "Arduino以外の環境では使用できません。"
-#endif /* ARDUINO */
-}
-
-/**
  * @brief シフトレジスタ出力関数
  * 
  * @param u8_data 出力データ
@@ -144,4 +105,73 @@ inline void f_driver_shiftOuts(
         }
     }
     f_driver_digitalWrite(u8_cs_pin, m_HIGH);
+}
+
+/**
+ * @brief ROM から1バイト読み込み関数
+ * @param addr 読み込みアドレス
+ * @note pgmspaceライブラリを使用、Arduino以外の環境ではアドレスの値をそのまま返す
+ * 
+ * @return uint8_t 
+ */
+inline uint8_t f_driver_readByteFromROM(const void* addr) {
+#ifdef ARDUINO
+    return pgm_read_byte(addr);
+#else  /* ARDUINO */
+    return *addr;
+#endif /* ARDUINO */
+}
+
+/**
+ * @brief ROM から2バイト読み込み関数
+ * @param addr 読み込みアドレス
+ * @note pgmspaceライブラリを使用、Arduino以外の環境ではアドレスの値をそのまま返す
+ * 
+ * @return uint16_t 
+ */
+inline uint16_t f_driver_readWordFromROM(const void* addr) {
+#ifdef ARDUINO
+    return pgm_read_word(addr);
+#else  /* ARDUINO */
+    return *addr;
+#endif /* ARDUINO */
+}
+
+/**
+ * @brief タイマ割り込み定義関数
+ * 
+ * @param u32_ms 割り込み実行周期(ms)
+ */
+inline void f_driver_timerInterrupt(void (*func)(void), uint32_t u32_ms) {
+#ifdef ARDUINO
+  // timer0_isr_init();
+  // timer0_attachInterrupt(func);
+  // timer0_write(ESP.getCycleCount() + u32_ms * 1000);
+#else  /* ARDUINO */
+#error "Arduino以外の環境では使用できません。"
+#endif /* ARDUINO */
+}
+
+/**
+ * @brief タイマ割り込み禁止関数
+ * 
+ */
+inline void f_driver_timerInterruptDisable(void) {
+#ifdef ARDUINO
+  timer0_detachInterrupt();
+#else  /* ARDUINO */
+#error "Arduino以外の環境では使用できません。"
+#endif /* ARDUINO */
+}
+
+/**
+ * @brief タイマ割り込み許可関数
+ * 
+ */
+inline void f_driver_timerInterruptEnable(void) {
+#ifdef ARDUINO
+  // timer0_attachInterrupt(timerInterrupt);
+#else  /* ARDUINO */
+#error "Arduino以外の環境では使用できません。"
+#endif /* ARDUINO */
 }
